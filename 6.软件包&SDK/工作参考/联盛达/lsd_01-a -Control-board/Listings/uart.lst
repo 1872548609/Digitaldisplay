@@ -1,0 +1,250 @@
+C51 COMPILER V9.54   UART                                                                  07/12/2025 08:10:59 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE UART
+OBJECT MODULE PLACED IN .\Objects\uart.obj
+COMPILER INVOKED BY: E:\keilC51\C51\BIN\C51.EXE scr\uart.c OPTIMIZE(9,SIZE) BROWSE INCDIR(.\inc;.\USER) DEBUG OBJECTEXTE
+                    -ND PRINT(.\Listings\uart.lst) TABS(2) OBJECT(.\Objects\uart.obj)
+
+line level    source
+
+   1          #include "uart.h"
+   2          
+   3          //16MHZ 娉㈢壒鐜?1?79600
+   4          #define d_S0RELH    0x03
+   5          #define d_S0RELL    0xCC    
+   6          
+   7          
+   8          #if(CRC16_ENABLE)
+   9          
+  10          static uint16 _crc16 = 0xffff;
+  11          /*! 
+  12          *  \brief  检查数据是否符合CRC16校验
+  13          *  \param buffer 待校验的数据
+  14          *  \param n 数据长度，包含CRC16
+  15          *  \param pcrc 校验码
+  16          */
+  17          static void AddCRC16(uint8 *buffer,uint16 n,uint16 *pcrc)
+  18          {
+  19   1          uint16 i,j,carry_flag,a;
+  20   1      
+  21   1          for (i=0; i<n; i++)
+  22   1          {
+  23   2              *pcrc=*pcrc^buffer[i];
+  24   2              for (j=0; j<8; j++)
+  25   2              {
+  26   3                  a=*pcrc;
+  27   3                  carry_flag=a&0x0001;
+  28   3                  *pcrc=*pcrc>>1;
+  29   3                  if (carry_flag==1)
+  30   3                      *pcrc=*pcrc^0xa001;
+  31   3              }
+  32   2          }
+  33   1      }
+  34          /*! 
+  35          *  \brief  检查数据是否符合CRC16校验
+  36          *  \param buffer 待校验的数据，末尾存储CRC16
+  37          *  \param n 数据长度，包含CRC16
+  38          *  \return 校验通过返回1，否则返回0
+  39          */
+  40          uint16 CheckCRC16(uint8 *buffer,uint16 n)
+  41          {
+  42   1          uint16 crc0 = 0x0;
+  43   1          uint16 crc1 = 0xffff;
+  44   1      
+  45   1          if(n>=2)
+  46   1          {
+  47   2              crc0 = ((buffer[n-2]<<8)|buffer[n-1]);
+  48   2              AddCRC16(buffer,n-2,&crc1);
+  49   2          }
+  50   1      
+  51   1          return (crc0==crc1);
+  52   1      }
+  53          /*! 
+  54          *  \brief  发送一个字节
+C51 COMPILER V9.54   UART                                                                  07/12/2025 08:10:59 PAGE 2   
+
+  55          *  \param  c 
+  56          */
+  57          void SEND_DATA(uint8 c)
+  58          {
+  59   1          AddCRC16(&c,1,&_crc16);
+  60   1          SendChar(c);
+  61   1      }
+  62          /*! 
+  63          *  \brief  帧头
+  64          */
+  65          void BEGIN_CMD()
+  66          {
+  67   1          TX_8(0XEE);
+  68   1          _crc16 = 0XFFFF;                      //开始计算CRC16
+  69   1      }
+  70          /*! 
+  71          *  \brief  帧尾
+  72          */
+  73          void END_CMD()
+  74          {
+  75   1          uint16 crc16 = _crc16;
+  76   1          TX_16(crc16);                         //发送CRC16
+  77   1          TX_32(0XFFFCFFFF);
+  78   1      }
+  79          
+  80          #else
+              
+              #define SEND_DATA(P) SendChar(P)          //锟斤拷锟斤拷一锟斤拷锟街斤拷
+              #define BEGIN_CMD() TX_8(0XEE)            //帧头
+              #define END_CMD() TX_32(0XFFFCFFFF)       //帧尾
+              
+              #endif
+  87          
+  88          
+  89          bit bU0TX =0;
+  90          u16 cmd_pos =0;
+  91          u32 cmd_state=0;
+  92          
+  93          void Uart_Init(void)
+  94          {
+  95   1          S0RELH   = d_S0RELH;
+  96   1          S0RELL   = d_S0RELL;
+  97   1          AUX     |= 0x80;            // BRS = 1
+  98   1          PCON    |= 0x80;            // SMOD =1
+  99   1          IEN0    |= 0x90;            // EA=1, ES0=1, interrupt enable
+ 100   1          S0CON    = 0x50;            // mode 1, SM20=0, Revice enable
+ 101   1          TI       = 0;
+ 102   1      }
+ 103          
+ 104          void UART0_ISR(void) interrupt d_UART0_Vector
+ 105          {
+ 106   1          unsigned char RXBUF0;
+ 107   1          if (RI)                     // INT_RX
+ 108   1          {
+ 109   2              RI = 0;                 // RI clear
+ 110   2              RXBUF0 = S0BUF;         // Read BUF, user code...
+ 111   2              PushQueue(&LoopUart,RXBUF0);
+ 112   2          }
+ 113   1          else                        // INT_TX
+ 114   1          {
+ 115   2              bU0TX  = 0;
+ 116   2              TI     = 0;             // TI clear
+C51 COMPILER V9.54   UART                                                                  07/12/2025 08:10:59 PAGE 3   
+
+ 117   2          }
+ 118   1      }
+ 119          void SendChar(unsigned char n_temp0)
+ 120          {
+ 121   1          bU0TX = 1;
+ 122   1          S0BUF = n_temp0;
+ 123   1          while(bU0TX)
+ 124   1          {
+ 125   2              ;
+ 126   2          }
+ 127   1      }
+ 128          
+ 129          
+ 130          void QueueInit(LoopUartType *uart)
+ 131          {
+ 132   1          u8 i;
+ 133   1          uart->rear = uart->front =0;
+ 134   1        cmd_pos=0;
+ 135   1        cmd_state=0;
+ 136   1          for(i=0;i<RX_BUFF_SIZE;i++)
+ 137   1              uart->rx_buf[i]=0;
+ 138   1        
+ 139   1      }
+ 140          
+ 141          // 鍒ょ┖
+ 142          bit ISEmpty(const LoopUartType *uart)
+ 143          {
+ 144   1          return uart->rear == uart->front;
+ 145   1      }
+ 146          
+ 147          //鍒ゆ弧
+ 148          bit ISFull(const LoopUartType *uart)
+ 149          {
+ 150   1          return (uart->rear + 1)%RX_BUFF_SIZE == uart->front;
+ 151   1      }
+ 152          
+ 153          //鍏ラ槦
+ 154          uartStateType PushQueue(LoopUartType *uart,u8 Data)
+ 155          {
+ 156   1          if(ISFull(uart)) 
+ 157   1              return UartFull;
+ 158   1          uart->rx_buf[uart->rear] = Data;
+ 159   1          uart->rear = (uart->rear+1)%RX_BUFF_SIZE;
+ 160   1          return UartOk;
+ 161   1      }
+ 162          
+ 163          //鍑洪槦
+ 164          uartStateType PopQueue(LoopUartType *uart,u8 *Data)
+ 165          {
+ 166   1          if(ISEmpty(uart))
+ 167   1              return UartEmpty;
+ 168   1          *Data= uart->rx_buf[uart->front];
+ 169   1          uart->front = (uart->front+1)%RX_BUFF_SIZE;
+ 170   1          return UartOk;
+ 171   1      }
+ 172          
+ 173          u8 SizeQueue(const LoopUartType *uart)
+ 174          {
+ 175   1          return ((uart->rear+RX_BUFF_SIZE-uart->front)%RX_BUFF_SIZE);
+ 176   1      }
+ 177          
+ 178          
+C51 COMPILER V9.54   UART                                                                  07/12/2025 08:10:59 PAGE 4   
+
+ 179          u16 QueueFinDataFrame(LoopUartType *uart,u8 *buffer)
+ 180          {
+ 181   1        u16 cmd_size =0;
+ 182   1          u8 _data =0;
+ 183   1          while(SizeQueue(uart)>0)
+ 184   1          {
+ 185   2              PopQueue(uart,&_data);
+ 186   2              if((cmd_pos==0)&&(_data != CMD_HEAD))
+ 187   2                  continue;
+ 188   2              if(cmd_pos < RX_BUFF_SIZE)
+ 189   2                  buffer[cmd_pos++] = _data;
+ 190   2              cmd_state= ((cmd_state<<8)|_data);
+ 191   2              if(cmd_state == CMD_TAIL)   
+ 192   2          {
+ 193   3            cmd_size=cmd_pos;
+ 194   3            cmd_state=0;
+ 195   3            cmd_pos=0;
+ 196   3      #if(CRC16_ENABLE)
+ 197   3                  //去掉指令头尾EE，尾FFFCFFFF共计5个字节，只计算数据部分CRC
+ 198   3                  if(!CheckCRC16(buffer+1,cmd_size-5))                      //CRC校验
+ 199   3                      return 0;
+ 200   3      
+ 201   3                  cmd_size -= 2;                                            //去掉CRC16（2字节）
+ 202   3      #endif
+ 203   3                  return cmd_size;
+ 204   3          }
+ 205   2          }
+ 206   1          return 0;
+ 207   1      }
+ 208          
+ 209          
+ 210          //注意数据不能出现帧尾0xFFFCFFFF
+ 211          void DataFrameTransmission(const void *Data,u8 cmd,u8 len)
+ 212          {
+ 213   1          u8 i=0;
+ 214   1          BEGIN_CMD();
+ 215   1          SEND_DATA(cmd);
+ 216   1          SEND_DATA(len);
+ 217   1          for(i=0;i<len;i++)
+ 218   1              SEND_DATA(((u8*)Data)[i]);
+ 219   1          END_CMD();
+ 220   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1014    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      8      51
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

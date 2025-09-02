@@ -1,0 +1,80 @@
+C51 COMPILER V9.54   TIMER                                                                 07/12/2025 08:10:59 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE TIMER
+OBJECT MODULE PLACED IN .\Objects\Timer.obj
+COMPILER INVOKED BY: E:\keilC51\C51\BIN\C51.EXE scr\Timer.c OPTIMIZE(9,SIZE) BROWSE INCDIR(.\inc;.\USER) DEBUG OBJECTEXT
+                    -END PRINT(.\Listings\Timer.lst) TABS(2) OBJECT(.\Objects\Timer.obj)
+
+line level    source
+
+   1          #include "Timer.h"
+   2          
+   3          #define TIMER0_VECTOR  1    //TIMER0 Interrupt Vevtor
+   4          #define d_T0MOD        0x01 //TMOD[3:0] TIMER0 Mode setting
+   5          #define d_T1MOD        0x00 //TMOD[7:4] TIMER1 Mode setting
+   6          #define d_ET2          0x00 //TIMER2 overflow Interrupt Enable (Default 0 Disable)
+   7          #define d_ET1          0x00 //TIMER1 overflow Interrupt Enable (Default 0 Disable)
+   8          #define d_ET0          0x01 //TIMER0 overflow Interrupt Enable (Default 0 Disable)
+   9          
+  10          #define d_MODEVALUE_T0      65536     //MODE1 16bit 65536
+  11          #define d_RELOADVALUE_T0    3333//User Define Reload Value
+  12          
+  13          volatile u32 xdata TimeCount   =0;
+  14          volatile u8 xdata ProcessCount = 0;
+  15          
+  16          void TIMER0_initialize(void)  //Initialize TIMER0 2.5ms
+  17          {
+  18   1          IEN0 |= (d_ET2<<5)|(d_ET1<<3)|(d_ET0<<1); //IE=IEN0
+  19   1          TMOD  = (d_T1MOD<<4)|(d_T0MOD);
+  20   1          TH0   = (d_MODEVALUE_T0-d_RELOADVALUE_T0)/256;    //MODE1 16bit 65536
+  21   1          TL0   = (d_MODEVALUE_T0-d_RELOADVALUE_T0)%256;
+  22   1          TR0   = 1;    //Timer0 Start bit
+  23   1      }
+  24          
+  25          void TIMER0_ISR(void) interrupt TIMER0_VECTOR
+  26          {
+  27   1          TH0 = (d_MODEVALUE_T0-d_RELOADVALUE_T0)/256;    //MODE1 16bit 65536
+  28   1          TL0 = (d_MODEVALUE_T0-d_RELOADVALUE_T0)%256;
+  29   1          TimeCount++;
+  30   1          ProcessCount++;
+  31   1          if(DeviceStatus != status_Down) SleepCut++;
+  32   1      }
+  33          
+  34          void TimerRes(u32 *tim)
+  35          {
+  36   1          TR0 = 0;
+  37   1          (*tim) = TimeCount;
+  38   1          TR0 = 1;
+  39   1      }
+  40          
+  41          u32 GetTime(u32 tim,u16 DIV)
+  42          {
+  43   1          TR0 = 0;
+  44   1          if(TimeCount>=tim)
+  45   1          {
+  46   2              TR0 = 1;
+  47   2              return (TimeCount-tim)/(DIV);
+  48   2          }
+  49   1          else
+  50   1          {
+  51   2              TR0 = 1;
+  52   2              return (TimeCount+(~tim))/(DIV);
+  53   2          }
+  54   1      }
+C51 COMPILER V9.54   TIMER                                                                 07/12/2025 08:10:59 PAGE 2   
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    234    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      5    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       6
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,9 @@
+..\output\apm32f0xx_comp.o: ..\FWLib\src\apm32f0xx_comp.c
+..\output\apm32f0xx_comp.o: ..\FWLib\inc\apm32f0xx_comp.h
+..\output\apm32f0xx_comp.o: ..\User\Main\apm32f0xx.h
+..\output\apm32f0xx_comp.o: ..\CMSIS\core_cm0plus.h
+..\output\apm32f0xx_comp.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\apm32f0xx_comp.o: ..\CMSIS\core_cmInstr.h
+..\output\apm32f0xx_comp.o: ..\CMSIS\core_cmFunc.h
+..\output\apm32f0xx_comp.o: ..\User\Main\system_apm32f0xx.h
+..\output\apm32f0xx_comp.o: ..\FWLib\inc\apm32f0xx_rcm.h

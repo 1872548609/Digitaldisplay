@@ -1,0 +1,6 @@
+--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\CMSIS -I ..\FWLib\inc -I ..\User\Main -I ..\User\Hardware -I ..\Boards\Board_APM32F051_EVAL\inc -I ..\Boards -I ..\User\Hardware\USER_DRIVER -I ..\User\Hardware\USER_HAL -I ..\User\Osal\include -I ..\User\Osal\hal\include -I ..\User\Osal\hal\target\CC2530EB -I ..\User\Osal\hal\TI2530DB --diag_suppress=188
+-I.\RTE\_Target_1
+-ID:\keil5\C51\ARM\CMSIS\5.0.1\CMSIS\Include
+-ID:\keil5\C51\Geehy\APM32F0xx_DFP\1.0.9\Device\Device\Geehy\APM32F0xx\Include
+-D__UVISION_VERSION="523" -D_RTE_ -DAPM32F051X8 -DBOARD_APM32F051_EVAL -DAPM32F051 -D__KEIL__ -D__GNUC__ -D__IAR_SYSTEMS_ICC__
+-o ..\output\user_readvalue_div.o --omf_browse ..\output\user_readvalue_div.crf --depend ..\output\user_readvalue_div.d --feedback "..\Output\Ddps.fed" "..\User\Hardware\USER_DRIVER\User_ReadValue_DIV.c"

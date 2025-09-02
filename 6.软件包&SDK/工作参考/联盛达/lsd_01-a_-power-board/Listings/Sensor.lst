@@ -1,0 +1,51 @@
+C51 COMPILER V9.54   SENSOR                                                                07/23/2024 15:06:20 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE SENSOR
+OBJECT MODULE PLACED IN .\Objects\Sensor.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE scr\Sensor.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\inc;.\USER) DEBUG O
+                    -BJECTEXTEND PRINT(.\Listings\Sensor.lst) OBJECT(.\Objects\Sensor.obj)
+
+line level    source
+
+   1          #include "Sensor.h"
+   2          
+   3          AdParaTypedef AdPara ={0};
+   4          
+   5          void CheckSensor(void)
+   6          {
+   7   1          static u8 delayCount =0;
+   8   1              delayCount ++;
+   9   1          switch (delayCount)
+  10   1          {
+  11   2          case 1:
+  12   2              AdPara.Temp1=Temper_Conver(d_ADC_CH0_IN);
+  13   2              break;
+  14   2          case 2:
+  15   2              AdPara.Temp2=Temper_Conver(d_ADC_CH1_IN);
+  16   2              break;
+  17   2          case 3:
+  18   2              AdPara.Press=Press_Conver(d_ADC_CH4_IN); 
+  19   2              break;
+  20   2              case 4:
+  21   2                      ADMotorCheck();
+  22   2                      break;
+  23   2          default:
+  24   2              delayCount =0;
+  25   2              break;
+  26   2          }
+  27   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     63    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      5    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

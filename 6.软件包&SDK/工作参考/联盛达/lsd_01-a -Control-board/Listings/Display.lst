@@ -1,0 +1,278 @@
+C51 COMPILER V9.54   DISPLAY                                                               07/12/2025 08:11:00 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE DISPLAY
+OBJECT MODULE PLACED IN .\Objects\Display.obj
+COMPILER INVOKED BY: E:\keilC51\C51\BIN\C51.EXE scr\Display.c OPTIMIZE(9,SIZE) BROWSE INCDIR(.\inc;.\USER) DEBUG OBJECTE
+                    -XTEND PRINT(.\Listings\Display.lst) TABS(2) OBJECT(.\Objects\Display.obj)
+
+line level    source
+
+   1          #include "Display.h"
+   2          
+   3          const u8 code Dis_Table[] = {0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F,0x77,0x7C,0x39,0x5E,0x79,0x
+             -71};
+   4          
+   5          typedef enum
+   6          {
+   7             Brightness_level_1      =  0X88,  // 亮度1/16
+   8             Brightness_level_3      =  0X8A,  // 亮度2/16
+   9             Brightness_level_4      =  0X8B,  // 亮度4/16
+  10             Brightness_level_5      =  0X8C,  // 亮度10/16
+  11             Brightness_level_6      =  0X8D,  // 亮度11/16
+  12             Brightness_level_7      =  0X8E,  // 亮度13/16
+  13             Brightness_level_8      =  0X8F,  // 亮度14/16
+  14          }  Brightness_level_t;
+  15          
+  16          //显示寄存器
+  17          u8 DisRegister[12]={0};
+  18          
+  19          void Delay_us(u8 us)
+  20          {
+  21   1          u8 i=0;
+  22   1          for(i=0;i<us;i++);
+  23   1      }
+  24          
+  25          
+  26          void AIP_Start()
+  27          {
+  28   1          CLK = 1;
+  29   1          DIN = 1;
+  30   1          Delay_us(2);
+  31   1          DIN = 0;
+  32   1          Delay_us(2);
+  33   1      }
+  34          
+  35          void AIP_Stop()
+  36          {
+  37   1          CLK = 0;
+  38   1          Delay_us(2);
+  39   1          DIN = 0;
+  40   1          Delay_us(2);
+  41   1          CLK = 1;
+  42   1          Delay_us(2);
+  43   1          DIN = 1;
+  44   1      }
+  45          
+  46          void SendByte(u8 Para)
+  47          {
+  48   1          u8 i =0;
+  49   1          for(i=0;i<8;i++)
+  50   1          {
+  51   2              CLK = 0; 
+  52   2              Delay_us(2);
+  53   2              if((Para>>i) & 0x01)
+C51 COMPILER V9.54   DISPLAY                                                               07/12/2025 08:11:00 PAGE 2   
+
+  54   2                  DIN = 1;
+  55   2              else
+  56   2                  DIN = 0;
+  57   2              Delay_us(3);
+  58   2              CLK = 1;
+  59   2              Delay_us(3);
+  60   2          }
+  61   1      }
+  62          
+  63          //地址自加1显示
+  64          void SendData(u8 Addr,u8 *arry,u8 len)
+  65          {
+  66   1          u8 i =0;
+  67   1          AIP_Start();
+  68   1          SendByte(Addr);
+  69   1          for(i=0;i<len;i++)
+  70   1              SendByte(arry[i]);
+  71   1          AIP_Stop();
+  72   1      }
+  73          //=====================================================================//
+  74          //压力显示
+  75          void Dis_Pressure(u8 pressure,u8 tag)
+  76          {
+  77   1          DisRegister[1] = 0;
+  78   1          DisRegister[2] = 0;
+  79   1          DisRegister[2] = Dis_Table[pressure%10];
+  80   1          if(pressure>9)//压力值不超过10
+  81   1              DisRegister[1] = Dis_Table[(pressure/10)%10];
+  82   1          if(tag)
+  83   1              DisRegister[1] |= 0x80; 
+  84   1      }
+  85          
+  86          //温度显示
+  87          void Dis_Temperature(u16 temperature,u8 tag)
+  88          {
+  89   1          if(tag==FahrenheitDis)//单位转换
+  90   1              temperature = (temperature*9/5)+32; //华氏度转换为摄氏度
+  91   1          DisRegister[10] &= 0x80; 
+  92   1          DisRegister[9] = 0;
+  93   1          DisRegister[8] = 0; //低位
+  94   1        
+  95   1          DisRegister[8] = Dis_Table[temperature%10];
+  96   1          if(temperature>9)
+  97   1              DisRegister[9] = Dis_Table[(temperature/10)%10];
+  98   1          else
+  99   1              DisRegister[9] = 0;
+ 100   1      
+ 101   1          if(temperature>99)
+ 102   1              DisRegister[10] = Dis_Table[(temperature/100)%10];
+ 103   1          else
+ 104   1              DisRegister[10] = 0;
+ 105   1      
+ 106   1          if(tag == CentigradeDis) //显示摄氏度
+ 107   1              DisRegister[9] |= 0x80;
+ 108   1          else if(tag == FahrenheitDis) //显示华氏度
+ 109   1              DisRegister[8] |= 0x80;
+ 110   1      }
+ 111          
+ 112          #define STR_E    0x79 
+ 113          #define STR_C    0x39 
+ 114          #define STR_L    0x38 
+ 115          #define STR_N    0x54 
+C51 COMPILER V9.54   DISPLAY                                                               07/12/2025 08:11:00 PAGE 3   
+
+ 116          #define STR_WAIT 0x40
+ 117          
+ 118          //代码显示
+ 119          void CodeDis(u8 modle,u8 errCode)
+ 120          {
+ 121   1          DisRegister[10] &= 0x80; 
+ 122   1          DisRegister[9] = 0;
+ 123   1          DisRegister[8] = 0; //低位
+ 124   1          switch (modle)
+ 125   1          {
+ 126   2          case ERR:
+ 127   2              DisRegister[10] = STR_E;
+ 128   2              DisRegister[9]  = STR_WAIT;
+ 129   2              DisRegister[8]  = Dis_Table[errCode%10];
+ 130   2          break;
+ 131   2          case CLN:
+ 132   2              DisRegister[10] = STR_C;
+ 133   2              DisRegister[9]  = STR_L;
+ 134   2              DisRegister[8]  = STR_N;
+ 135   2          break;
+ 136   2          }
+ 137   1      }
+ 138          
+ 139          
+ 140          //不同功能显示不同按键，当前功能灯
+ 141          void Dis_Function(u8 function)
+ 142          {
+ 143   1           DisRegister[10] &= 0x7F;
+ 144   1           DisRegister[7] = 0;
+ 145   1           DisRegister[6] = 0;
+ 146   1           DisRegister[5] = 0;
+ 147   1         DisRegister[4] = 0;
+ 148   1           DisRegister[3] &= 0x1F;
+ 149   1      
+ 150   1        if(function & SingleEspersso)//显示单杯
+ 151   1           {
+ 152   2               DisRegister[7] |= 0x07;
+ 153   2               DisRegister[6] |= 0x07;
+ 154   2           }
+ 155   1           if(function & DoubleEspersso)//显示双杯
+ 156   1           {
+ 157   2               DisRegister[7] |= 0x38;
+ 158   2               DisRegister[6] |= 0x38;
+ 159   2           }
+ 160   1           if(function & Coffe)//显示咖啡
+ 161   1           {
+ 162   2               DisRegister[7] |= 0xC0;
+ 163   2               DisRegister[6] |= 0xC0;
+ 164   2               DisRegister[10]|= 0x80;
+ 165   2               DisRegister[3] |= 0x20;
+ 166   2           }
+ 167   1           if(function & Americano)//显示美式
+ 168   1           {
+ 169   2               DisRegister[5] |= 0x07;
+ 170   2               DisRegister[4] |= 0x07;
+ 171   2           }
+ 172   1           if(function & ColdBrew)//显示冷翠
+ 173   1           {
+ 174   2               DisRegister[5] |= 0x38;
+ 175   2               DisRegister[4] |= 0x38;
+ 176   2      
+ 177   2           }
+C51 COMPILER V9.54   DISPLAY                                                               07/12/2025 08:11:00 PAGE 4   
+
+ 178   1           if(function & EsperssoCool)//冷密浓缩
+ 179   1           {
+ 180   2               DisRegister[5] |= 0xC0;
+ 181   2               DisRegister[4] |= 0xC0;
+ 182   2               DisRegister[3] |= 0xC0;
+ 183   2           }
+ 184   1      }
+ 185          
+ 186          
+ 187          //错误灯
+ 188          void Dis_Error(u8 error)
+ 189          {
+ 190   1          DisRegister[3] &= 0xE0;
+ 191   1          if(error & Descaling)
+ 192   1              DisRegister[3] |= 0x01;
+ 193   1          if(error & ErrUniversal)
+ 194   1              DisRegister[3] |= 0x02;
+ 195   1          if(error & ErrTankLack)
+ 196   1              DisRegister[3] |= 0x04;
+ 197   1          if(error & ErrBeanLack)
+ 198   1              DisRegister[3] |= 0x08;
+ 199   1          if(error & ErrBeanWareHouse)
+ 200   1              DisRegister[3] |= 0x10;
+ 201   1      }
+ 202          
+ 203          
+ 204          
+ 205          void Dis_PilotLamp(u8 lamp)//灯显示
+ 206          {
+ 207   1          DisRegister[11] = 0;
+ 208   1          if(lamp & Led_Power)
+ 209   1              DisRegister[11] |= 0x04;//电源灯
+ 210   1          if(lamp & Led_Grind)
+ 211   1              DisRegister[11] |= 0x02;//磨豆
+ 212   1          if(lamp & Led_Temp)
+ 213   1              DisRegister[11] |= 0x01;//温度
+ 214   1          if(lamp & Led_Clean)
+ 215   1              DisRegister[11] |= 0x08;//清洁
+ 216   1          if(lamp & Led_Steam)
+ 217   1              DisRegister[11] |= 0x10;//蒸汽
+ 218   1          if(lamp & Led_HotWater)
+ 219   1              DisRegister[11] |= 0x20;//热水
+ 220   1      }
+ 221          
+ 222          void AllDown()
+ 223          {
+ 224   1          u8 i =0;
+ 225   1          for(i=0;i<12;i++)
+ 226   1              DisRegister[i] = 0;
+ 227   1      }
+ 228          
+ 229          void AllUp()
+ 230          {
+ 231   1          u8 i =0;
+ 232   1          for(i=0;i<12;i++)
+ 233   1              DisRegister[i] = 0xFF;
+ 234   1      }
+ 235          //主循环更新显示
+ 236          void DisRefresh()
+ 237          {
+ 238   1          AIP_Start();
+ 239   1          SendByte(0x40);
+C51 COMPILER V9.54   DISPLAY                                                               07/12/2025 08:11:00 PAGE 5   
+
+ 240   1          AIP_Stop();
+ 241   1          SendData(0xC0,DisRegister,12);
+ 242   1          AIP_Start();
+ 243   1          SendByte(Brightness_level_8);
+ 244   1          AIP_Stop();
+ 245   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    605    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     12       7
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,279 @@
+C51 COMPILER V9.54   ADC                                                                   07/23/2024 15:06:20 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE ADC
+OBJECT MODULE PLACED IN .\Objects\ADC.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE scr\ADC.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\inc;.\USER) DEBUG OBJE
+                    -CTEXTEND PRINT(.\Listings\ADC.lst) OBJECT(.\Objects\ADC.obj)
+
+line level    source
+
+   1          #include "ADC.h"
+   2          
+   3          unsigned int n_data    = 0x0000;
+   4          bit          ADCfinish = 0;
+   5          
+   6          const unsigned int code TemTable[ADC_TABLE_SIZE] = {
+   7              // 4055, 4052, 4050, 4047, 4044, 4041, 4038, 4035, 4031, 4028,              // -20~-11
+   8              // 4024, 4020, 4016, 4012, 4007, 4002, 3997, 3992, 3987, 3981,              // -10~-1
+   9              3975, 3969, 3963, 3956, 3949, 3941, 3934, 3926, 3918, 3909,                 // 0~9
+  10              3900, 3891, 3881, 3871, 3861, 3850, 3839, 3827, 3815, 3803,                 // 10~19
+  11              3790, 3777, 3763, 3749, 3734, 3719, 3703, 3687, 3671, 3654,                 // 20~29
+  12              3636, 3618, 3600, 3581, 3562, 3542, 3521, 3500, 3479, 3457,                 // 30~39
+  13              3434, 3411, 3387, 3363, 3339, 3314, 3288, 3262, 3236, 3209,                 // 40~49
+  14              3182, 3154, 3125, 3097, 3068, 3038, 3008, 2978, 2947, 2917,                 // 50~59
+  15              2885, 2854, 2822, 2790, 2757, 2725, 2692, 2659, 2626, 2592,                 // 60~69
+  16              2559, 2525, 2491, 2457, 2424, 2390, 2356, 2322, 2288, 2254,                 // 70~79
+  17              2220, 2186, 2153, 2119, 2086, 2052, 2019, 1986, 1954, 1921,                 // 80~89
+  18              1889, 1857, 1825, 1793, 1762, 1731, 1700, 1670, 1640, 1610,                 // 90~99
+  19              1580, 1551, 1522, 1494, 1466, 1438, 1411, 1384, 1358, 1331,                 // 100~109
+  20              1306, 1280, 1255, 1231, 1206, 1183, 1159, 1136, 1113, 1091,                 // 110~119
+  21              1069, 1048, 1026, 1006, 985, 965, 946, 926, 907, 889,                               // 120~129
+  22              871, 853, 835, 818, 801, 785, 769, 753, 738, 722,                                   // 130~139
+  23              707, 693, 679, 665, 651, 638, 625, 612, 599, 587,                                   // 140~149
+  24              575, 563, 552, 540, 529, 518, 508, 498, 487, 478,                                   // 150~159
+  25              468, 458, 449, 440, 431, 423, 414, 406, 398, 390,                                   // 160~169
+  26              382, 374, 367, 360, 353, 346, 339, 332, 326, 319,                                   // 170~179
+  27              313, 307, 301, 295, 290, 284, 279, 273, 268, 263,                                   // 180~189
+  28              258, 253, 248, 244, 239, 235, 230, 226, 222, 218,                                   // 190~199
+  29              214, 
+  30              // 210, 206, 202, 198, 195, 191, 188, 184, 181,                                     // 200~209
+  31          //     178, 175, 171, 168, 165, 162, 160, 157, 154, 151,                                        // 210~219
+  32          //     149, 146, 144, 141, 139, 136, 134, 132, 129, 127,                                        // 220~229
+  33          //     125, 123, 121, 119, 117, 115, 113, 111, 109, 108,                                        // 230~239
+  34          //     106, 104, 102, 101, 99, 98, 96, 94, 93, 91, 90                                           // 240~250
+  35          };
+  36          
+  37          
+  38          const unsigned int code PresureTable[PRESSURE_TABLE_SIZE] = {
+  39              410,//0 bar
+  40              541,//1 bar
+  41              672,//2 bar
+  42              803,//3 bar
+  43              934,//4 bar
+  44              1065,//5 bar
+  45              1196,//6 bar
+  46              1327,//7 bar
+  47              1458,//8 bar
+  48              1589,//9 bar
+  49              1720,//10 bar
+  50              1851,//11 bar
+  51              1982,//12 bar
+  52              2113,//13 bar
+  53              2244,//14 bar    
+  54              2376,//15 bar
+C51 COMPILER V9.54   ADC                                                                   07/23/2024 15:06:20 PAGE 2   
+
+  55              2507,//16 bar
+  56              2638,//17 bar
+  57              2769,//18 bar
+  58              2900,//19 bar
+  59              3031,//20 bar
+  60              3162,//21 bar
+  61              3293,//22 bar
+  62              3424,//23 bar
+  63              3555,//24 bar
+  64              3686,//25 bar
+  65          };
+  66          
+  67          void ADC_Init(void)
+  68          {
+  69   1          ADCC1 = d_ADCnEN0;                 //Set ADC channel 
+  70   1          ADCCS = d_ADCnEN1 | d_ADC_CLK_Sel; //Set ADC channel & Select ADC clock
+  71   1          IEADC = 1;                         //Enable ADC interrupt.
+  72   1          // EA    = 1;
+  73   1      }
+  74          
+  75          unsigned int ADC_Read12() //12-bit ADC
+  76          {
+  77   1          unsigned int n_ADCD12 = 0x0000;
+  78   1          n_ADCD12 = (ADCDH<<4) | ADCDL;     //12-bit ADC
+  79   1          return n_ADCD12;
+  80   1      }
+  81              
+  82          void ADCInterrupt(void) interrupt d_ADC_Vector // ADC Interrupt Vector Address 0053h => interrupt 10
+  83          {
+  84   1          n_data = ADC_Read12(); //Read ADC
+  85   1          ADCfinish = 1;
+  86   1      }
+  87          
+  88          u16 ADC_Start(u8 channel)
+  89          {
+  90   1          ADCfinish = 0;
+  91   1          ADCC2  = channel; //Set a new channel
+  92   1          ADCC2 |= 0x80;      //ADC start conversion
+  93   1          while(!ADCfinish);
+  94   1          return n_data;
+  95   1      }
+  96          
+  97          // AD中值滤波
+  98          #define N 5
+  99          u16 Value_Filter(u8 channel)
+ 100          {
+ 101   1          u16 arr[N]=0;
+ 102   1          u16 temp;
+ 103   1          u8 i,j;
+ 104   1          for(i = 0;i < N ;i++)
+ 105   1          {
+ 106   2              arr[i] = ADC_Start(channel);
+ 107   2          }
+ 108   1              for (i = 0; i < N-1; i++)
+ 109   1                              for (j = 0; j < N-1-i; j++)
+ 110   1                                              if (arr[j] > arr[j + 1]) {
+ 111   2                                                              temp = arr[j];
+ 112   2                                                              arr[j] = arr[j + 1];
+ 113   2                                                              arr[j + 1] = temp;
+ 114   2                                              }
+ 115   1          return arr[(N-1)/2];
+ 116   1      }
+C51 COMPILER V9.54   ADC                                                                   07/23/2024 15:06:20 PAGE 3   
+
+ 117          
+ 118          //温度AD值2分法查表
+ 119          u8 Temper_Conver(u8 channel )
+ 120          {
+ 121   1          u16 AdValue =0;
+ 122   1          u8 Tail ,Front,middle;
+ 123   1          Tail =0;
+ 124   1          Front = ADC_TABLE_SIZE-1;
+ 125   1          AdValue = Value_Filter(channel);
+ 126   1          if(AdValue <TemTable[Tail]&& AdValue > TemTable[Front])
+ 127   1          {
+ 128   2              middle = (Front - Tail)/2;
+ 129   2              while((Front - Tail)>1)
+ 130   2              {
+ 131   3                  if(AdValue < TemTable[middle])
+ 132   3                  {
+ 133   4                      Tail = middle;
+ 134   4                  //    middle +=(Front - Tail)/2;
+ 135   4                      middle = (Front + Tail)/2;
+ 136   4                  }
+ 137   3                  else if(AdValue > TemTable[middle])
+ 138   3                  {
+ 139   4                      Front = middle;
+ 140   4                  //    middle -=(Front - Tail)/2;
+ 141   4                      middle = (Front + Tail)/2;
+ 142   4                  }
+ 143   3                  else
+ 144   3                  return middle;
+ 145   3              }
+ 146   2              if(abs(AdValue-TemTable[Tail])<abs(AdValue-TemTable[Front]))
+ 147   2              return Tail;else return Front;
+ 148   2          }
+ 149   1          else if(AdValue >=LOWTEMP_CRITICAL)
+ 150   1          return BROKENERR;    //开路
+ 151   1          else if(AdValue >=TemTable[0])
+ 152   1          return 0;          //低温
+ 153   1          else
+ 154   1          return SHORTERR;    //短路
+ 155   1      }
+ 156          
+ 157          
+ 158          
+ 159          u8 Press_Conver(u8 channel)
+ 160          {
+ 161   1          u16 AdValue =0;
+ 162   1          u8 Tail ,Front,middle;
+ 163   1          Tail =0;
+ 164   1          Front = PRESSURE_TABLE_SIZE-1;
+ 165   1          AdValue = Value_Filter(channel);
+ 166   1          if(AdValue >PresureTable[Tail]&& AdValue < PresureTable[Front])
+ 167   1          {
+ 168   2              middle = (Front - Tail)/2;
+ 169   2              while((Front - Tail)>1)
+ 170   2              {
+ 171   3                  if(AdValue > PresureTable[middle])
+ 172   3                  {
+ 173   4                      Tail = middle;
+ 174   4                  //    middle +=(Front - Tail)/2;
+ 175   4                      middle = (Front + Tail)/2;
+ 176   4                  }
+ 177   3                  else if(AdValue < PresureTable[middle])
+ 178   3                  {
+C51 COMPILER V9.54   ADC                                                                   07/23/2024 15:06:20 PAGE 4   
+
+ 179   4                      Front = middle;
+ 180   4                  //    middle -=(Front - Tail)/2;
+ 181   4                      middle = (Front + Tail)/2;
+ 182   4                  }
+ 183   3                  else
+ 184   3                  return middle;
+ 185   3              }
+ 186   2              if(abs(AdValue-PresureTable[Tail])<abs(AdValue-PresureTable[Front]))
+ 187   2              return Tail;else return Front;
+ 188   2          }
+ 189   1          else if(AdValue >=3800)
+ 190   1          return BROKENERR;    //开路
+ 191   1          else if(AdValue >=PresureTable[25])
+ 192   1          return 25;          //超压
+ 193   1          else
+ 194   1          return SHORTERR;    //短路   
+ 195   1      }
+ 196          
+ 197          #define NoWork      0x01    //无工作
+ 198          #define NoLoad      0x02    //空转
+ 199          #define Grinding    0x04    //磨豆
+ 200          #define Stall       0x08    //堵转
+ 201          
+ 202          void ADMotorCheck(void)
+ 203          {
+ 204   1          static u8 tempValue =0;
+ 205   1          static u8 DelayCnt =0;
+ 206   1          u8 i =0;
+ 207   1          u16 AdValue =0;
+ 208   1          for(i = 0;i < 10;i++)
+ 209   1              AdValue += ADC_Start(d_ADC_CH2_IN);
+ 210   1          AdValue /= 10;
+ 211   1          if(AdValue >= 0 && AdValue < 20)
+ 212   1              tempValue = NoWork;
+ 213   1          else if ((AdValue >= 20) && (AdValue < 200))
+ 214   1              tempValue = NoLoad;
+ 215   1          else if((AdValue >= 200) && (AdValue < 1000)) 
+ 216   1              tempValue = Grinding;
+ 217   1              else
+ 218   1                      tempValue = Stall;
+ 219   1          if(tempValue!= AdPara.AdMotor)
+ 220   1          {
+ 221   2              DelayCnt++;
+ 222   2              switch (tempValue)
+ 223   2              {
+ 224   3                  case NoWork:
+ 225   3                  if(DelayCnt >= 40)
+ 226   3                      AdPara.AdMotor = tempValue;
+ 227   3                  break;
+ 228   3                  case NoLoad:
+ 229   3                  if(DelayCnt >= 3)
+ 230   3                      AdPara.AdMotor = tempValue;
+ 231   3                  break;
+ 232   3                  case Grinding:
+ 233   3                  if(DelayCnt >= 3)
+ 234   3                      AdPara.AdMotor = tempValue;
+ 235   3                  break;
+ 236   3                  case Stall: 
+ 237   3                  if(DelayCnt >= 2)
+ 238   3                      AdPara.AdMotor = tempValue;
+ 239   3                  break;
+ 240   3              default:
+C51 COMPILER V9.54   ADC                                                                   07/23/2024 15:06:20 PAGE 5   
+
+ 241   3                  break;
+ 242   3              }
+ 243   2          }
+ 244   1          else
+ 245   1              DelayCnt = 0;
+ 246   1      }
+ 247          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1231    ----
+   CONSTANT SIZE    =    464    ----
+   XDATA SIZE       =      4      21
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

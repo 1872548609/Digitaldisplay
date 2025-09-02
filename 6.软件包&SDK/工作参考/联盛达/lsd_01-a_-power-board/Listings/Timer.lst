@@ -1,0 +1,108 @@
+C51 COMPILER V9.54   TIMER                                                                 07/23/2024 15:40:40 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE TIMER
+OBJECT MODULE PLACED IN .\Objects\Timer.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE scr\Timer.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\inc;.\USER) DEBUG OB
+                    -JECTEXTEND PRINT(.\Listings\Timer.lst) OBJECT(.\Objects\Timer.obj)
+
+line level    source
+
+   1          #include "Timer.h"
+   2          
+   3          #define TIMER0_VECTOR  1    //TIMER0 Interrupt Vevtor
+   4          #define d_T0MOD        0x01 //TMOD[3:0] TIMER0 Mode setting
+   5          #define d_T1MOD        0x00 //TMOD[7:4] TIMER1 Mode setting
+   6          #define d_ET2          0x00 //TIMER2 overflow Interrupt Enable (Default 0 Disable)
+   7          #define d_ET1          0x00 //TIMER1 overflow Interrupt Enable (Default 0 Disable)
+   8          #define d_ET0          0x01 //TIMER0 overflow Interrupt Enable (Default 0 Disable)
+   9          
+  10          #define d_MODEVALUE_T0      65536     //MODE1 16bit 65536
+  11          #define d_RELOADVALUE_T0    3333//User Define Reload Value
+  12          
+  13          volatile u32 TimeCount=0;
+  14          volatile u8  Time10MS =0; 
+  15          
+  16          DutyCycleOutputType     SteamHeatCtrl       ={0}; //蒸汽加热控制
+  17          DutyCycleOutputType     SteamPumpCtrl       ={0}; //蒸汽水泵控制
+  18          volatile u16 SteamHeatCount =0;
+  19          volatile u16 SteamPumpCount =0;
+  20          
+  21          void TIMER0_initialize(void)  //Initialize TIMER0
+  22          {
+  23   1          IEN0 |= (d_ET2<<5)|(d_ET1<<3)|(d_ET0<<1); //IE=IEN0
+  24   1          TMOD |= (d_T1MOD<<4)|(d_T0MOD);
+  25   1          TH0   = (d_MODEVALUE_T0-d_RELOADVALUE_T0)/256;    //MODE1 16bit 65536 默认12分频 
+  26   1          TL0   = (d_MODEVALUE_T0-d_RELOADVALUE_T0)%256;
+  27   1          TR0   = 1;    //Timer0 Start bit
+  28   1      }
+  29          
+  30          void TIMER0_ISR(void) interrupt TIMER0_VECTOR//2.5ms中断
+  31          {
+  32   1          TH0 = (d_MODEVALUE_T0-d_RELOADVALUE_T0)/256;    //MODE1 16bit 65536
+  33   1          TL0 = (d_MODEVALUE_T0-d_RELOADVALUE_T0)%256;
+  34   1          TimeCount++;
+  35   1          Time10MS++; 
+  36   1          UartTimeOutCount++;
+  37   1          Lamp_Ctrl();
+  38   1          //蒸汽加热控制
+  39   1          if(SteamHeatCtrl.workFlag)
+  40   1          {
+  41   2              (SteamHeatCount >=SteamHeatCtrl.Period)?(SteamHeatCount=0):(SteamHeatCount++);
+  42   2              if(SteamHeatCount<=SteamHeatCtrl.Duty)
+  43   2              SCR1 =Low_ON;
+  44   2              else
+  45   2              SCR1 =High_OFF;
+  46   2          }
+  47   1          else
+  48   1              SCR1 = High_OFF;
+  49   1          //蒸汽水泵控制
+  50   1          if(SteamPumpCtrl.workFlag)
+  51   1          {
+  52   2              (SteamPumpCount>=SteamPumpCtrl.Period)?(SteamPumpCount=0):(SteamPumpCount++);
+  53   2              if(SteamPumpCount<=SteamPumpCtrl.Duty)
+  54   2              SCR3 =Low_ON;
+C51 COMPILER V9.54   TIMER                                                                 07/23/2024 15:40:40 PAGE 2   
+
+  55   2              else
+  56   2              SCR3 =High_OFF;
+  57   2          }
+  58   1          else
+  59   1              SCR3 = High_OFF;   
+  60   1      }
+  61          
+  62          void TimerRes(u32 *tim)
+  63          {
+  64   1          TR0 =0;
+  65   1          (*tim) = TimeCount;
+  66   1          TR1 =0;
+  67   1      }
+  68          
+  69          u32 GetTime(u32 tim,u16 DIV)
+  70          {
+  71   1          TR0 = 0;
+  72   1          if(TimeCount>=tim)
+  73   1          {
+  74   2              TR0 = 1;
+  75   2              return (TimeCount-tim)/(DIV);
+  76   2          }
+  77   1          else
+  78   1          {
+  79   2              TR0 = 1;
+  80   2              return (TimeCount+(~tim))/(DIV);
+  81   2          }
+  82   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    460    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     19       6
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

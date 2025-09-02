@@ -1,0 +1,34 @@
+C51 COMPILER V9.54   LOGIC                                                                 07/23/2024 15:06:20 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE LOGIC
+OBJECT MODULE PLACED IN .\Objects\Logic.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE scr\Logic.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\inc;.\USER) DEBUG OB
+                    -JECTEXTEND PRINT(.\Listings\Logic.lst) OBJECT(.\Objects\Logic.obj)
+
+line level    source
+
+   1          #include "Logic.h"
+   2          
+   3          Task LogicTask ={0};
+   4          
+   5          //void Logic()
+   6          //{
+   7          //    ;
+   8          //}
+   9          
+  10          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   ----    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      5    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

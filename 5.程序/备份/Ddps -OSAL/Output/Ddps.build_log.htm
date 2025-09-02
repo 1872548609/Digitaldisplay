@@ -1,0 +1,285 @@
+<html>
+<body>
+<pre>
+<h1>�Vision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.23.0.0
+Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: long long, long, LIC=65ISZ-J72RS-JJT6S-LZH1U-18VHP-RCFZN
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.23
+Toolchain Path:  D:\keil5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 4 (build 422)
+Assembler:       Armasm.exe V5.06 update 4 (build 422)
+Linker/Locator:  ArmLink.exe V5.06 update 4 (build 422)
+Library Manager: ArmAr.exe V5.06 update 4 (build 422)
+Hex Converter:   FromElf.exe V5.06 update 4 (build 422)
+CPU DLL:         SARMCM3.DLL V5.23
+Dialog DLL:      DARMCM1.DLL V1.17.0.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.18.0
+Dialog DLL:      TARMCM1.DLL V1.12.0.0
+ 
+<h2>Project:</h2>
+C:\Users\long\Desktop\压力传感器\5.程序\Ddps -OSAL\Project\Ddps.uvprojx
+Project File Date:  07/11/2025
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 4 (build 422)', folder: 'D:\keil5\ARM\ARMCC\Bin'
+Build target 'Target 1'
+compiling OSAL_Clock.c...
+..\User\Osal\hal\TI2530DB\OnBoard.h(337): error:  #260-D: explicit type is missing ("int" assumed)
+    extern __near_func void Onboard_soft_reset( void );
+..\User\Osal\hal\TI2530DB\OnBoard.h(337): error:  #65: expected a ";"
+    extern __near_func void Onboard_soft_reset( void );
+..\User\Osal\common\OSAL_Clock.c(106): error:  #757: variable "__near_func"  is not a type name
+    extern __near_func uint32 osalMcuDivide31By16To16( uint32 dividend, uint16 divisor );
+..\User\Osal\common\OSAL_Clock.c(106): error:  #101: "uint32" has already been declared in the current scope
+    extern __near_func uint32 osalMcuDivide31By16To16( uint32 dividend, uint16 divisor );
+..\User\Osal\common\OSAL_Clock.c(106): error:  #65: expected a ";"
+    extern __near_func uint32 osalMcuDivide31By16To16( uint32 dividend, uint16 divisor );
+..\User\Osal\common\OSAL_Clock.c(151): error:  #757: variable "uint32"  is not a type name
+    static uint32 previousMacTimerTick = 0;
+..\User\Osal\common\OSAL_Clock.c(155): error:  #757: variable "uint32"  is not a type name
+  static uint32 timeMSec = 0;
+..\User\Osal\common\OSAL_Clock.c(166): error:  #757: variable "uint32"  is not a type name
+  static void osalClockUpdate( uint32 elapsedMSec );
+..\User\Osal\common\OSAL_Clock.c(192): error:  #65: expected a ";"
+    uint32 tmp;
+..\User\Osal\common\OSAL_Clock.c(193): error:  #65: expected a ";"
+    uint32 ticks320us;
+..\User\Osal\common\OSAL_Clock.c(194): error:  #65: expected a ";"
+    uint32 elapsedMSec = 0;
+..\User\Osal\common\OSAL_Clock.c(196): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION(intState);
+..\User\Osal\common\OSAL_Clock.c(198): error:  #20: identifier "tmp" is undefined
+    tmp = macMcuPrecisionCount();
+..\User\Osal\common\OSAL_Clock.c(199): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION(intState);
+..\User\Osal\common\OSAL_Clock.c(204): error:  #20: identifier "ticks320us" is undefined
+      ticks320us = (tmp - previousMacTimerTick) & 0xffffffffu;
+..\User\Osal\common\OSAL_Clock.c(220): error:  #20: identifier "elapsedMSec" is undefined
+          elapsedMSec += COUNTER_ELAPSEDMS;
+..\User\Osal\common\OSAL_Clock.c(228): warning:  #223-D: function "osalMcuDivide31By16To16" declared implicitly
+        
+ONVERT_320US_TO_MS_ELAPSED_REMAINDER( tmp, elapsedMSec, remUsTicks );
+..\User\Osal\common\OSAL_Clock.c(228): error:  #20: identifier "elapsedMSec" is undefined
+        
+ONVERT_320US_TO_MS_ELAPSED_REMAINDER( tmp, elapsedMSec, remUsTicks );
+..\User\Osal\common\OSAL_Clock.c(231): error:  #20: identifier "elapsedMSec" is undefined
+        osalClockUpdate( elapsedMSec );
+..\User\Osal\common\OSAL_Clock.c(247): error:  #757: variable "uint32"  is not a type name
+  static void osalClockUpdate( uint32 elapsedMSec )
+..\User\Osal\common\OSAL_Clock.c(249): error:  #65: expected a ";"
+    uint32 tmp;
+..\User\Osal\common\OSAL_Clock.c(252): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION(intState);
+..\User\Osal\common\OSAL_Clock.c(259): error:  #20: identifier "tmp" is undefined
+      tmp = timeMSec;
+..\User\Osal\common\OSAL_Clock.c(260): warning:  #223-D: function "osalMcuDivide31By16To16" declared implicitly
+      
+ONVERT_MS_TO_S_ELAPSED_REMAINDER(tmp, OSAL_timeSeconds, timeMSec);
+..\User\Osal\common\OSAL_Clock.c(262): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION(intState);
+..\User\Osal\common\OSAL_Clock.c(301): error:  #20: identifier "EA" is undefined
+    
+AL_CRITICAL_STATEMENT(OSAL_timeSeconds = newTime);
+..\User\Osal\common\OSAL_Clock.c(301): error:  #20: identifier "EA" is undefined
+    
+AL_CRITICAL_STATEMENT(OSAL_timeSeconds = newTime);
+..\User\Osal\common\OSAL_Clock.c(337): error:  #65: expected a ";"
+      uint32 day = secTime % DAY;
+..\User\Osal\common\OSAL_Clock.c(338): error:  #20: identifier "day" is undefined
+      tm->seconds = day % 60UL;
+..\User\Osal\common\OSAL_Clock.c(408): error:  #65: expected a ";"
+    uint32 seconds;
+..\User\Osal\common\OSAL_Clock.c(411): error:  #20: identifier "seconds" is undefined
+    seconds = (((tm->hour * 60UL) + tm->minutes) * 60UL) + tm->seconds;
+..\User\Osal\common\OSAL_Clock.c: 2 warnings, 29 errors
+compiling OSAL_Memory.c...
+..\User\Osal\hal\TI2530DB\OnBoard.h(337): error:  #260-D: explicit type is missing ("int" assumed)
+    extern __near_func void Onboard_soft_reset( void );
+..\User\Osal\hal\TI2530DB\OnBoard.h(337): error:  #65: expected a ";"
+    extern __near_func void Onboard_soft_reset( void );
+..\User\Osal\common\OSAL_Memory.c(289): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION(intState);  // Hold off interrupts.
+..\User\Osal\common\OSAL_Memory.c(299): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION(intState);  // Re-enable interrupts.
+..\User\Osal\common\OSAL_Memory.c(345): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION( intState );  // Hold off interrupts.
+..\User\Osal\common\OSAL_Memory.c(486): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION( intState );  // Re-enable interrupts.
+..\User\Osal\common\OSAL_Memory.c(527): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION( intState );  // Hold off interrupts.
+..\User\Osal\common\OSAL_Memory.c(560): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION( intState );  // Re-enable interrupts.
+..\User\Osal\common\OSAL_Memory.c: 0 warnings, 8 errors
+compiling OSAL_Timers.c...
+..\User\Osal\hal\TI2530DB\OnBoard.h(337): error:  #260-D: explicit type is missing ("int" assumed)
+    extern __near_func void Onboard_soft_reset( void );
+..\User\Osal\hal\TI2530DB\OnBoard.h(337): error:  #65: expected a ";"
+    extern __near_func void Onboard_soft_reset( void );
+..\User\Osal\common\OSAL_Timers.c(264): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION( intState );  // Hold off interrupts.
+..\User\Osal\common\OSAL_Timers.c(269): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION( intState );   // Re-enable interrupts.
+..\User\Osal\common\OSAL_Timers.c(294): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION( intState );  // Hold off interrupts.
+..\User\Osal\common\OSAL_Timers.c(304): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION( intState );   // Re-enable interrupts.
+..\User\Osal\common\OSAL_Timers.c(328): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION( intState );  // Hold off interrupts.
+..\User\Osal\common\OSAL_Timers.c(337): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION( intState );   // Re-enable interrupts.
+..\User\Osal\common\OSAL_Timers.c(358): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION( intState );  // Hold off interrupts.
+..\User\Osal\common\OSAL_Timers.c(367): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION( intState );   // Re-enable interrupts.
+..\User\Osal\common\OSAL_Timers.c(387): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION( intState );  // Hold off interrupts.
+..\User\Osal\common\OSAL_Timers.c(399): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION( intState );   // Re-enable interrupts.
+..\User\Osal\common\OSAL_Timers.c(422): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION( intState );  // Hold off interrupts.
+..\User\Osal\common\OSAL_Timers.c(425): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION( intState );   // Re-enable interrupts.
+..\User\Osal\common\OSAL_Timers.c(439): error:  #20: identifier "EA" is undefined
+        
+AL_ENTER_CRITICAL_SECTION( intState );  // Hold off interrupts.
+..\User\Osal\common\OSAL_Timers.c(514): error:  #20: identifier "EA" is undefined
+        
+AL_EXIT_CRITICAL_SECTION( intState );   // Re-enable interrupts.
+..\User\Osal\common\OSAL_Timers.c: 0 warnings, 16 errors
+compiling OSAL.c...
+..\User\Osal\hal\TI2530DB\OnBoard.h(337): error:  #260-D: explicit type is missing ("int" assumed)
+    extern __near_func void Onboard_soft_reset( void );
+..\User\Osal\hal\TI2530DB\OnBoard.h(337): error:  #65: expected a ";"
+    extern __near_func void Onboard_soft_reset( void );
+..\User\Osal\common\OSAL.c(335): error:  #147-D: declaration is incompatible with "uint8 *_ltoa(uint32, uint8 *, uint8)"  (declared at line 331 of "..\User\Osal\include\OSAL.h")
+  unsigned char * _ltoa(unsigned long l, unsigned char *buf, unsigned char radix)
+..\User\Osal\common\OSAL.c(340): warning:  #223-D: function "ltoa" declared implicitly
+    return ( (char*)ltoa( l, buf, radix ) );
+..\User\Osal\common\OSAL.c(340): warning:  #120-D: return value type does not match the function type
+    return ( (char*)ltoa( l, buf, radix ) );
+..\User\Osal\common\OSAL.c(610): error:  #20: identifier "tasksCnt" is undefined
+    if ( destination_task >= tasksCnt )
+..\User\Osal\common\OSAL.c(665): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION(intState);
+..\User\Osal\common\OSAL.c(713): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION(intState);
+..\User\Osal\common\OSAL.c(742): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION(intState);  // Hold off interrupts.
+..\User\Osal\common\OSAL.c(757): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION(intState);  // Release interrupts.
+..\User\Osal\common\OSAL.c(788): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION(intState);  // Hold off interrupts.
+..\User\Osal\common\OSAL.c(804): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION(intState);  // Release interrupts.
+..\User\Osal\common\OSAL.c(828): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION(intState);
+..\User\Osal\common\OSAL.c(846): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION(intState);
+..\User\Osal\common\OSAL.c(867): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION(intState);
+..\User\Osal\common\OSAL.c(879): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION(intState);
+..\User\Osal\common\OSAL.c(903): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION(intState);
+..\User\Osal\common\OSAL.c(910): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION(intState);
+..\User\Osal\common\OSAL.c(933): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION(intState);
+..\User\Osal\common\OSAL.c(949): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION(intState);
+..\User\Osal\common\OSAL.c(974): error:  #20: identifier "EA" is undefined
+    
+AL_ENTER_CRITICAL_SECTION(intState);
+..\User\Osal\common\OSAL.c(1002): error:  #20: identifier "EA" is undefined
+    
+AL_EXIT_CRITICAL_SECTION(intState);
+..\User\Osal\common\OSAL.c(1027): error:  #20: identifier "tasksCnt" is undefined
+   if ( task_id < tasksCnt )
+..\User\Osal\common\OSAL.c(1030): error:  #20: identifier "EA" is undefined
+      
+AL_ENTER_CRITICAL_SECTION(intState);    // Hold off interrupts
+..\User\Osal\common\OSAL.c(1031): error:  #20: identifier "tasksEvents" is undefined
+      tasksEvents[task_id] |= event_flag;  // Stuff the event bit(s)
+..\User\Osal\common\OSAL.c(1032): error:  #20: identifier "EA" is undefined
+      
+AL_EXIT_CRITICAL_SECTION(intState);     // Release interrupts
+..\User\Osal\common\OSAL.c(1056): error:  #20: identifier "tasksCnt" is undefined
+    if ( task_id < tasksCnt )
+..\User\Osal\common\OSAL.c(1059): error:  #20: identifier "EA" is undefined
+      
+AL_ENTER_CRITICAL_SECTION(intState);    // Hold off interrupts
+..\User\Osal\common\OSAL.c(1060): error:  #20: identifier "tasksEvents" is undefined
+      tasksEvents[task_id] &= ~(event_flag);   // Clear the event bit(s)
+..\User\Osal\common\OSAL.c(1061): error:  #20: identifier "EA" is undefined
+      
+AL_EXIT_CRITICAL_SECTION(intState);     // Release interrupts
+..\User\Osal\common\OSAL.c(1115): error:  #20: identifier "EA" is undefined
+      
+AL_ENABLE_INTERRUPTS();
+..\User\Osal\common\OSAL.c(1146): error:  #20: identifier "EA" is undefined
+      
+AL_DISABLE_INTERRUPTS();
+..\User\Osal\common\OSAL.c: 2 warnings, 30 errors
+"..\Output\Ddps.axf" - 83 Error(s), 4 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.0.1.pack
+                ARM::CMSIS:CORE:5.0.1
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.0.1
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\_Target_1
+  D:\keil5\C51\ARM\CMSIS\5.0.1\CMSIS\Include
+  D:\keil5\C51\Geehy\APM32F0xx_DFP\1.0.9\Device\Device\Geehy\APM32F0xx\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.0.1
+Target not created.
+Build Time Elapsed:  00:00:00
+</pre>
+</body>
+</html>

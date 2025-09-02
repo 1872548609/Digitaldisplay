@@ -1,0 +1,83 @@
+/*!
+ * @file        main.h
+ *
+ * @brief       Header for main.c module
+ *
+ * @version     V1.0.0
+ *
+ * @date        2022-09-29
+ *
+ * @attention
+ *
+ *  Copyright (C) 2022 Geehy Semiconductor
+ *
+ *  You may not use this file except in compliance with the
+ *  GEEHY COPYRIGHT NOTICE (GEEHY SOFTWARE PACKAGE LICENSE).
+ *
+ *  The program is only for reference, which is distributed in the hope
+ *  that it will be useful and instructional for customers to develop
+ *  their software. Unless required by applicable law or agreed to in
+ *  writing, the program is distributed on an "AS IS" BASIS, WITHOUT
+ *  ANY WARRANTY OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the GEEHY SOFTWARE PACKAGE LICENSE for the governing permissions
+ *  and limitations under the License.
+ */
+
+/* Define to prevent recursive inclusion */
+#ifndef __MAIN_H
+#define __MAIN_H
+
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
+/* Includes */
+#include "Board.h"
+#include "apm32f0xx.h"
+#include "apm32f0xx_eint.h"
+#include "apm32f0xx_rcm.h"
+#include "apm32f0xx_gpio.h"
+#include "apm32f0xx_usart.h"
+#include "apm32f0xx_misc.h"
+#include "apm32f0xx_tmr.h"
+#include "bsp_delay.h"
+
+/** @addtogroup Examples
+  @{
+  */
+
+/** @addtogroup USART_RS485
+  @{
+  */
+
+/** @defgroup USART_RS485_Enumerates Enumerates
+  @{
+  */
+
+/**
+ * @brief   RS485 translation status
+ *
+ */
+typedef enum
+{
+    RS485_STATUS_TX,
+    RS485_STATUS_RX
+} RS485_STATUS_T;
+
+/**@} end of group USART_RS485_Enumerates*/
+
+/** @defgroup USART_RS485_Functions Functions
+  @{
+  */
+void TMR14_Isr(void);
+void RS485_RxIsr(void);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+
+/**@} end of group USART_RS485_Functions */
+/**@} end of group USART_RS485 */
+/**@} end of group Examples */

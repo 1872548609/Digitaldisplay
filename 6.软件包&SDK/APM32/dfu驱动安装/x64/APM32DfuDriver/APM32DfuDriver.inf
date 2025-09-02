@@ -1,0 +1,84 @@
+;
+; dfudriver.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=USB
+ClassGuid={36fc9e60-c465-11cf-8056-444553540000} 
+Provider=%ManufacturerName%
+DriverVer= 07/27/2021, 1.0.0.0
+PnpLockdown=1
+CatalogFile=APM32DfuDriver.cat
+
+[DestinationDirs]
+DefaultDestDir = 12
+dfu_Device_CoInstaller_CopyFiles = 11
+
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+APM32DfuDriver.sys  = 1,,
+WdfCoInstaller01009.dll=1 ; make sure the number matches with SourceDisksNames
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+%dfu.DeviceDesc%=dfu_Device, USB\VID_314B&PID_0106
+
+
+[dfu_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+APM32DfuDriver.sys
+
+;-------------- Service installation
+[dfu_Device.NT.Services]
+AddService = dfu,%SPSVCINST_ASSOCSERVICE%, dfu_Service_Inst
+
+; -------------- dfu driver install sections
+[dfu_Service_Inst]
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\APM32DfuDriver.sys
+AddReg         = UsbDriver.AddReg
+LoadOrderGroup = Base
+
+[UsbDriver.AddReg]
+HKR,"Parameters","MaximumTransferSize",0x10001,65536
+HKR,"Parameters","DebugLevel",0x10001,2
+
+;
+;--- dfu_Device Coinstaller installation ------
+;
+
+[dfu_Device.NT.CoInstallers]
+AddReg=dfu_Device_CoInstaller_AddReg
+CopyFiles=dfu_Device_CoInstaller_CopyFiles
+
+[dfu_Device_CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller01009.dll,WdfCoInstaller"
+
+[dfu_Device_CoInstaller_CopyFiles]
+WdfCoInstaller01009.dll
+
+[dfu_Device.NT.Wdf]
+KmdfService =  dfu, dfu_wdfsect
+[dfu_wdfsect]
+KmdfLibraryVersion = 1.9
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="Geehy Semiconductor"
+DiskName = "APM32 Bootloader Installation Disk"
+dfu.DeviceDesc = "APM32 Bootloader"
+
