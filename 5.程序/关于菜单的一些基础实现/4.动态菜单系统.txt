@@ -1,0 +1,129 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+/*菜单可以动态添加/删除项目
+使用链表结构存储菜单项
+支持运行时修改菜单*/
+
+// 菜单项结构体
+typedef struct MenuItem {
+    char text[32];
+    void (*func)(void);
+    struct MenuItem *next;
+    struct MenuItem *prev;
+} MenuItem;
+
+// 菜单结构体
+typedef struct {
+    char title[32];
+    MenuItem *head;
+    MenuItem *tail;
+    int count;
+} Menu;
+
+// 示例功能函数
+void funcX() { printf("执行功能X\n"); }
+void funcY() { printf("执行功能Y\n"); }
+void funcZ() { printf("执行功能Z\n"); }
+
+// 初始化菜单
+void initMenu(Menu *menu, const char *title) {
+    strncpy(menu->title, title, sizeof(menu->title) - 1);
+    menu->title[sizeof(menu->title) - 1] = '\0';
+    menu->head = NULL;
+    menu->tail = NULL;
+    menu->count = 0;
+}
+
+// 添加菜单项
+void addMenuItem(Menu *menu, const char *text, void (*func)(void)) {
+    MenuItem *item = (MenuItem *)malloc(sizeof(MenuItem));
+    if (!item) return;
+    
+    strncpy(item->text, text, sizeof(item->text) - 1);
+    item->text[sizeof(item->text) - 1] = '\0';
+    item->func = func;
+    item->next = NULL;
+    item->prev = menu->tail;
+    
+    if (menu->tail) {
+        menu->tail->next = item;
+    }
+    menu->tail = item;
+    
+    if (!menu->head) {
+        menu->head = item;
+    }
+    
+    menu->count++;
+}
+
+// 显示菜单
+void displayMenu(Menu *menu) {
+    printf("\n===== %s =====\n", menu->title);
+    MenuItem *item = menu->head;
+    int i = 1;
+    while (item) {
+        printf("%d. %s\n", i++, item->text);
+        item = item->next;
+    }
+    printf("===============\n");
+}
+
+// 运行菜单
+void runMenu(Menu *menu) {
+    int choice;
+    
+    while (1) {
+        displayMenu(menu);
+        printf("请选择(1-%d, 0退出): ", menu->count);
+        scanf("%d", &choice);
+        
+        if (choice == 0) {
+            printf("退出菜单\n");
+            break;
+        }
+        
+        if (choice < 1 || choice > menu->count) {
+            printf("无效选择!\n");
+            continue;
+        }
+        
+        MenuItem *selected = menu->head;
+        for (int i = 1; i < choice; i++) {
+            selected = selected->next;
+        }
+        
+        if (selected->func) {
+            selected->func();
+        }
+    }
+}
+
+// 释放菜单资源
+void freeMenu(Menu *menu) {
+    MenuItem *item = menu->head;
+    while (item) {
+        MenuItem *next = item->next;
+        free(item);
+        item = next;
+    }
+    menu->head = NULL;
+    menu->tail = NULL;
+    menu->count = 0;
+}
+
+int main() {
+    Menu myMenu;
+    initMenu(&myMenu, "动态菜单");
+    
+    addMenuItem(&myMenu, "功能X", funcX);
+    addMenuItem(&myMenu, "功能Y", funcY);
+    addMenuItem(&myMenu, "功能Z", funcZ);
+    
+    runMenu(&myMenu);
+    
+    freeMenu(&myMenu);
+    return 0;
+}

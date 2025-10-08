@@ -1,0 +1,134 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
+/*菜单项可以有启用/禁用状态
+菜单可以保存当前选择状态
+支持快捷键访问*/
+
+// 菜单项结构体
+typedef struct {
+    char text[32];
+    void (*func)(void);
+    bool enabled;
+    char shortcut;
+} MenuItem;
+
+// 菜单结构体
+typedef struct {
+    char title[32];
+    MenuItem *items;
+    int count;
+    int selected;
+} Menu;
+
+// 示例功能函数
+void func1() { printf("执行功能1\n"); }
+void func2() { printf("执行功能2\n"); }
+void func3() { printf("执行功能3\n"); }
+
+// 初始化菜单
+void initMenu(Menu *menu, const char *title, MenuItem *items, int count) {
+    strncpy(menu->title, title, sizeof(menu->title) - 1);
+    menu->title[sizeof(menu->title) - 1] = '\0';
+    menu->items = items;
+    menu->count = count;
+    menu->selected = 0;
+    
+    // 默认所有项启用
+    for (int i = 0; i < count; i++) {
+        menu->items[i].enabled = true;
+    }
+}
+
+// 显示菜单
+void displayMenu(Menu *menu) {
+    printf("\n===== %s =====\n", menu->title);
+    for (int i = 0; i < menu->count; i++) {
+        if (i == menu->selected) {
+            printf("-> ");
+        } else {
+            printf("   ");
+        }
+        
+        if (!menu->items[i].enabled) {
+            printf("[禁用] ");
+        }
+        
+        printf("%c: %s\n", menu->items[i].shortcut, menu->items[i].text);
+    }
+    printf("===============\n");
+}
+
+// 处理输入
+void processInput(Menu *menu, char input) {
+    // 检查快捷键
+    for (int i = 0; i < menu->count; i++) {
+        if (menu->items[i].enabled && 
+            input == menu->items[i].shortcut && 
+            menu->items[i].func != NULL) {
+            menu->items[i].func();
+            return;
+        }
+    }
+    
+    // 方向键模拟
+    switch (input) {
+        case 'w': // 上
+        case 'W':
+            do {
+                menu->selected = (menu->selected - 1 + menu->count) % menu->count;
+            } while (!menu->items[menu->selected].enabled);
+            break;
+        case 's': // 下
+        case 'S':
+            do {
+                menu->selected = (menu->selected + 1) % menu->count;
+            } while (!menu->items[menu->selected].enabled);
+            break;
+        case '\r': // 回车
+        case '\n':
+            if (menu->items[menu->selected].enabled && menu->items[menu->selected].func != NULL) {
+                menu->items[menu->selected].func();
+            }
+            break;
+        case 'q': // 退出
+        case 'Q':
+            printf("退出菜单\n");
+            exit(0);
+        default:
+            break;
+    }
+}
+
+// 运行菜单
+void runMenu(Menu *menu) {
+    char input;
+    
+    while (1) {
+        displayMenu(menu);
+        printf("使用W/S上下移动，数字键选择，Q退出: ");
+        
+        // 清空输入缓冲区
+        while ((input = getchar()) == '\n' || input == '\r');
+        
+        processInput(menu, input);
+    }
+}
+
+int main() {
+    MenuItem mainItems[] = {
+        {"功能1", func1, true, '1'},
+        {"功能2", func2, true, '2'},
+        {"功能3", func3, false, '3'}, // 初始禁用
+        {"退出", NULL, true, 'Q'}
+    };
+    
+    Menu mainMenu;
+    initMenu(&mainMenu, "状态菜单", mainItems, sizeof(mainItems)/sizeof(MenuItem));
+    
+    runMenu(&mainMenu);
+    
+    return 0;
+}

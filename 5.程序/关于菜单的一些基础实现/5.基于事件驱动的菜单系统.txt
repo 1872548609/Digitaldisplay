@@ -1,0 +1,255 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <time.h>
+
+/*使用事件循环处理用户输入
+支持定时器和异步事件
+适合嵌入式系统*/
+
+// 事件类型
+typedef enum {
+    EVENT_NONE,
+    EVENT_KEY_UP,
+    EVENT_KEY_DOWN,
+    EVENT_KEY_ENTER,
+    EVENT_KEY_EXIT,
+    EVENT_TIMER
+} EventType;
+
+// 事件结构体
+typedef struct {
+    EventType type;
+    char key;
+    time_t timestamp;
+} Event;
+
+// 菜单项结构体
+typedef struct MenuItem MenuItem;
+struct MenuItem {
+    char text[32];
+    void (*func)(MenuItem*);
+    bool enabled;
+    MenuItem *parent;
+    MenuItem **children;
+    int childCount;
+};
+
+// 菜单系统结构体
+typedef struct {
+    MenuItem *current;
+    MenuItem *root;
+    bool running;
+} MenuSystem;
+
+// 示例功能函数
+void funcA(MenuItem *item) { printf("执行功能A: %s\n", item->text); }
+void funcB(MenuItem *item) { printf("执行功能B: %s\n", item->text); }
+void funcC(MenuItem *item) { printf("执行功能C: %s\n", item->text); }
+
+// 进入子菜单
+void enterSubmenu(MenuItem *item) {
+    if (item->childCount > 0) {
+        menuSystem.current = item->children[0];
+    }
+}
+
+// 返回上级菜单
+void returnToParent(MenuItem *item) {
+    if (item->parent) {
+        menuSystem.current = item->parent;
+    }
+}
+
+// 初始化菜单系统
+void initMenuSystem(MenuSystem *sys) {
+    // 创建根菜单
+    MenuItem *root = (MenuItem *)malloc(sizeof(MenuItem));
+    strcpy(root->text, "根菜单");
+    root->func = NULL;
+    root->enabled = true;
+    root->parent = NULL;
+    root->children = NULL;
+    root->childCount = 0;
+    
+    // 创建子菜单项
+    MenuItem *item1 = (MenuItem *)malloc(sizeof(MenuItem));
+    strcpy(item1->text, "菜单项1");
+    item1->func = funcA;
+    item1->enabled = true;
+    item1->parent = root;
+    item1->children = NULL;
+    item1->childCount = 0;
+    
+    MenuItem *item2 = (MenuItem *)malloc(sizeof(MenuItem));
+    strcpy(item2->text, "菜单项2");
+    item2->func = funcB;
+    item2->enabled = true;
+    item2->parent = root;
+    item2->children = NULL;
+    item2->childCount = 0;
+    
+    MenuItem *item3 = (MenuItem *)malloc(sizeof(MenuItem));
+    strcpy(item3->text, "子菜单");
+    item3->func = enterSubmenu;
+    item3->enabled = true;
+    item3->parent = root;
+    
+    // 创建子菜单的子项
+    MenuItem *subItem1 = (MenuItem *)malloc(sizeof(MenuItem));
+    strcpy(subItem1->text, "子菜单项1");
+    subItem1->func = funcC;
+    subItem1->enabled = true;
+    subItem1->parent = item3;
+    subItem1->children = NULL;
+    subItem1->childCount = 0;
+    
+    MenuItem *subItem2 = (MenuItem *)malloc(sizeof(MenuItem));
+    strcpy(subItem2->text, "返回");
+    subItem2->func = returnToParent;
+    subItem2->enabled = true;
+    subItem2->parent = item3;
+    subItem2->children = NULL;
+    subItem2->childCount = 0;
+    
+    // 设置子菜单关系
+    item3->children = (MenuItem **)malloc(2 * sizeof(MenuItem *));
+    item3->children[0] = subItem1;
+    item3->children[1] = subItem2;
+    item3->childCount = 2;
+    
+    // 设置根菜单的子项
+    root->children = (MenuItem **)malloc(3 * sizeof(MenuItem *));
+    root->children[0] = item1;
+    root->children[1] = item2;
+    root->children[2] = item3;
+    root->childCount = 3;
+    
+    sys->root = root;
+    sys->current = root;
+    sys->running = true;
+}
+
+// 显示当前菜单
+void displayCurrentMenu(MenuSystem *sys) {
+    printf("\n===== %s =====\n", sys->current->text);
+    
+    if (sys->current->childCount > 0) {
+        for (int i = 0; i < sys->current->childCount; i++) {
+            if (sys->current->children[i]->enabled) {
+                printf("%d. %s\n", i + 1, sys->current->children[i]->text);
+            }
+        }
+    }
+    
+    if (sys->current->parent != NULL) {
+        printf("0. 返回\n");
+    }
+    
+    printf("===============\n");
+}
+
+// 处理事件
+void handleEvent(MenuSystem *sys, Event *event) {
+    if (!sys->current->enabled) return;
+    
+    switch (event->type) {
+        case EVENT_KEY_UP:
+            // 上移逻辑可以在GUI中实现
+            break;
+        case EVENT_KEY_DOWN:
+            // 下移逻辑可以在GUI中实现
+            break;
+        case EVENT_KEY_ENTER: {
+            int choice;
+            printf("请输入选择: ");
+            scanf("%d", &choice);
+            
+            if (choice == 0 && sys->current->parent != NULL) {
+                // 返回上级
+                if (sys->current->func) {
+                    sys->current->func(sys->current);
+                }
+            } 
+            else if (choice > 0 && choice <= sys->current->childCount) {
+                MenuItem *selected = sys->current->children[choice - 1];
+                if (selected->enabled) {
+                    if (selected->func) {
+                        selected->func(selected);
+                    }
+                }
+            }
+            break;
+        }
+        case EVENT_KEY_EXIT:
+            sys->running = false;
+            break;
+        case EVENT_TIMER:
+            // 处理定时事件
+            break;
+        default:
+            break;
+    }
+}
+
+// 模拟获取事件
+bool getEvent(Event *event) {
+    static int count = 0;
+    
+    // 模拟一些事件
+    if (count++ % 10 == 0) {
+        event->type = EVENT_TIMER;
+        event->timestamp = time(NULL);
+        return true;
+    }
+    
+    char input;
+    printf("输入命令(1-9选择, 0返回, q退出): ");
+    scanf(" %c", &input);
+    
+    switch (input) {
+        case 'q':
+        case 'Q':
+            event->type = EVENT_KEY_EXIT;
+            break;
+        case '0':
+            event->type = EVENT_KEY_ENTER;
+            event->key = '0';
+            break;
+        default:
+            if (input >= '1' && input <= '9') {
+                event->type = EVENT_KEY_ENTER;
+                event->key = input;
+            } else {
+                event->type = EVENT_NONE;
+            }
+            break;
+    }
+    
+    return event->type != EVENT_NONE;
+}
+
+// 运行菜单系统
+void runMenuSystem(MenuSystem *sys) {
+    Event event;
+    
+    while (sys->running) {
+        displayCurrentMenu(sys);
+        
+        if (getEvent(&event)) {
+            handleEvent(sys, &event);
+        }
+    }
+}
+
+// 全局菜单系统实例
+MenuSystem menuSystem;
+
+int main() {
+    initMenuSystem(&menuSystem);
+    runMenuSystem(&menuSystem);
+    
+    // 实际应用中应该有释放资源的代码
+    return 0;
+}

@@ -1,0 +1,28 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.9 Chrome/134.0.6998.205 Electron/35.4.0 Safari/537.36" version="27.0.9">
+  <diagram name="第 1 页" id="XI-NXbsyWHBy-11IqtXd">
+    <mxGraphModel dx="873" dy="755" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="vk_bevipn_7ms3-zrlAw-21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="vk_bevipn_7ms3-zrlAw-16" target="vk_bevipn_7ms3-zrlAw-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vk_bevipn_7ms3-zrlAw-16" value="检测延时" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="270" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="vk_bevipn_7ms3-zrlAw-30" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="vk_bevipn_7ms3-zrlAw-19" target="vk_bevipn_7ms3-zrlAw-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vk_bevipn_7ms3-zrlAw-19" value="是否达到延时反应时间" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="370" width="180" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="vk_bevipn_7ms3-zrlAw-29" value="输出" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="540" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="vk_bevipn_7ms3-zrlAw-33" value="&lt;div style=&quot;line-height: 0%;&quot;&gt;&lt;p style=&quot;text-align: left; margin-left: 21pt;&quot; class=&quot;MsoNormal&quot;&gt;&lt;font&gt;检测反应时间设置：&lt;span lang=&quot;EN-US&quot;&gt;2.5~5000ms&lt;/span&gt;&lt;/font&gt;&lt;/p&gt;&lt;p style=&quot;text-align: left; margin-left: 21pt;&quot; class=&quot;MsoNormal&quot;&gt;&lt;font&gt;&lt;br&gt;&lt;/font&gt;&lt;/p&gt;&lt;p style=&quot;text-align: left; margin-left: 21pt;&quot; class=&quot;MsoNormal&quot;&gt;&lt;font&gt;（一个定时时间，如果在该期间内气压一致大于或低于某个输出的设定值，&lt;/font&gt;&lt;/p&gt;&lt;p style=&quot;text-align: left; margin-left: 21pt;&quot; class=&quot;MsoNormal&quot;&gt;&lt;font&gt;&lt;br&gt;&lt;/font&gt;&lt;/p&gt;&lt;p style=&quot;text-align: left; margin-left: 21pt;&quot; class=&quot;MsoNormal&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;则传感器将控制相应输出通道输出&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot; lang=&quot;EN-US&quot;&gt;ON&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;或&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot; lang=&quot;EN-US&quot;&gt;OFF&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;）&lt;/span&gt;&lt;/p&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;font&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;font&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;&lt;p style=&quot;text-align: left; margin-left: 21pt;&quot; class=&quot;MsoNormal&quot;&gt;&lt;font&gt;输出方式：&lt;span lang=&quot;EN-US&quot;&gt;NO/NC&lt;/span&gt;切换&lt;span lang=&quot;EN-US&quot;&gt;&lt;/span&gt;&lt;/font&gt;&lt;/p&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;font&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;font&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;&lt;p style=&quot;text-align: left; margin-left: 21pt;&quot; class=&quot;MsoNormal&quot;&gt;&lt;font&gt;输出模式：比较输出&lt;span lang=&quot;EN-US&quot;&gt;1&lt;/span&gt;和比较输出&lt;span lang=&quot;EN-US&quot;&gt;2&lt;/span&gt;&lt;/font&gt;&lt;/p&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;font&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;font&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;&lt;p style=&quot;text-align: left; margin-left: 21pt;&quot; class=&quot;MsoNormal&quot;&gt;&lt;font&gt;输出控制：&lt;span lang=&quot;EN-US&quot;&gt;IO&lt;/span&gt;口加外部电路&lt;/font&gt;&lt;/p&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="150" y="615" width="450" height="160" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

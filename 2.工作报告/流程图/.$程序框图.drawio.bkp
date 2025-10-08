@@ -1,0 +1,95 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.9 Chrome/134.0.6998.205 Electron/35.4.0 Safari/537.36" version="27.0.9">
+  <diagram name="第 1 页" id="zAqt_nvz2cmlmaJroj0E">
+    <mxGraphModel dx="436" dy="228" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="SfeH2Qk9TO7M8xPd-bBo-1" target="SfeH2Qk9TO7M8xPd-bBo-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-1" value="开机&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="SfeH2Qk9TO7M8xPd-bBo-2" target="SfeH2Qk9TO7M8xPd-bBo-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-2" value="初始化设置" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="270" y="290" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="SfeH2Qk9TO7M8xPd-bBo-4" target="SfeH2Qk9TO7M8xPd-bBo-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-4" value="加载用户设定参数" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="270" y="390" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="SfeH2Qk9TO7M8xPd-bBo-6" target="SfeH2Qk9TO7M8xPd-bBo-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-6" value="读取压力传感器" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="270" y="480" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="SfeH2Qk9TO7M8xPd-bBo-8" target="SfeH2Qk9TO7M8xPd-bBo-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-8" value="刷新显示" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="270" y="570" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="SfeH2Qk9TO7M8xPd-bBo-10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="330" y="740" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-10" value="等待用户操作" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="270" y="660" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="SfeH2Qk9TO7M8xPd-bBo-14" target="SfeH2Qk9TO7M8xPd-bBo-15">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="390" y="780" />
+              <mxPoint x="390" y="780" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-17" value="长时间无操作" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SfeH2Qk9TO7M8xPd-bBo-16">
+          <mxGeometry x="-0.2206" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="SfeH2Qk9TO7M8xPd-bBo-14" target="SfeH2Qk9TO7M8xPd-bBo-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-26" value="t" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SfeH2Qk9TO7M8xPd-bBo-19">
+          <mxGeometry x="-0.32" y="-3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-14" value="有无操作" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="290" y="740" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SfeH2Qk9TO7M8xPd-bBo-15" target="SfeH2Qk9TO7M8xPd-bBo-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-15" value="进入休眠" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="750" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-22" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="SfeH2Qk9TO7M8xPd-bBo-18" target="SfeH2Qk9TO7M8xPd-bBo-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-18" value="执行用户操作" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="860" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SfeH2Qk9TO7M8xPd-bBo-21" target="SfeH2Qk9TO7M8xPd-bBo-10">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="190" y="980" />
+              <mxPoint x="190" y="690" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SfeH2Qk9TO7M8xPd-bBo-21" value="结束操作" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="950" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

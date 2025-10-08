@@ -1,1 +1,0 @@
-"scr\Timer.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(.\inc;.\USER) DEBUG OBJECTEXTEND PRINT(.\Listings\Timer.lst) OBJECT(.\Objects\Timer.obj)

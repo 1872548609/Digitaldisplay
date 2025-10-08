@@ -1,0 +1,85 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.9 Chrome/134.0.6998.205 Electron/35.4.0 Safari/537.36" version="27.0.9">
+  <diagram name="第 1 页" id="WsQT5EF_fANVPbjhW3rG">
+    <mxGraphModel dx="387" dy="722" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="-JJFS9tXQRYudcrBdOz_-1" target="-JJFS9tXQRYudcrBdOz_-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-1" value="长按按键四秒" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="170" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="-JJFS9tXQRYudcrBdOz_-2" target="-JJFS9tXQRYudcrBdOz_-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-7" value="上下键切换" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="-JJFS9tXQRYudcrBdOz_-6">
+          <mxGeometry x="-0.3129" y="2" relative="1" as="geometry">
+            <mxPoint x="1" y="12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="-JJFS9tXQRYudcrBdOz_-2" target="-JJFS9tXQRYudcrBdOz_-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-10" value="单击mode按键" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="-JJFS9tXQRYudcrBdOz_-9">
+          <mxGeometry x="0.1181" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-2" value="PRO模式" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="350" y="310" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="-JJFS9tXQRYudcrBdOz_-5" target="-JJFS9tXQRYudcrBdOz_-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-14" value="单击mode按键" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="-JJFS9tXQRYudcrBdOz_-12">
+          <mxGeometry x="-0.0431" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-5" value="次屏设置" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="550" y="310" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-8" value="切换下一个设置页" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="350" y="450" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="-JJFS9tXQRYudcrBdOz_-11" target="-JJFS9tXQRYudcrBdOz_-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-17" value="上下按键增加减少对应位值" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="-JJFS9tXQRYudcrBdOz_-16">
+          <mxGeometry x="0.1036" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-11" value="对应选中位闪闪" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="550" y="410" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="-JJFS9tXQRYudcrBdOz_-15" target="-JJFS9tXQRYudcrBdOz_-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-21" value="连续按下mode直到设置完成" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="-JJFS9tXQRYudcrBdOz_-19">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-15" value="改变次屏显示" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="550" y="525" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="-JJFS9tXQRYudcrBdOz_-18" target="-JJFS9tXQRYudcrBdOz_-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-24" value="再次按下mode" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="-JJFS9tXQRYudcrBdOz_-23">
+          <mxGeometry x="-0.0333" y="-2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-18" value="最后一位结束" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="550" y="640" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-JJFS9tXQRYudcrBdOz_-22" value="RUN模式" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="350" y="640" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

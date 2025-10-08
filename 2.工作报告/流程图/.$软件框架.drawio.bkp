@@ -1,0 +1,28 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.9 Chrome/134.0.6998.205 Electron/35.4.0 Safari/537.36" version="27.0.9">
+  <diagram name="第 1 页" id="5TL7K_-g6inRsV8wGJj2">
+    <mxGraphModel dx="442" dy="592" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="n_VguiXeCaiT-sL75bEZ-1" value="&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;驱动层（直接与硬件交互）&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="173" y="600" width="480" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n_VguiXeCaiT-sL75bEZ-3" value="主频/中断/IO输入输出/定时器/滴答定时器/显示屏协议/ADC/模拟输出等" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="650" width="480" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="n_VguiXeCaiT-sL75bEZ-11" value="GPIO接口/按键接口/LED/显示屏接口/采集信号获取接口/模拟输出接口等" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="520" width="480" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n_VguiXeCaiT-sL75bEZ-13" value="硬件抽象层（提供硬件无关的接口）" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="470" width="480" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n_VguiXeCaiT-sL75bEZ-14" value="LED闪烁/传感器数据采集/通信协议处理等" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="400" width="480" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="n_VguiXeCaiT-sL75bEZ-15" value="应用层（实现具体业务）" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="350" width="480" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

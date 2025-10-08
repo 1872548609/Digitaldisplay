@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+/*使用结构体数组存储菜单项
+每个菜单项包含显示文本和对应的功能函数
+通过索引选择菜单项*/
+
+// 菜单项结构体
+typedef struct {
+    char *text;
+    void (*func)(void);
+} MenuItem;
+
+// 示例功能函数
+void func1() { printf("执行功能1\n"); }
+void func2() { printf("执行功能2\n"); }
+void func3() { printf("执行功能3\n"); }
+
+// 菜单项数组
+MenuItem mainMenu[] = {
+    {"功能1", func1},
+    {"功能2", func2},
+    {"功能3", func3},
+    {"退出", NULL}
+};
+int menuCount = sizeof(mainMenu) / sizeof(MenuItem);
+
+// 显示菜单
+void displayMenu(MenuItem *menu, int count) {
+    printf("\n===== 菜单 =====\n");
+    for (int i = 0; i < count; i++) {
+        printf("%d. %s\n", i + 1, menu[i].text);
+    }
+    printf("===============\n");
+}
+
+// 主循环
+int main() {
+    int choice;
+    
+    while (1) {
+        displayMenu(mainMenu, menuCount);
+        printf("请选择(1-%d): ", menuCount);
+        scanf("%d", &choice);
+        
+        if (choice < 1 || choice > menuCount) {
+            printf("无效选择!\n");
+            continue;
+        }
+        
+        if (mainMenu[choice - 1].func == NULL) {
+            printf("退出菜单\n");
+            break;
+        }
+        
+        mainMenu[choice - 1].func();
+    }
+    
+    return 0;
+}

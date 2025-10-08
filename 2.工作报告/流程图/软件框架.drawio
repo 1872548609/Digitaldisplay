@@ -1,0 +1,73 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.9 Chrome/134.0.6998.205 Electron/35.4.0 Safari/537.36" version="27.0.9">
+  <diagram name="第 1 页" id="5TL7K_-g6inRsV8wGJj2">
+    <mxGraphModel dx="1410" dy="859" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="n_VguiXeCaiT-sL75bEZ-1" value="&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;硬件抽象层（直接与硬件交互）&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#6a00ff;align=left;fontColor=#ffffff;strokeColor=#3700CC;gradientColor=default;" parent="1" vertex="1">
+          <mxGeometry x="20" y="610" width="700" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="n_VguiXeCaiT-sL75bEZ-3" value="主频" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="220" y="630" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="n_VguiXeCaiT-sL75bEZ-13" value="硬件驱动层（提供硬件无关的接口）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;align=left;gradientDirection=south;fontColor=#ffffff;strokeColor=#006EAF;gradientColor=#FFE9DF;" parent="1" vertex="1">
+          <mxGeometry x="20" y="394.5" width="700" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="n_VguiXeCaiT-sL75bEZ-15" value="应用层（实现具体业务）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#008a00;align=left;fontColor=#ffffff;strokeColor=#57182F;gradientColor=default;" parent="1" vertex="1">
+          <mxGeometry x="20" y="180" width="700" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="mTeS8OlsLS1gB6t2sNi8-1" value="ADC采集" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="220" y="497" width="120" height="63" as="geometry" />
+        </mxCell>
+        <mxCell id="SeeZEJL1Hf_8s25hDftE-1" value="LED功能" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="200" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SeeZEJL1Hf_8s25hDftE-2" value="传感器数据采集处理" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="340" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SeeZEJL1Hf_8s25hDftE-5" value="通信" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="480" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SeeZEJL1Hf_8s25hDftE-7" value="显示" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="340" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SeeZEJL1Hf_8s25hDftE-8" value="按键" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="200" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SeeZEJL1Hf_8s25hDftE-11" value="GPIO" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="220" y="420" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SeeZEJL1Hf_8s25hDftE-12" value="LED功能" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="500" y="420" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SeeZEJL1Hf_8s25hDftE-13" value="KEY" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="360" y="420" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SeeZEJL1Hf_8s25hDftE-19" value="模拟输出" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="360" y="497" width="120" height="63" as="geometry" />
+        </mxCell>
+        <mxCell id="SeeZEJL1Hf_8s25hDftE-20" value="中断" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="360" y="630" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SeeZEJL1Hf_8s25hDftE-23" value="IO" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="500" y="630" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SeeZEJL1Hf_8s25hDftE-24" value="定时器" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="360" y="710" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SeeZEJL1Hf_8s25hDftE-25" value="定时器" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="220" y="710" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SeeZEJL1Hf_8s25hDftE-28" value="看门狗" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="500" y="710" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SeeZEJL1Hf_8s25hDftE-29" value="开关量输出" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="500" y="500" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SeeZEJL1Hf_8s25hDftE-30" value="输出" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFBF76;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="480" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,121 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.9 Chrome/134.0.6998.205 Electron/35.4.0 Safari/537.36" version="27.0.9">
+  <diagram name="第 1 页" id="ie7RrQF_2yHgbtO3k7Pb">
+    <mxGraphModel dx="575" dy="876" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="rn92pzegthWtfIBxc3gq-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-1" target="rn92pzegthWtfIBxc3gq-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-1" target="rn92pzegthWtfIBxc3gq-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-1" target="rn92pzegthWtfIBxc3gq-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-1" target="rn92pzegthWtfIBxc3gq-34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-1" value="核心功能" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="90" y="400" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-2" target="rn92pzegthWtfIBxc3gq-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-2" target="rn92pzegthWtfIBxc3gq-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-2" target="rn92pzegthWtfIBxc3gq-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-2" value="显示模块" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="190" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-3" target="rn92pzegthWtfIBxc3gq-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-3" target="rn92pzegthWtfIBxc3gq-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-3" target="rn92pzegthWtfIBxc3gq-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-3" value="输出模块" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="400" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-4" target="rn92pzegthWtfIBxc3gq-26">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-4" target="rn92pzegthWtfIBxc3gq-27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-4" target="rn92pzegthWtfIBxc3gq-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-4" target="rn92pzegthWtfIBxc3gq-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-4" value="接口模块" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="648" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-9" value="多单位显示: MPa/KPa/Bar/PSI" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="120" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-13" value="双屏自定义: 主屏显示压力值/副屏显示设定值" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="190" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-15" value="颜色警示: 输出ON/OFF文字颜色区分" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="260" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-18" value="数字信号: PNP/NPN型开关量输出" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="330" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-21" value="模拟信号: 4-20mA/0-10V输出" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="400" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-22" value="比较模式: EASY/应差/窗式比较" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="470" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-26" value="物理接口: OUT1/OUT2开关量" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="540" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-27" value="模拟接口: 电流/电压输出" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="616" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-28" value="通信接口: RS485/IO-Link/Modbus" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="686" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-29" value="进气接口: G1/8/R1/8/NPT1/8" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="756" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-34" target="rn92pzegthWtfIBxc3gq-36">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-34" target="rn92pzegthWtfIBxc3gq-40">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-34" target="rn92pzegthWtfIBxc3gq-41">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rn92pzegthWtfIBxc3gq-34" target="rn92pzegthWtfIBxc3gq-42">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-34" value="设置与操作" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="940" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-36" value="设定值调整: 上下键步进调节" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="830" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-40" value="校零功能: 大气压下长按组合键" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="900" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-41" value="安全锁定: 模式键+下键2秒锁定" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="970" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rn92pzegthWtfIBxc3gq-42" value="数据备份: ON/ON-L两种备份模式" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="1040" width="240" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

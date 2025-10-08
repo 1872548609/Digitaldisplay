@@ -1,0 +1,114 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.9 Chrome/134.0.6998.205 Electron/35.4.0 Safari/537.36" version="27.0.9">
+  <diagram name="第 1 页" id="jay6wAJ2bXRLVE0Ny9OE">
+    <mxGraphModel dx="582" dy="503" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="cePdtwa5_dM8LyDOlnS9-1" target="cePdtwa5_dM8LyDOlnS9-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-1" value="获取压力值" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="123" y="110" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="cePdtwa5_dM8LyDOlnS9-4" target="cePdtwa5_dM8LyDOlnS9-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-12" value="是" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="cePdtwa5_dM8LyDOlnS9-7">
+          <mxGeometry x="-0.15" y="-2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="cePdtwa5_dM8LyDOlnS9-4" target="cePdtwa5_dM8LyDOlnS9-14">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="369.0000000000001" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-11" value="否" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="cePdtwa5_dM8LyDOlnS9-9">
+          <mxGeometry x="-0.0476" y="-2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-4" value="判断压力值是否达到设定值+应差值" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="200" width="246" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-6" value="输出ON" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="123" y="360" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="cePdtwa5_dM8LyDOlnS9-14" target="cePdtwa5_dM8LyDOlnS9-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-17" value="是" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="cePdtwa5_dM8LyDOlnS9-16">
+          <mxGeometry x="0.0121" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="cePdtwa5_dM8LyDOlnS9-14" target="cePdtwa5_dM8LyDOlnS9-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-19" value="否" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="cePdtwa5_dM8LyDOlnS9-18">
+          <mxGeometry x="-0.72" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-14" value="判断是否低于设定值" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="379" y="215" width="160" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-15" value="输出OFF" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="399" y="360" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="cePdtwa5_dM8LyDOlnS9-22" target="cePdtwa5_dM8LyDOlnS9-27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-22" value="获取压力值" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="123" y="550" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="cePdtwa5_dM8LyDOlnS9-27" target="cePdtwa5_dM8LyDOlnS9-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-24" value="是" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="cePdtwa5_dM8LyDOlnS9-23">
+          <mxGeometry x="-0.15" y="-2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="cePdtwa5_dM8LyDOlnS9-27" target="cePdtwa5_dM8LyDOlnS9-33">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="369.0000000000001" y="700" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-26" value="否" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="cePdtwa5_dM8LyDOlnS9-25">
+          <mxGeometry x="-0.0476" y="-2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-27" value="判断压力值是否达到LO值+应差值&lt;div&gt;且是否小于HI+应差值&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="640" width="246" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-28" value="输出ON" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="123" y="800" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-29" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="cePdtwa5_dM8LyDOlnS9-33" target="cePdtwa5_dM8LyDOlnS9-34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-30" value="是" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="cePdtwa5_dM8LyDOlnS9-29">
+          <mxGeometry x="0.0121" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="cePdtwa5_dM8LyDOlnS9-33" target="cePdtwa5_dM8LyDOlnS9-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-32" value="否" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="cePdtwa5_dM8LyDOlnS9-31">
+          <mxGeometry x="-0.72" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-33" value="判断是否大于HI+应差值&lt;div&gt;或是否小于LO值&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="379" y="655" width="160" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="cePdtwa5_dM8LyDOlnS9-34" value="输出OFF" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="399" y="800" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

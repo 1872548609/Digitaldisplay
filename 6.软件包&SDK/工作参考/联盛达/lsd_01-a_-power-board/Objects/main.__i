@@ -1,1 +1,0 @@
-"USER\main.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(.\inc;.\USER) DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) OBJECT(.\Objects\main.obj)

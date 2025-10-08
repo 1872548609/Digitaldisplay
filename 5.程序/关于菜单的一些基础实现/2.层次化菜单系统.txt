@@ -1,0 +1,104 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+/*支持多级子菜单
+使用结构体嵌套实现菜单层次
+每个菜单项可以关联一个子菜单*/
+
+// 前向声明
+typedef struct Menu Menu;
+typedef struct MenuItem MenuItem;
+
+// 菜单项结构体
+struct MenuItem {
+    char text[32];
+    void (*func)(void);
+    Menu *submenu;
+};
+
+// 菜单结构体
+struct Menu {
+    char title[32];
+    MenuItem *items;
+    int count;
+};
+
+// 示例功能函数
+void funcA() { printf("执行功能A\n"); }
+void funcB() { printf("执行功能B\n"); }
+void funcC() { printf("执行功能C\n"); }
+
+// 子菜单1
+MenuItem subItems1[] = {
+    {"子功能1", funcA, NULL},
+    {"子功能2", funcB, NULL},
+    {"返回", NULL, NULL}
+};
+Menu subMenu1 = {"子菜单1", subItems1, sizeof(subItems1)/sizeof(MenuItem)};
+
+// 主菜单
+MenuItem mainItems[] = {
+    {"主功能1", funcA, NULL},
+    {"主功能2", funcB, NULL},
+    {"进入子菜单", NULL, &subMenu1},
+    {"退出", NULL, NULL}
+};
+Menu mainMenu = {"主菜单", mainItems, sizeof(mainItems)/sizeof(MenuItem)};
+
+// 显示菜单
+void displayMenu(Menu *menu) {
+    printf("\n===== %s =====\n", menu->title);
+    for (int i = 0; i < menu->count; i++) {
+        printf("%d. %s\n", i + 1, menu->items[i].text);
+    }
+    printf("===============\n");
+}
+
+// 运行菜单
+void runMenu(Menu *menu) {
+    int choice;
+    Menu *currentMenu = menu;
+    
+    while (1) {
+        displayMenu(currentMenu);
+        printf("请选择(1-%d): ", currentMenu->count);
+        scanf("%d", &choice);
+        
+        if (choice < 1 || choice > currentMenu->count) {
+            printf("无效选择!\n");
+            continue;
+        }
+        
+        MenuItem *selected = &currentMenu->items[choice - 1];
+        
+        // 如果有功能函数且没有子菜单，执行功能
+        if (selected->func != NULL && selected->submenu == NULL) {
+            selected->func();
+        }
+        // 如果有子菜单，进入子菜单
+        else if (selected->submenu != NULL) {
+            if (selected->submenu->count > 0) {
+                currentMenu = selected->submenu;
+            }
+        }
+        // 返回上级菜单
+        else if (strcmp(selected->text, "返回") == 0 && currentMenu != menu) {
+            currentMenu = menu; // 简单实现，实际应该返回上一级
+        }
+        // 退出菜单
+        else if (strcmp(selected->text, "退出") == 0) {
+            if (currentMenu == menu) {
+                printf("退出菜单系统\n");
+                return;
+            } else {
+                currentMenu = menu;
+            }
+        }
+    }
+}
+
+int main() {
+    runMenu(&mainMenu);
+    return 0;
+}
