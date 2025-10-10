@@ -1,0 +1,211 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.9 Chrome/134.0.6998.205 Electron/35.4.0 Safari/537.36" version="27.0.9">
+  <diagram name="第 1 页" id="myobmbB1UO2eIXCQRtIi">
+    <mxGraphModel dx="1600" dy="1443" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="XtJ0JxVe74JKAtumRpjx-27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="XtJ0JxVe74JKAtumRpjx-1" target="XtJ0JxVe74JKAtumRpjx-26" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="20" y="175" />
+              <mxPoint x="20" y="175" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XtJ0JxVe74JKAtumRpjx-1" value="main（）" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-35" y="160" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="XtJ0JxVe74JKAtumRpjx-49" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="XtJ0JxVe74JKAtumRpjx-3" target="XtJ0JxVe74JKAtumRpjx-6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XtJ0JxVe74JKAtumRpjx-3" value="&lt;div&gt;&amp;nbsp; // 启动OSAL调度系统&lt;/div&gt;osal_start_system();&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-35" y="750" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="XtJ0JxVe74JKAtumRpjx-17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="XtJ0JxVe74JKAtumRpjx-6" target="XtJ0JxVe74JKAtumRpjx-16" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XtJ0JxVe74JKAtumRpjx-6" value="osal_run_system();&amp;nbsp;&lt;div&gt;&amp;nbsp;// 调用OSAL调度器核心函数，处理任务事件&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-220" y="755" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="XtJ0JxVe74JKAtumRpjx-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="XtJ0JxVe74JKAtumRpjx-6" target="XtJ0JxVe74JKAtumRpjx-6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XtJ0JxVe74JKAtumRpjx-44" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="XtJ0JxVe74JKAtumRpjx-16" target="XtJ0JxVe74JKAtumRpjx-43" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XtJ0JxVe74JKAtumRpjx-16" value="遍历事件列表tasksEvents[idx]" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="-210" y="890" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="XtJ0JxVe74JKAtumRpjx-31" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="XtJ0JxVe74JKAtumRpjx-26" target="XtJ0JxVe74JKAtumRpjx-30" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XtJ0JxVe74JKAtumRpjx-26" value="&lt;p&gt;&amp;nbsp; // **初始化操作系统抽象层（OSAL：Operating System Abstraction Layer）&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp; osal_init_system();&lt;/span&gt;&lt;/p&gt;" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="-90" y="270" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="XtJ0JxVe74JKAtumRpjx-33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="XtJ0JxVe74JKAtumRpjx-30" target="XtJ0JxVe74JKAtumRpjx-32" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="XtJ0JxVe74JKAtumRpjx-30" target="5NWK_WrRRoG5Ygzmmgte-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="XtJ0JxVe74JKAtumRpjx-30" target="5NWK_WrRRoG5Ygzmmgte-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-63" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="XtJ0JxVe74JKAtumRpjx-30" target="5NWK_WrRRoG5Ygzmmgte-62">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XtJ0JxVe74JKAtumRpjx-30" value="&lt;div&gt;//分配任务函数id,初始化定义的任务&lt;/div&gt;osalInitTasks();" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="-25" y="390" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="XtJ0JxVe74JKAtumRpjx-32" target="XtJ0JxVe74JKAtumRpjx-47">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="XtJ0JxVe74JKAtumRpjx-32" target="5NWK_WrRRoG5Ygzmmgte-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="120" y="560" />
+              <mxPoint x="120" y="560" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XtJ0JxVe74JKAtumRpjx-32" value="SampleApp_Init( taskID );      // 初始化用户应用（最后一个任务）" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="-25" y="525" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="XtJ0JxVe74JKAtumRpjx-43" target="XtJ0JxVe74JKAtumRpjx-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XtJ0JxVe74JKAtumRpjx-43" value="调用非0事件的任务函数传递事件" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="-210" y="1020" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="XtJ0JxVe74JKAtumRpjx-51" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="XtJ0JxVe74JKAtumRpjx-47" target="XtJ0JxVe74JKAtumRpjx-3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XtJ0JxVe74JKAtumRpjx-47" value="main（）" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-35" y="630" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-5" value="宏HOLD_AUTO_START&lt;div&gt;ZDOInitDevice(0);&lt;/div&gt;&lt;div&gt;这里调用ZDOInitDevice(0)初始化设备但不自动入网&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="180" y="532.5" width="165" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-7" target="5NWK_WrRRoG5Ygzmmgte-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-7" value="&lt;div&gt;// 初始化板载硬件（如LED、按键等基础外设）&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp; HAL_BOARD_INIT();&lt;/span&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="180" y="395" width="195" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-9" value="/* 配置LEDGPIO方向 */&lt;div&gt;/* 配置三态输入PUSH2按钮引脚引脚（高阻态）*/&amp;nbsp; &amp;nbsp; &amp;nbsp;&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="460" y="390" width="152.5" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-13" target="5NWK_WrRRoG5Ygzmmgte-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-13" value="&lt;div&gt;// 冷初始化（硬件初始化）板载I/O（如GPIO、外设时钟等）&lt;/div&gt;&lt;div&gt;&amp;nbsp; InitBoard( OB_COLD );&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="180" y="320" width="190" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-15" target="5NWK_WrRRoG5Ygzmmgte-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-15" value="&amp;nbsp;HalKeyConfig(HAL_KEY_INTERRUPT_DISABLE, OnBoard_KeyCallback);按键中断以及回调配置，触发按键轮询" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="420" y="325" width="320" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-18" target="5NWK_WrRRoG5Ygzmmgte-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-18" value="&lt;div&gt;/* 启动第一次轮询事件 */&lt;/div&gt;&lt;div&gt;&amp;nbsp;osal_set_event(Hal_TaskID, HAL_KEY_EVENT);&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="800" y="320" width="170" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-20" target="5NWK_WrRRoG5Ygzmmgte-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-20" value="uint16 Hal_ProcessEvent(uint8 task_id, uint16 events)" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="320" width="155" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-22" target="5NWK_WrRRoG5Ygzmmgte-30">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-22" target="5NWK_WrRRoG5Ygzmmgte-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-22" value="&amp;nbsp;if (events &amp;amp; HAL_KEY_EVENT)&lt;div&gt;触发按键事件&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1292.5" y="320" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-24" target="5NWK_WrRRoG5Ygzmmgte-26">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-24" value="/* 如果按键中断未启用&amp;nbsp;if (!Hal_KeyIntEnable)" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1507" y="320" width="147.5" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-46" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-26" target="5NWK_WrRRoG5Ygzmmgte-42">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-26" value="osal_start_timerEx(Hal_TaskID, HAL_KEY_EVENT, 100);//再次发送事件请求轮询" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1479.56" y="200" width="202.38" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-35" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-30" target="5NWK_WrRRoG5Ygzmmgte-34">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1447" y="540" />
+              <mxPoint x="1447" y="540" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-50" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-30" target="5NWK_WrRRoG5Ygzmmgte-49">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-30" value="&amp;nbsp;HalKeyPoll(); // 轮询按键状态，处理按键状态" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1387" y="450" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-34" target="5NWK_WrRRoG5Ygzmmgte-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-34" value="&lt;div&gt;&amp;nbsp;/* 如果有新按键按下且回调函数已注册，则调用回调函数 */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; (pHalKeyProcessFunction) (keys, HAL_KEY_STATE_NORMAL);&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1390" y="560" width="180" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-42" target="5NWK_WrRRoG5Ygzmmgte-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-42" value="OSAL事件处理器" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1280.0049999999999" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-49" target="5NWK_WrRRoG5Ygzmmgte-34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-49" value="中断启用直接在轮询处理" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1550" y="450" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-54" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-52" target="5NWK_WrRRoG5Ygzmmgte-53">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-52" value="按键中断服务程序" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1115.01" y="740" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-56" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-53" target="5NWK_WrRRoG5Ygzmmgte-55">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-53" value="halProcessKeyInterrupt(); // 处理按键中断" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1095.01" y="625" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-55" value="osal_start_timerEx (Hal_TaskID, HAL_KEY_EVENT, HAL_KEY_DEBOUNCE_VALUE);&lt;div&gt;/* 如果有有效中断，启动消抖定时器 */&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1070.01" y="510" width="210" height="77.5" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-61" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-59" target="5NWK_WrRRoG5Ygzmmgte-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-59" value="OSAL事件处理器" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="420" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.545;entryY=1.021;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-55" target="5NWK_WrRRoG5Ygzmmgte-59">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-65" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="5NWK_WrRRoG5Ygzmmgte-62" target="5NWK_WrRRoG5Ygzmmgte-64">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-62" value="&lt;div&gt;&amp;nbsp;// 初始化硬件抽象层（HAL）驱动（如定时器、ADC、SPI等）&lt;/div&gt;&lt;div&gt;&amp;nbsp; HalDriverInit();&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="180" y="460" width="190" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5NWK_WrRRoG5Ygzmmgte-64" value="&amp;nbsp;HalKeyInit();" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="485" y="460" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

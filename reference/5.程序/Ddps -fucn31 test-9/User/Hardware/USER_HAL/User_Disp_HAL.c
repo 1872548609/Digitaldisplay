@@ -1,12 +1,12 @@
 #include "User_Disp_Hal.h"
 
-//ÑÓÊ±
+//å»¶æ—¶
 void HAL_Disp_DelayUs(uint32_t us)
 {
 	  	APM_EVAL_DelayUs(us);
 }
 
-//ÇåÆÁ
+//æ¸…å±
 void HAL_Disp_ClearALL(void)
 {
 		uint16_t i;
@@ -16,7 +16,7 @@ void HAL_Disp_ClearALL(void)
 		}
 }
 
-//Ìî³ä
+//å¡«å……
 void HAL_Disp_Fill(uint8_t data)
 {
 	uint16_t i;
@@ -26,20 +26,20 @@ void HAL_Disp_Fill(uint8_t data)
 		}
 }
 
-//Æô¶¯ÅäÖÃ
+//å¯åŠ¨é…ç½®
 void HAL_Disp_Config(void)
 {
-		//ÉèÖÃLCDÆ«ÖÃ 4com
+		//è®¾ç½®LCDåç½® 4com
 				HAL_Disp_W_Cmd(cmdid,BIAS_1_3_4_COMS);
-			//´ò¿ªLCDÆ«ÖÃ
+			//æ‰“å¼€LCDåç½®
 				HAL_Disp_W_Cmd(cmdid,LCD_ON);
-			//´ò¿ªÏµÍ³Ê±ÖÓ£¬Ä¬ÈÏRC256k
+			//æ‰“å¼€ç³»ç»Ÿæ—¶é’Ÿï¼Œé»˜è®¤RC256k
 				HAL_Disp_W_Cmd(cmdid,SYS_EN);   
-			//ÇåÆÁ
+			//æ¸…å±
 			HAL_Disp_ClearALL();
 }
 
-//³õÊ¼»¯¶ÏÂëÆÁÒı½Å
+//åˆå§‹åŒ–æ–­ç å±å¼•è„š
 void HAL_Disp_Init(void)
 {
 		GPIO_Config_T gpioConfig;
@@ -57,12 +57,12 @@ void HAL_Disp_Init(void)
 }
 
 
-//Á¬ĞøĞ´Êı¾İ
+//è¿ç»­å†™æ•°æ®
 void HAL_Disp_WrSeriesData(uint8_t id,uint16_t startaddress, uint8_t * data, uint16_t length)
 {
 	   Disp_W_CS(0);
 				HAL_Disp_DelayUs(1);
-				///Ğ´id
+				///å†™id
 				int i;
 				for(i=0;i<Id_length;i++)
 				{
@@ -72,7 +72,7 @@ void HAL_Disp_WrSeriesData(uint8_t id,uint16_t startaddress, uint8_t * data, uin
 								Disp_W_WR(1);
 								HAL_Disp_DelayUs(1);
 				}
-				//Ğ´µØÖ·
+				//å†™åœ°å€
 				for(i=0;i<address_Length;i++)
 				{
 								Disp_W_WR(0);
@@ -83,7 +83,7 @@ void HAL_Disp_WrSeriesData(uint8_t id,uint16_t startaddress, uint8_t * data, uin
 				}
 				for(i=0;i<length;i++)
 			{
-				//Êı¾İ
+				//æ•°æ®
 				int j;
 				for(j=0;j<Data_Length;j++)
 				{		
@@ -99,12 +99,12 @@ void HAL_Disp_WrSeriesData(uint8_t id,uint16_t startaddress, uint8_t * data, uin
 			HAL_Disp_DelayUs(1);
 }
 
-//Ğ´ÃüÁî
+//å†™å‘½ä»¤
 void HAL_Disp_W_Cmd(uint8_t id,uint16_t cmd)
 {
 		 Disp_W_CS(0);
 			HAL_Disp_DelayUs(1);
-			///Ğ´id
+			///å†™id
 		 int i;
 			for(i=0;i<Id_length;i++)
 			{
@@ -114,7 +114,7 @@ void HAL_Disp_W_Cmd(uint8_t id,uint16_t cmd)
 				   Disp_W_WR(1);
 							HAL_Disp_DelayUs(1);
 			}
-		 //Ğ´ÃüÁî´úÂë
+		 //å†™å‘½ä»¤ä»£ç 
 			for(i=0;i<Cmd_Length;i++)
 			{
 					  Disp_W_WR(0);
@@ -127,12 +127,12 @@ void HAL_Disp_W_Cmd(uint8_t id,uint16_t cmd)
 			HAL_Disp_DelayUs(1);
 }
 
-//Ğ´Êı¾İ
+//å†™æ•°æ®
 void HAL_Disp_W_Data(uint8_t id,uint16_t address,uint16_t data)
 {
 			Disp_W_CS(0);
 			HAL_Disp_DelayUs(1);
-			///Ğ´id
+			///å†™id
 		 int i;
 			for(i=0;i<Id_length;i++)
 			{			 
@@ -143,7 +143,7 @@ void HAL_Disp_W_Data(uint8_t id,uint16_t address,uint16_t data)
 				   Disp_W_WR(1);
 							HAL_Disp_DelayUs(1);
 			}
-		 //Ğ´µØÖ·
+		 //å†™åœ°å€
 			for(i=0;i<address_Length;i++)
 			{
 					 
@@ -155,7 +155,7 @@ void HAL_Disp_W_Data(uint8_t id,uint16_t address,uint16_t data)
 							HAL_Disp_DelayUs(1);
 			}
 			
-			//Êı¾İ
+			//æ•°æ®
 			for(i=0;i<Data_Length;i++)
 			{
 					 
@@ -170,7 +170,7 @@ void HAL_Disp_W_Data(uint8_t id,uint16_t address,uint16_t data)
 			HAL_Disp_DelayUs(1);
 }
 
-//²ÎÊı¿ÉÒÔÊÇ  W_CS ÖĞÒ»¸ö
+//å‚æ•°å¯ä»¥æ˜¯  W_CS ä¸­ä¸€ä¸ª
 void HAL_Disp_Write_Pin(uint8_t cmd,uint8_t level)
 {
 	  switch(cmd)
