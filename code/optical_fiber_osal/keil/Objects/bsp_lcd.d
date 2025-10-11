@@ -1,14 +1,17 @@
 .\objects\bsp_lcd.o: ..\code\components\bsp\apm32f051\Board_APM32F051_EVAL\src\bsp_lcd.c
 .\objects\bsp_lcd.o: ..\code\components\bsp\apm32f051\Board_APM32F051_EVAL\inc\bsp_lcd.h
 .\objects\bsp_lcd.o: ..\code\main\main.h
-.\objects\bsp_lcd.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdint.h
-.\objects\bsp_lcd.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\bsp_lcd.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\bsp_lcd.o: D:\keil5\ARM\ARMCC\Bin\..\include\time.h
-.\objects\bsp_lcd.o: D:\keil5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\bsp_lcd.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\bsp_lcd.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\bsp_lcd.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\bsp_lcd.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\time.h
+.\objects\bsp_lcd.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\bsp_lcd.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdarg.h
+.\objects\bsp_lcd.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\bsp_lcd.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_menu.h
+.\objects\bsp_lcd.o: ..\code\main\main.h
 .\objects\bsp_lcd.o: ..\code\components\bsp\apm32f051\Board.h
 .\objects\bsp_lcd.o: ..\code\components\bsp\apm32f051\Board_APM32F051_EVAL/inc/board_apm32f051_eval.h
-.\objects\bsp_lcd.o: ..\code\main\main.h
 .\objects\bsp_lcd.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_usart.h
 .\objects\bsp_lcd.o: ..\code\main\apm32f0xx.h
 .\objects\bsp_lcd.o: ..\code\components\hal\target\apm32f051\CMSIS\core_cm0plus.h
@@ -28,6 +31,9 @@
 .\objects\bsp_lcd.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_pmu.h
 .\objects\bsp_lcd.o: ..\code\components\bsp\apm32f051\Board_APM32F051_EVAL\inc\bsp_delay.h
 .\objects\bsp_lcd.o: ..\code\components\hal\target\apm32f051\hal_types.h
+.\objects\bsp_lcd.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_syscfg.h
+.\objects\bsp_lcd.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_iwdt.h
+.\objects\bsp_lcd.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_dbg.h
 .\objects\bsp_lcd.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_clock.h
 .\objects\bsp_lcd.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_gpio.h
 .\objects\bsp_lcd.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_flash.h

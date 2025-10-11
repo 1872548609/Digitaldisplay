@@ -27,6 +27,9 @@ extern "C"
 #include "stdlib.h"
 #include "time.h"
 #include "string.h"
+#include "stdarg.h"
+#include "math.h"
+#include "iot_driver_menu.h"		
 
 /*************************************************-*************************************************
 *                                             INCLUDES
@@ -46,9 +49,12 @@ extern "C"
 #include "apm32f0xx_fmc.h"
 #include "apm32f0xx_pmu.h"
 #include "bsp_delay.h"
-#include "stdint.h"
 #include "stdio.h"		
 #include "hal_types.h"
+
+#include "apm32f0xx_syscfg.h"			
+#include "apm32f0xx_iwdt.h"	
+#include "apm32f0xx_dbg.h"			
 
 /*************************************************-*************************************************
 *                                             INCLUDES

@@ -2,15 +2,18 @@
 .\objects\hal_key.o: ..\code\components\hal\target\apm32f051\hal_mcu.h
 .\objects\hal_key.o: ..\code\components\hal\include\hal_defs.h
 .\objects\hal_key.o: ..\code\components\hal\target\apm32f051\hal_types.h
-.\objects\hal_key.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\hal_key.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\hal_key.o: ..\code\main\main.h
-.\objects\hal_key.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\hal_key.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\hal_key.o: D:\keil5\ARM\ARMCC\Bin\..\include\time.h
-.\objects\hal_key.o: D:\keil5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\hal_key.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\hal_key.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\hal_key.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\time.h
+.\objects\hal_key.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\hal_key.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdarg.h
+.\objects\hal_key.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\hal_key.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_menu.h
+.\objects\hal_key.o: ..\code\main\main.h
 .\objects\hal_key.o: ..\code\components\bsp\apm32f051\Board.h
 .\objects\hal_key.o: ..\code\components\bsp\apm32f051\Board_APM32F051_EVAL/inc/board_apm32f051_eval.h
-.\objects\hal_key.o: ..\code\main\main.h
 .\objects\hal_key.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_usart.h
 .\objects\hal_key.o: ..\code\main\apm32f0xx.h
 .\objects\hal_key.o: ..\code\components\hal\target\apm32f051\CMSIS\core_cm0plus.h
@@ -29,6 +32,9 @@
 .\objects\hal_key.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_fmc.h
 .\objects\hal_key.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_pmu.h
 .\objects\hal_key.o: ..\code\components\bsp\apm32f051\Board_APM32F051_EVAL\inc\bsp_delay.h
+.\objects\hal_key.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_syscfg.h
+.\objects\hal_key.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_iwdt.h
+.\objects\hal_key.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_dbg.h
 .\objects\hal_key.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_clock.h
 .\objects\hal_key.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_gpio.h
 .\objects\hal_key.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_flash.h

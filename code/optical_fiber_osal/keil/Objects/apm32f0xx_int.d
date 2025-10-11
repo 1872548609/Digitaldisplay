@@ -1,14 +1,17 @@
 .\objects\apm32f0xx_int.o: ..\code\main\apm32f0xx_int.c
 .\objects\apm32f0xx_int.o: ..\code\main\apm32f0xx_int.h
 .\objects\apm32f0xx_int.o: ..\code\main\main.h
-.\objects\apm32f0xx_int.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdint.h
-.\objects\apm32f0xx_int.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\apm32f0xx_int.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\apm32f0xx_int.o: D:\keil5\ARM\ARMCC\Bin\..\include\time.h
-.\objects\apm32f0xx_int.o: D:\keil5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\apm32f0xx_int.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\apm32f0xx_int.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\apm32f0xx_int.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\apm32f0xx_int.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\time.h
+.\objects\apm32f0xx_int.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\apm32f0xx_int.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdarg.h
+.\objects\apm32f0xx_int.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\apm32f0xx_int.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_menu.h
+.\objects\apm32f0xx_int.o: ..\code\main\main.h
 .\objects\apm32f0xx_int.o: ..\code\components\bsp\apm32f051\Board.h
 .\objects\apm32f0xx_int.o: ..\code\components\bsp\apm32f051\Board_APM32F051_EVAL/inc/board_apm32f051_eval.h
-.\objects\apm32f0xx_int.o: ..\code\main\main.h
 .\objects\apm32f0xx_int.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_usart.h
 .\objects\apm32f0xx_int.o: ..\code\main\apm32f0xx.h
 .\objects\apm32f0xx_int.o: ..\code\components\hal\target\apm32f051\CMSIS\core_cm0plus.h
@@ -28,6 +31,9 @@
 .\objects\apm32f0xx_int.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_pmu.h
 .\objects\apm32f0xx_int.o: ..\code\components\bsp\apm32f051\Board_APM32F051_EVAL\inc\bsp_delay.h
 .\objects\apm32f0xx_int.o: ..\code\components\hal\target\apm32f051\hal_types.h
+.\objects\apm32f0xx_int.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_syscfg.h
+.\objects\apm32f0xx_int.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_iwdt.h
+.\objects\apm32f0xx_int.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_dbg.h
 .\objects\apm32f0xx_int.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_clock.h
 .\objects\apm32f0xx_int.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_gpio.h
 .\objects\apm32f0xx_int.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_flash.h

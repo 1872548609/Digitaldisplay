@@ -2865,16 +2865,16 @@ void mainTask(void)
 
 int main(void)
 {
-	 HAL_System_Init();
-  APM_EVAL_DelayInit();
-		HAL_TMR_Init();
-	 DIV_KEY_Init();
-	 DIV_Pwm_Init();
-		DIV_ReadValue_Init();  
-		Hal_Out_Init();
-		DIV_Disp_Init();
-  Flash_Page_Init(&manager);
-	 DIV_Usart_Init();
+	HAL_System_Init();
+	APM_EVAL_DelayInit();
+	HAL_TMR_Init();
+	DIV_KEY_Init();
+	DIV_Pwm_Init();
+	DIV_ReadValue_Init();  
+	Hal_Out_Init();
+	DIV_Disp_Init();
+	Flash_Page_Init(&manager);
+	DIV_Usart_Init();
 //	 HAL_IWDT_Init();
 	
 	while (1)             

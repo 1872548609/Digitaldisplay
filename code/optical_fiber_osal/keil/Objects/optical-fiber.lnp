@@ -41,6 +41,8 @@
 ".\objects\iot_driver_gpio.o"
 ".\objects\iot_driver_clock.o"
 ".\objects\iot_driver_flash.o"
+".\objects\iot_driver_div.o"
+".\objects\iot_driver_hal.o"
 ".\objects\board.o"
 ".\objects\bsp_lcd.o"
 ".\objects\bsp_delay.o"
@@ -53,6 +55,6 @@
 ".\objects\system_apm32f0xx.o"
 ".\objects\startup_apm32f051.o"
 --strict --scatter ".\Objects\optical-fiber.sct"
---summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list ".\Listings\optical-fiber.map" -o .\Objects\optical-fiber.axf
