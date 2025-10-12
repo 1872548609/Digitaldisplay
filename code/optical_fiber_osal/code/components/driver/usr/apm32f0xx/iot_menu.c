@@ -383,7 +383,7 @@ bool Menu_NavigateTo(const char* targetText) {
 //}
 
 // callback 0
-__attribute__((weak)) void onItem1Click(MenuItem* item) {}
+__attribute__((weak)) void root_Click(MenuItem* item) {}
 	
 // callback 1
 __attribute__((weak)) void normset_click(MenuItem* item) {}

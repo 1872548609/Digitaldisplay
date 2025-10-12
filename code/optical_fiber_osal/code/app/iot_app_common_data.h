@@ -21,14 +21,14 @@ extern "C"
 #define HAL_KEY1_INIT()                                             {iot_driver_gpio_init_input(HAL_KEY1_PORT, HAL_KEY1_PIN);}
 #define HAL_KEY1_READ()                                             (!GPIO_ReadInputBit(HAL_KEY1_PORT, HAL_KEY1_PIN))
     
-#define HAL_KEY_LEFT_ADD                                                	HAL_KEY_2
+#define HAL_KEY_LEFT_ADD                                            HAL_KEY_2
 #define HAL_KEY2_BIT                                                HAL_KEY_2
 #define HAL_KEY2_PORT                                               GPIOA
 #define HAL_KEY2_PIN                                                GPIO_PIN_0
 #define HAL_KEY2_INIT()                                             {iot_driver_gpio_init_input(HAL_KEY2_PORT, HAL_KEY2_PIN);}
 #define HAL_KEY2_READ()                                             (!GPIO_ReadInputBit(HAL_KEY2_PORT, HAL_KEY2_PIN))
 
-#define HAL_KEY_RIGHT_SUB                                           		HAL_KEY_3
+#define HAL_KEY_RIGHT_SUB                                         	HAL_KEY_3
 #define HAL_KEY3_BIT                                                HAL_KEY_3
 #define HAL_KEY3_PORT                                               GPIOB
 #define HAL_KEY3_PIN                                                GPIO_PIN_8
