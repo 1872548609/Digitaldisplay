@@ -63,7 +63,6 @@
 const pTaskEventHandlerFn tasksArr[] = 
 {
     Hal_ProcessEvent,               // 硬件抽象层任务
-    menu_app_process_event,
     iot_app_process_event,          // 用户自定义任务（必须存在）
 };
 
@@ -108,7 +107,6 @@ void osalInitTasks( void )
     /* 按顺序初始化所有任务 */
     // 注意：taskID在每次调用后会自动递增
     Hal_Init( taskID++ );       // 硬件抽象层初始化
-    menu_app_init( taskID++ );
     iot_app_init( taskID++ );
 }
 

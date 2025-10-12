@@ -383,7 +383,7 @@ bool Menu_NavigateTo(const char* targetText) {
 //}
 
 // 回调函数
-//void onItem1Click(MenuItem* item) {
+void onItem1Click(MenuItem* item) {}
 
 
 //}
