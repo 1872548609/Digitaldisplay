@@ -111,20 +111,20 @@ void HAL_Disp_W_Cmd(uint8_t id,uint16_t cmd)
 	int i;
 	for(i=0;i<Id_length;i++)
 	{
-			  Disp_W_WR(0);
-					Disp_W_DATA(id & (0x04>>i));
-					HAL_Disp_DelayUs(1);
-		   Disp_W_WR(1);
-					HAL_Disp_DelayUs(1);
+		Disp_W_WR(0);
+		Disp_W_DATA(id & (0x04>>i));
+		HAL_Disp_DelayUs(1);
+		Disp_W_WR(1);
+		HAL_Disp_DelayUs(1);
 	}
 	//写命令代码
 	for(i=0;i<Cmd_Length;i++)
 	{
-			  Disp_W_WR(0);
-					Disp_W_DATA(cmd & (0x80>>i));
-					HAL_Disp_DelayUs(1);
-		   Disp_W_WR(1);
-					HAL_Disp_DelayUs(1);
+		Disp_W_WR(0);
+		Disp_W_DATA(cmd & (0x80>>i));
+		HAL_Disp_DelayUs(1);
+		Disp_W_WR(1);
+		HAL_Disp_DelayUs(1);
 	}
 	Disp_W_CS(1);
 	HAL_Disp_DelayUs(1);

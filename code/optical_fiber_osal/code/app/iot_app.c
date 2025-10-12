@@ -59,7 +59,7 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
     uint8  key_mask = HAL_KEY_1;
     uint8  scan_flag = 1;
     uint8  press_keys = 0;      // 按下的按键
-    uint8  hold_keys = 0;       // 按住的按键
+    //uint8  hold_keys = 0;       // 按住的按键
 	uint8  release_keys = 0;    // 释放的按键
 	static uint8 islongorshortpress = 0; // 长按或短按标志
 	uint8_t longpress_morethan_3s_keys = 0; // 长按超过3秒的按键
@@ -83,23 +83,15 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
         if (cur_keys & key_mask)
         {
             // 短按检测
-            if (hal_key_press_time_count[k] == 2)
+            if (hal_key_press_time_count[k] > 2)
             {
                islongorshortpress = 1;
-            }
-            // 长按检测
-            else if (hal_key_press_time_count[k] > 2)
-            {
-                hold_keys |= key_mask;
             }
             // 超长按检测（>3s）
 			if (hal_key_press_time_count[k] >= 30)
             {
+				islongorshortpress = 2;
                 longpress_morethan_3s_keys |= key_mask;
-				if(longpress_morethan_3s_keys!=HAL_KEY_SW6)
-				{
-					islongorshortpress = 2;
-				}
             }
         }
         // 按键释放处理
@@ -107,21 +99,16 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
         {
 			if((pre_keys & key_mask) && !(cur_keys & key_mask))
 			{
-				release_keys |= key_mask;
-				
 				// 短按处理
 				if(islongorshortpress == 1)
 				{
 					press_keys |= key_mask;
 				}
+				
 				islongorshortpress = 0;
+				
+				release_keys |= key_mask;
 			}
-			
-            // 拨动开关处理
-            if ((key_mask & HAL_KEY_SW6) && (hal_key_press_time_count[k] >= 2))
-            {
-                press_keys |= key_mask;
-            }
         }
     }
 	

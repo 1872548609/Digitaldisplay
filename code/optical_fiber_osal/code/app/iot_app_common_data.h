@@ -85,24 +85,7 @@ extern "C"
 /*************************************************-*************************************************
 *                                          GLOBAL VARIABLES
 **************************************************-*****************^******************************/
-extern uint8   iot_app_optical_current_mode;
-extern int8    iot_app_optical_current_att;
-extern int8    iot_app_optical_auto_adjust_att;
-extern uint16  iot_app_optical_current_adc_value;
-extern uint16  iot_app_optical_delta_adc_value;
-extern uint32  iot_app_optical_delta_voltage_mv;
-extern uint32  iot_app_optical_current_lux;
-extern uint16  iot_app_vdd_current_adc_value;
-extern uint16_t thresholdValue;	// adc阈值
-extern uint8_t adc_update_en ;// 是否显示阈值
-extern uint8_t threshold_update_en;// 是否刷新阈值显示
-extern uint8_t outmodeset ; // 输出模式切换，0 入光 1遮光
-extern uint32_t iot_app_optical_current_sta;// 0~ 9999
 
-
-
-
-extern uint8_t systemstate ; // 1 输出模式设置 2 设置校准 3 菜单 4 阈值设置
 /*************************************************-*************************************************
 *                                             FUNCTION
 **************************************************-*****************^******************************/

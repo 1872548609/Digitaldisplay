@@ -98,9 +98,7 @@ void HalDriverInit(void)
 	#if (defined HAL_DIV) && (HAL_DIV == TRUE)
 	DIV_Disp_Init();
 	#endif
-	
-	DIV_Disp_ByString(MainScreen,"AARM");
-	
+		
     /* SPI初始化（可选） */
     #if (defined HAL_SPI) && (HAL_SPI == TRUE)
     HalSpiInit();
