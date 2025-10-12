@@ -1,0 +1,12 @@
+.\objects\iot_driver_gpio.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_gpio.c
+.\objects\iot_driver_gpio.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_gpio.h
+.\objects\iot_driver_gpio.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\iot_driver_gpio.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\iot_driver_gpio.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\iot_driver_gpio.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_gpio.h
+.\objects\iot_driver_gpio.o: ..\code\main\apm32f0xx.h
+.\objects\iot_driver_gpio.o: ..\code\components\hal\target\apm32f051\CMSIS\core_cm0plus.h
+.\objects\iot_driver_gpio.o: ..\code\components\hal\target\apm32f051\CMSIS\core_cmInstr.h
+.\objects\iot_driver_gpio.o: ..\code\components\hal\target\apm32f051\CMSIS\core_cmFunc.h
+.\objects\iot_driver_gpio.o: ..\code\main\system_apm32f0xx.h
+.\objects\iot_driver_gpio.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_rcm.h

@@ -1,0 +1,66 @@
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\lib\apm32f0xx\src\apm32f0xx_hal.c
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_hal.h
+.\objects\apm32f0xx_hal.o: ..\code\main\main.h
+.\objects\apm32f0xx_hal.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\apm32f0xx_hal.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\apm32f0xx_hal.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\apm32f0xx_hal.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\time.h
+.\objects\apm32f0xx_hal.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\apm32f0xx_hal.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdarg.h
+.\objects\apm32f0xx_hal.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_menu.h
+.\objects\apm32f0xx_hal.o: ..\code\main\main.h
+.\objects\apm32f0xx_hal.o: ..\code\components\bsp\apm32f051\Board.h
+.\objects\apm32f0xx_hal.o: ..\code\components\bsp\apm32f051\Board_APM32F051_EVAL/inc/board_apm32f051_eval.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_usart.h
+.\objects\apm32f0xx_hal.o: ..\code\main\apm32f0xx.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\target\apm32f051\CMSIS\core_cm0plus.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\target\apm32f051\CMSIS\core_cmInstr.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\target\apm32f051\CMSIS\core_cmFunc.h
+.\objects\apm32f0xx_hal.o: ..\code\main\system_apm32f0xx.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_rcm.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_i2c.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_eint.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_gpio.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_misc.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_tmr.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_adc.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_wwdt.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_dma.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_fmc.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_pmu.h
+.\objects\apm32f0xx_hal.o: ..\code\components\bsp\apm32f051\Board_APM32F051_EVAL\inc\bsp_delay.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\target\apm32f051\hal_types.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_syscfg.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_iwdt.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_dbg.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_clock.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_gpio.h
+.\objects\apm32f0xx_hal.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_flash.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\include\hal_nixietube_display.h
+.\objects\apm32f0xx_hal.o: ..\code\main\onboard.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\target\apm32f051\hal_mcu.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\include\hal_defs.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\include\hal_uart.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\include\hal_board.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\target\apm32f051\hal_board_cfg.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\include\hal_sleep.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\include\hal_drivers.h
+.\objects\apm32f0xx_hal.o: ..\code\components\osal\include\OSAL.h
+.\objects\apm32f0xx_hal.o: ..\code\components\osal\include\comdef.h
+.\objects\apm32f0xx_hal.o: ..\code\components\osal\include\OSAL_Memory.h
+.\objects\apm32f0xx_hal.o: ..\code\components\osal\include\OSAL_Timers.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\include\hal_adc.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\include\hal_board.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\include\hal_key.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\include\hal_board.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\include\hal_lcd.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\include\hal_board.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\include\hal_led.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\include\hal_board.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\include\hal_timer.h
+.\objects\apm32f0xx_hal.o: ..\code\components\hal\include\hal_board.h
+.\objects\apm32f0xx_hal.o: ..\code\app\iot_menu.h
+.\objects\apm32f0xx_hal.o: ..\code\app\iot_app_common_data.h
+.\objects\apm32f0xx_hal.o: ..\code\app\iot_app.h
+.\objects\apm32f0xx_hal.o: ..\code\app\menu_app.h

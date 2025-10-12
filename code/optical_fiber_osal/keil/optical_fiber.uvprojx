@@ -386,16 +386,6 @@
               <FilePath>..\code\app\osal_app.c</FilePath>
             </File>
             <File>
-              <FileName>iot_app_common_data.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\code\app\iot_app_common_data.c</FilePath>
-            </File>
-            <File>
-              <FileName>iot_app_optical.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\code\app\iot_app_optical.c</FilePath>
-            </File>
-            <File>
               <FileName>iot_app.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\code\app\iot_app.c</FilePath>
@@ -404,11 +394,6 @@
               <FileName>menu_app.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\code\app\menu_app.c</FilePath>
-            </File>
-            <File>
-              <FileName>keyadjust_app.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\code\app\keyadjust_app.c</FilePath>
             </File>
             <File>
               <FileName>iot_menu.c</FileName>
@@ -635,6 +620,11 @@
               <FileType>1</FileType>
               <FilePath>..\code\components\driver\lib\apm32f0xx\src\apm32f0xx_wwdt.c</FilePath>
             </File>
+            <File>
+              <FileName>apm32f0xx_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\components\driver\lib\apm32f0xx\src\apm32f0xx_hal.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -684,16 +674,6 @@
               <FileName>iot_driver_font.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_font.h</FilePath>
-            </File>
-            <File>
-              <FileName>iot_driver_hal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_hal.c</FilePath>
-            </File>
-            <File>
-              <FileName>iot_driver_hal.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_hal.h</FilePath>
             </File>
           </Files>
         </Group>
