@@ -1,0 +1,201 @@
+/**************************************************************************************************
+Filename:       iot_app.c
+Revised:        $Date: 2019-8-20 15:35
+Revision:       $Revision: V1.0.0
+
+Description:    IoT应用程序主文件，包含任务初始化、按键处理和事件处理等功能
+
+Copyright 2021 uwaycon. All rights reserved.
+**************************************************-*****************^******************************/
+	
+#include "main.h"
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+#ifdef _HU_APP_H
+/*************************************************-*************************************************
+*                                               NOTE
+**************************************************-*****************^******************************/
+//-- source insight使用UTF-8编码，File->Reload As Encoding...->UTF-8
+//-- source insight设置默认编码，Option->Preferences->Files->Default encoding->UTF-8
+
+/*************************************************-*************************************************
+*                                             INCLUDES
+**************************************************-*****************^******************************/
+// 头文件包含区域（实际使用时需要包含必要的头文件）
+
+/*************************************************-*************************************************
+*                                               MACRO
+**************************************************-*****************^******************************/
+// 宏定义区域
+
+/*************************************************-*************************************************
+*                                          CONSTANT DEFINED
+**************************************************-*****************^******************************/
+// 常量定义区域
+
+/*************************************************-*************************************************
+*                                           STRUCT DEFINED
+**************************************************-*****************^******************************/
+// 结构体定义区域
+
+/*************************************************-*************************************************
+*                                          GLOBAL VARIABLES
+**************************************************-*****************^******************************/
+// 全局变量定义区域
+
+/*************************************************-*************************************************
+*                                          LOCAL VARIABLES
+**************************************************-*****************^******************************/
+// 局部变量定义区域
+uint8 hu_app_task_id;
+
+uint8 hu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milliseconds)
+{
+    uint8  k;
+    uint8  key_mask = HAL_KEY_1;
+    uint8  scan_flag = 1;
+    uint8  press_keys = 0;      // 按下的按键
+    //uint8  hold_keys = 0;       // 按住的按键
+	uint8  release_keys = 0;    // 释放的按键
+	static uint8 islongorshortpress = 0; // 长按或短按标志
+	uint8_t longpress_morethan_3s_keys = 0; // 长按超过3秒的按键
+	
+    // 只处理有效的按键
+    cur_keys &= HU_APP_KEY_MASK;
+    pre_keys &= HU_APP_KEY_MASK;
+
+    // 遍历所有按键
+    for (k = 0; k < 8; k++,key_mask<<=1)
+    {
+        IOT_WATCHDOG_RESET(); // 喂狗
+
+        // 跳过无效按键
+        if (!(key_mask & HU_APP_KEY_MASK))
+        {
+            continue;
+        }
+        
+        // 按键按下处理
+        if (cur_keys & key_mask)
+        {
+            // 短按检测
+            if (hal_key_press_time_count[k] > 2)
+            {
+               islongorshortpress = 1;
+            }
+            // 超长按检测（>3s）
+			if (hal_key_press_time_count[k] >= 30)
+            {
+				islongorshortpress = 2;
+                longpress_morethan_3s_keys |= key_mask;
+            }
+        }
+        // 按键释放处理
+        else
+        {
+			if((pre_keys & key_mask) && !(cur_keys & key_mask))
+			{
+				// 短按处理
+				if(islongorshortpress == 1)
+				{
+					press_keys |= key_mask;
+				}
+				
+				islongorshortpress = 0;
+				
+				release_keys |= key_mask;
+			}
+        }
+    }
+	
+		if(press_keys & HAL_KEY_MODE)
+		{
+			DIV_Disp_ByString(SecondScreen ,"AAAA");
+		}
+		
+		if(press_keys & HAL_KEY_LEFT_ADD)
+		{
+			DIV_Disp_ByString(SecondScreen ,"VVVV");
+		}
+		
+		if(press_keys & HAL_KEY_RIGHT_SUB)
+		{
+			DIV_Disp_ByString(SecondScreen ,"CXXX");
+		}
+		
+	
+	return scan_flag;
+}
+
+void hu_app_init(uint8 task_id)
+{
+    hu_app_task_id = task_id; // 保存任务ID
+			
+		// 注册事件
+		osal_start_reload_timer(hu_app_task_id,HU_APP_TIMER_EVT,HU_APP_TIMER_INTERVAL);
+	
+    // 注册按键回调函数
+    HalKeyCallbackRegister(hu_app_key_callback);
+}
+
+uint16 hu_app_process_event(uint8 task_id, uint16 events)
+{
+    (void)task_id; // 显式忽略未引用参数（避免编译器警告）
+     
+    // 处理系统消息事件
+    if ( events & SYS_EVENT_MSG )
+    {
+        // 接收消息队列中的消息
+        uint8* msg_packet = (uint8 *)osal_msg_receive(hu_app_task_id);
+        while ( msg_packet )
+        {
+            // 根据消息事件类型分发处理
+            //switch ( msg_packet->hdr.event )
+            //{
+            //case KEY_CHANGE://按键事件处理
+            // //UserApp_HandleKeys( ((keyChange_t *)MSGpkt)->state, ((keyChange_t *)MSGpkt)->keys );
+            // break;
+
+            //default:
+            // break;
+            //}
+
+            // 释放消息内存
+            osal_msg_deallocate((uint8 *)msg_packet);
+
+            // 接收下一条消息
+            msg_packet = (uint8 *)osal_msg_receive(hu_app_task_id);
+        }
+
+        // 返回未处理的事件（清除已处理的SYS_EVENT_MSG）
+        return (events ^ SYS_EVENT_MSG);
+    }
+	
+	
+	
+
+	
+	//判断他是否成功调度起来了，添加成功就会进你的事件管理
+	if(events & IOT_APP_TIMER_EVT)
+	{
+		
+		
+		return (events ^ IOT_APP_TIMER_EVT);
+	}
+		
+	
+	// 丢弃未知事件
+    return 0;
+}
+
+/*************************************************-*************************************************
+*                                                END
+**************************************************-*****************^******************************/
+#ifdef __cplusplus
+}
+#endif
+#endif
