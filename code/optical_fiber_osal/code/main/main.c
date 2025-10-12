@@ -57,63 +57,21 @@ extern "C"
 /*************************************************-*************************************************
 *                                             FUNCTIONS
 **************************************************-*****************^******************************/
-void delay(void)
-{
-    //-- 要预防被优化
-    for (int i = 0; i < 300; i++)
-    {
-        for (int j = 0; j < 1000; j++)
-        {
-            IOT_WATCHDOG_RESET();
-        }
-    }
-}
 
 int main(void)
 {	
     // 关闭所有中断（防止初始化过程中被中断打断）
     osal_int_disable( INTS_ALL );
 
-    //-- 要延时大概5秒，预防后面修改了烧录IO口，导致不能再烧录问题
-     //delay();
-
     // 初始化滴答
     iot_driver_clock_init();
-
-    // 初始化板载硬件（如LED、按键等基础外设）
-    //HAL_BOARD_INIT();
-
-    // 检查供电电压是否满足最低运行要求
-    //zmain_vdd_check();
-
+	
     // 冷初始化（硬件初始化）板载I/O（如GPIO、外设时钟等）
     InitBoard( OB_COLD );
 
     // 初始化硬件抽象层（HAL）驱动（如定时器、ADC、SPI等）
     HalDriverInit();
  
-    // 初始化非易失性存储系统（NV：Non-Volatile，如Flash存储）
-    //osal_nv_init(NULL);
-
-    // 初始化MAC层（媒体访问控制层，Zigbee协议栈的一部分）
-    //ZMacInit();
-
-    // 确定设备的扩展地址（如64位IEEE地址）
-    //zmain_ext_addr();
-
-    // 如果定义了ZCL密钥建立功能（ZCL_KEY_ESTABLISH），则初始化证书信息
-    //#if defined ZCL_KEY_ESTABLISH
-    //  zmain_cert_init();
-    //#endif
-
-    // 初始化基础NV项（如网络参数、设备类型等）
-    //zgInit();
-
-    // 如果未定义NONWK（即支持网络功能），初始化应用框架（AF：Application Framework）
-    //#ifndef NONWK
-    //  afInit();
-    //#endif
-
     // **初始化操作系统抽象层（OSAL：Operating System Abstraction Layer）
     osal_init_system();
 
@@ -122,19 +80,6 @@ int main(void)
 
     // 准备就绪后的板载最终初始化（如启用高级外设功能）
     InitBoard( OB_READY );
-
-    // 显示设备信息（如通过串口输出固件版本、设备类型等）
-    //zmain_dev_info();
-
-    // 如果支持LCD，初始化LCD并显示设备信息
-    //#ifdef LCD_SUPPORTED
-    //  zmain_lcd_init();
-    //#endif
-
-    // 如果配置了在PM1低功耗模式下使用看门狗（WDT_IN_PM1），则启用看门狗定时器
-    //#ifdef WDT_IN_PM1
-    //  WatchDogEnable( WDTIMX );
-    //#endif
 
     // **启动OSAL调度系统（从此函数不再返回，进入任务轮询或事件驱动模式）
     osal_start_system(); // No Return from here

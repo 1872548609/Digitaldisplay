@@ -28,8 +28,7 @@ extern "C"
 #include "time.h"
 #include "string.h"
 #include "stdarg.h"
-#include "math.h"
-#include "iot_driver_menu.h"		
+#include "math.h"	
 
 /*************************************************-*************************************************
 *                                             INCLUDES
@@ -62,6 +61,7 @@ extern "C"
 #include "iot_driver_clock.h"
 #include "iot_driver_gpio.h"
 #include "iot_driver_flash.h"
+#include "iot_driver_menu.h"	
 /*************************************************-*************************************************
 *                                             INCLUDES
 **************************************************-*****************^******************************/

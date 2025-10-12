@@ -16,7 +16,7 @@ void DIV_Disp_ClearAllPoint(uint8_t screen)
 	}		 	
 }
 
-//È¡ÏûÉèÖÃĞ¡Êıµã
+//å–æ¶ˆè®¾ç½®å°æ•°ç‚¹
 void DIV_Disp_UnSetPoint(uint8_t screen ,uint8_t p)
 {
 	if(screen==MainScreen)
@@ -41,7 +41,7 @@ void DIV_Disp_UnSetPoint(uint8_t screen ,uint8_t p)
 		}
 }
 
-//ÉèÖÃĞ¡Êıµã
+//è®¾ç½®å°æ•°ç‚¹
 void DIV_Disp_SetPoint(uint8_t screen ,uint8_t p)
 {
 	if(screen==MainScreen)
@@ -68,8 +68,8 @@ void DIV_Disp_SetPoint(uint8_t screen ,uint8_t p)
 		}
 }
 
-//ÏÔÊ¾¸¡µã´ø0µ½3Î»Ğ¡ÊıµÄ
-void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡µãÊı
+//æ˜¾ç¤ºæµ®ç‚¹å¸¦0åˆ°3ä½å°æ•°çš„
+void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //æ˜¾ç¤ºæµ®ç‚¹æ•°
 {
 	  char buffer[30]={0};
 	
@@ -80,19 +80,19 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 			switch(xbit)
 			{
 				case 0:{
-				   length = snprintf(buffer, sizeof(buffer), "%.1f", num);  //×ª¼¸Î»
+				   length = snprintf(buffer, sizeof(buffer), "%.1f", num);  //è½¬å‡ ä½
 					   buffer[length-1]='\0';
 				}break;
 				case 1:{
-				  length = snprintf(buffer, sizeof(buffer), "%.2f", num);  //×ª¼¸Î»
+				  length = snprintf(buffer, sizeof(buffer), "%.2f", num);  //è½¬å‡ ä½
 					   buffer[length-1]='\0';
 				}break;
 				case 2:{
-				  length = snprintf(buffer, sizeof(buffer), "%.3f", num);  //×ª¼¸Î»
+				  length = snprintf(buffer, sizeof(buffer), "%.3f", num);  //è½¬å‡ ä½
 					   buffer[length-1]='\0';
 				}break;
 				case 3:{
-				  length = snprintf(buffer, sizeof(buffer), "%.4f", num);  //×ª¼¸Î»
+				  length = snprintf(buffer, sizeof(buffer), "%.4f", num);  //è½¬å‡ ä½
 					  buffer[length-1]='\0';
 				}break;
 				default:{length=0;}break; 
@@ -111,7 +111,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 						{
 							 if((num-0)<1e-6f)
 								{
-								   DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+								   DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									   if(screen)
 												{
 													DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -127,7 +127,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(num>0&&num<10.0)
 								{
-										  DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+										  DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									   if(screen)
 												{
 													DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -143,7 +143,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(num>=10.0&&num<100)
 								{
-											 DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı 
+											 DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•° 
 											if(screen)
 												{
 													DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -158,19 +158,19 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								else if(num>=100&&num<1000)
 								{
 									    DIV_Disp_Num(NIXIE1,NUMNULL);
-											  DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											  DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 								}																				
 									else if(num>=1000&&num<1050)
 								{      
 									    DIV_Disp_Num(NIXIE8,NUMNULL);
-											  DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											  DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 								}	
 						}
 						else
 						{	
 							if((temp-0)<1e-1f)
 								{
-								   DIV_Disp_FloatByString(screen,buffer+1); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+								   DIV_Disp_FloatByString(screen,buffer+1); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									   if(screen)
 												{
 													DIV_Disp_Symbol(NIXIE1,Symbol_minus);
@@ -186,7 +186,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(temp>0&&temp<10)
 								{
-										  DIV_Disp_FloatByString(screen,buffer+1); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+										  DIV_Disp_FloatByString(screen,buffer+1); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									    if(screen)
 												{
 															DIV_Disp_Num(NIXIE2,NUMNULL);
@@ -203,7 +203,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(temp>=10&&temp<100)
 								{
-											 DIV_Disp_FloatByString(screen,buffer+1); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											 DIV_Disp_FloatByString(screen,buffer+1); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									   if(screen)
 												{
 													 	DIV_Disp_Symbol(NIXIE1,Symbol_minus);
@@ -215,7 +215,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(temp>=100&&temp<1000)
 								{
-											  DIV_Disp_FloatByString(screen,buffer+2); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											  DIV_Disp_FloatByString(screen,buffer+2); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 												if(screen)
 												{
 															DIV_Disp_Symbol(NIXIE1,Symbol_Negativeone);
@@ -228,7 +228,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}																				
 									else if(temp>=1000&&temp<=1050)
 								{
-											  DIV_Disp_FloatByString(screen,buffer+2); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											  DIV_Disp_FloatByString(screen,buffer+2); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									    if(screen)
 												{
 																DIV_Disp_Num(NIXIE2,NUM0);
@@ -242,12 +242,12 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}		
 						}
 					}break;
-					case 1:{    //Õı³£ÏÔÊ¾
+					case 1:{    //æ­£å¸¸æ˜¾ç¤º
 					  if(num>=0)
 						{
 							 if((num-0)<1e-6f)
 								{
-								   DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+								   DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									   if(screen)
 												{
 													DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -261,7 +261,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(num>0&&num<10.0)
 								{
-										  DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+										  DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									   if(screen)
 												{
 													DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -275,7 +275,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(num>=10.0&&num<100)
 								{
-											 DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı 
+											 DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•° 
 											if(screen)
 												{
 													DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -287,18 +287,18 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(num>=100&&num<1000)
 								{
-											  DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											  DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 								}																				
 									else if(num>=1000&&num<1050)
 								{
-											  DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											  DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 								}	
 						}
 						else
 						{	
 							if((temp-0)<1e-6f)
 								{
-								   DIV_Disp_FloatByString(screen,buffer+1); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+								   DIV_Disp_FloatByString(screen,buffer+1); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									   if(screen)
 												{
 													DIV_Disp_Num(NIXIE1,Symbol_minus);
@@ -312,7 +312,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(temp>0&&temp<10)
 								{
-										  DIV_Disp_FloatByString(screen,buffer+1); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+										  DIV_Disp_FloatByString(screen,buffer+1); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									    if(screen)
 												{
 													 DIV_Disp_Num(NIXIE2,NUMNULL);
@@ -327,7 +327,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(temp>=10&&temp<100)
 								{
-											 DIV_Disp_FloatByString(screen,buffer+1); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											 DIV_Disp_FloatByString(screen,buffer+1); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									   if(screen)
 												{
 													 	DIV_Disp_Symbol(NIXIE1,Symbol_minus);
@@ -339,7 +339,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(temp>=100&&temp<1000)
 								{
-											  DIV_Disp_FloatByString(screen,buffer+2); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											  DIV_Disp_FloatByString(screen,buffer+2); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 												if(screen)
 												{
 															DIV_Disp_Symbol(NIXIE1,Symbol_Negativeone);
@@ -352,7 +352,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}																				
 									else if(temp>=1000&&temp<=1050)
 								{
-											  DIV_Disp_FloatByString(screen,buffer+2); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											  DIV_Disp_FloatByString(screen,buffer+2); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									    if(screen)
 												{
 																DIV_Disp_Num(NIXIE2,NUM0);
@@ -366,14 +366,14 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}		
 						}
 					}break;
-					case 2:{    //Õı³£ÏÔÊ¾
+					case 2:{    //æ­£å¸¸æ˜¾ç¤º
 						
-						DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+						DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 					 if(num>=0)
 						{
 							 if((num-0)<1e-6f)
 								{
-								   DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+								   DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									   if(screen)
 												{
 													DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -387,7 +387,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(num>0&&num<10.0)
 								{
-										  DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+										  DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									   if(screen)
 												{
 													DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -399,7 +399,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(num>=10.0&&num<100)
 								{
-											 DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı 
+											 DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•° 
 											if(screen)
 												{
 													DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -411,18 +411,18 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(num>=100&&num<1000)
 								{
-											  DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											  DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 								}																				
 									else if(num>=1000&&num<1050)
 								{
-											  DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											  DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 								}	
 						}
 						else
 						{	
 							if((temp-0)<1e-1f)
 								{
-								   DIV_Disp_FloatByString(screen,buffer+1); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+								   DIV_Disp_FloatByString(screen,buffer+1); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									   if(screen)
 												{
 													DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -436,7 +436,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(temp>0&&temp<10)
 								{
-										  DIV_Disp_FloatByString(screen,buffer+1); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+										  DIV_Disp_FloatByString(screen,buffer+1); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									    if(screen)
 												{
 													 	DIV_Disp_Symbol(NIXIE1,Symbol_minus);
@@ -449,7 +449,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(temp>=10&&temp<100)
 								{
-											 DIV_Disp_FloatByString(screen,buffer+1); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											 DIV_Disp_FloatByString(screen,buffer+1); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									   if(screen)
 												{
 													 	DIV_Disp_Symbol(NIXIE1,Symbol_minus);
@@ -461,7 +461,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(temp>=100&&temp<1000)
 								{
-											  DIV_Disp_FloatByString(screen,buffer+2); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											  DIV_Disp_FloatByString(screen,buffer+2); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 												if(screen)
 												{
 															DIV_Disp_Symbol(NIXIE1,Symbol_Negativeone);
@@ -474,7 +474,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}																				
 									else if(temp>=1000&&temp<=1050)
 								{
-											  DIV_Disp_FloatByString(screen,buffer+2); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											  DIV_Disp_FloatByString(screen,buffer+2); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									    if(screen)
 												{
 																DIV_Disp_Num(NIXIE2,NUM0);
@@ -489,12 +489,12 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 						}
 			
 					}break;
-					case 3:{    //1000ÒÔºóÃ»ÓĞ¿¼ÂÇ
+					case 3:{    //1000ä»¥åæ²¡æœ‰è€ƒè™‘
 					 	  if(num>=0)
 						{
 							 if((num-0)<1e-6f)
 								{
-								   DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+								   DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 											if(screen)
 											{
 											    	DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -507,7 +507,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(num>0&&num<10.0)
 								{
-										  DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+										  DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									  if(screen)
 											{
 											    	DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -520,7 +520,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(num>=10.0&&num<100)
 								{
-											 DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı 
+											 DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•° 
 									    if(screen)
 											{
 											    	DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -532,7 +532,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(num>=100&&num<1000)
 								{
-											  DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											  DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									     if(screen)
 											{
 											    	DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -544,14 +544,14 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}																				
 									else if(num>=1000&&num<1050)
 								{
-											  DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											  DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 								}	
 						}
 						else
 						{	
 							if((temp-0)<1e-1f)
 								{
-								   DIV_Disp_FloatByString(screen,buffer+1); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+								   DIV_Disp_FloatByString(screen,buffer+1); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									   		if(screen)
 											{
 											    	DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -563,7 +563,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(temp>0&&temp<10)
 								{
-										  DIV_Disp_FloatByString(screen,buffer+1); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+										  DIV_Disp_FloatByString(screen,buffer+1); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									    if(screen)
 												{
 													 	DIV_Disp_Symbol(NIXIE1,Symbol_minus);
@@ -576,7 +576,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(temp>=10&&temp<100)
 								{
-											 DIV_Disp_FloatByString(screen,buffer+1); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											 DIV_Disp_FloatByString(screen,buffer+1); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									   if(screen)
 												{
 													 	DIV_Disp_Symbol(NIXIE1,Symbol_minus);
@@ -588,7 +588,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}
 								else if(temp>=100&&temp<1000)
 								{
-											  DIV_Disp_FloatByString(screen,buffer+2); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											  DIV_Disp_FloatByString(screen,buffer+2); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 												if(screen)
 												{
 															DIV_Disp_Symbol(NIXIE1,Symbol_Negativeone);
@@ -601,7 +601,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 								}																				
 									else if(temp>=1000&&temp<=1050)
 								{
-											  DIV_Disp_FloatByString(screen,buffer+2); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+											  DIV_Disp_FloatByString(screen,buffer+2); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 									    if(screen)
 												{
 																DIV_Disp_Num(NIXIE2,NUM0);
@@ -622,7 +622,7 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //ÏÔÊ¾¸¡
 }
 
 
-//°Ñ×Ö·û´®´Ó×óÍùÓÒÒÀ´ÎÏÔÊ¾ÔÚÆÁÄ»ÉÏ×Ö·ûÕ¼Ò»Î»£¬ÎŞÔò²»ÏÔÊ¾
+//æŠŠå­—ç¬¦ä¸²ä»å·¦å¾€å³ä¾æ¬¡æ˜¾ç¤ºåœ¨å±å¹•ä¸Šå­—ç¬¦å ä¸€ä½ï¼Œæ— åˆ™ä¸æ˜¾ç¤º
 void DIV_Disp_Snprintf(int screen,const char * data1,...)
 {  
 	  char data[9]={0};
@@ -634,19 +634,19 @@ void DIV_Disp_Snprintf(int screen,const char * data1,...)
 			va_end(ps);   
 }
 
-//ÏÔÊ¾¸¡µã´øÒ»Î»Ğ¡ÊıµÄ
-void DIV_Disp_floatNum(uint8_t screen,float num)   //ÏÔÊ¾¸¡µãÊı
+//æ˜¾ç¤ºæµ®ç‚¹å¸¦ä¸€ä½å°æ•°çš„
+void DIV_Disp_floatNum(uint8_t screen,float num)   //æ˜¾ç¤ºæµ®ç‚¹æ•°
 {
 	  char buffer[10];
-	  int length = snprintf(buffer, sizeof(buffer), "%.1f", num);  //×ª¼¸Î»
+	  int length = snprintf(buffer, sizeof(buffer), "%.1f", num);  //è½¬å‡ ä½
 			
 			if(length<10)
 			{
-        DIV_Disp_FloatByString(screen,buffer); //¿ÉÒÔÏÔÊ¾×î¶àÈıÎ»Ğ¡Êı
+        DIV_Disp_FloatByString(screen,buffer); //å¯ä»¥æ˜¾ç¤ºæœ€å¤šä¸‰ä½å°æ•°
 			}
 	
 }
-//ÏÔÊ¾×Ö·û´®
+//æ˜¾ç¤ºå­—ç¬¦ä¸²
 void DIV_Disp_ByString(int mainscreen,char * string)
 { 
 	uint16_t sz;
@@ -751,12 +751,12 @@ void DIV_Disp_ByString(int mainscreen,char * string)
 }
 
 
-//ÏÔÊ¾¸¡µã×Ö·û´®£¬×î¶àÈı¸öĞ¡Êı,³¤¶ÈËÄÎ» ¿ÕÎ»²»ÏÔÊ¾£¬ĞèÒªÇå³ı  ·¶Î§-1050~1050
+//æ˜¾ç¤ºæµ®ç‚¹å­—ç¬¦ä¸²ï¼Œæœ€å¤šä¸‰ä¸ªå°æ•°,é•¿åº¦å››ä½ ç©ºä½ä¸æ˜¾ç¤ºï¼Œéœ€è¦æ¸…é™¤  èŒƒå›´-1050~1050
 void DIV_Disp_FloatByString(uint8_t screen ,char * string)
 {	
 	int len = strlen(string);
 	
-	if (len >= 20) return; // »ò±¨´í´¦Àí
+	if (len >= 20) return; // æˆ–æŠ¥é”™å¤„ç†
 	
 	
 	char date2[10]={0};
@@ -769,7 +769,7 @@ void DIV_Disp_FloatByString(uint8_t screen ,char * string)
 	int num1 = 0;
 	int count = 0;
 		
-	uint8_t head2=0;     //²»Òª¶ººÅ³õÊ¼»¯È»ºóµÚÒ»¸ö²»Ğ´³õÊ¼Öµ
+	uint8_t head2=0;     //ä¸è¦é€—å·åˆå§‹åŒ–ç„¶åç¬¬ä¸€ä¸ªä¸å†™åˆå§‹å€¼
 	uint8_t head3=0;
 	
 	int ader =0;
@@ -813,7 +813,7 @@ void DIV_Disp_FloatByString(uint8_t screen ,char * string)
 	  	if(count==3){
 	//DIV_Disp_Num(NIXIE1,num%10);	
 					
-					//ÅäºÏÌØÊâÏÔÊ¾
+					//é…åˆç‰¹æ®Šæ˜¾ç¤º
 	if(num==0)
 	{
 	   DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -834,7 +834,7 @@ void DIV_Disp_FloatByString(uint8_t screen ,char * string)
 		if(count1==1)
 		{		
 					//DIV_Disp_Num(NIXIE2,num%10);
-			//ÅäºÏÌØÊâÏÔÊ¾
+			//é…åˆç‰¹æ®Šæ˜¾ç¤º
 	if(num==0)
 	{
 	   DIV_Disp_Num(NIXIE2,NUMNULL);
@@ -848,7 +848,7 @@ void DIV_Disp_FloatByString(uint8_t screen ,char * string)
 //				DIV_Disp_Num(NIXIE1,num/10%10);
 //				DIV_Disp_Num(NIXIE2,num%10);
 			
-			//ÅäºÏÌØÊâÏÔÊ¾
+			//é…åˆç‰¹æ®Šæ˜¾ç¤º
 			if(num==0)
 			{
 							DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -884,7 +884,7 @@ void DIV_Disp_FloatByString(uint8_t screen ,char * string)
 	//DIV_Disp_Symbol(NIXIE3,Symbol_point);
 		DIV_Disp_SetPoint(MainScreen,P3);
 	}
-else if(count==0)   //Ã»ÓĞĞ¡Êı
+else if(count==0)   //æ²¡æœ‰å°æ•°
 {
 	 DIV_Disp_Num(NIXIE1,num/1000%10);
 				DIV_Disp_Num(NIXIE2,num/100%10);
@@ -895,10 +895,10 @@ else if(count==0)   //Ã»ÓĞĞ¡Êı
 	}
 	else
 	{
-		if(count==3){ //Ğ¡Êı¸öÊı
+		if(count==3){ //å°æ•°ä¸ªæ•°
 	//DIV_Disp_Num(NIXIE8,num%10);	
 			
-	//ÅäºÏÌØÊâÏÔÊ¾
+	//é…åˆç‰¹æ®Šæ˜¾ç¤º
 	if(num==0)
 	{
 	   DIV_Disp_Num(NIXIE8,NUMNULL);
@@ -914,11 +914,11 @@ else if(count==0)   //Ã»ÓĞĞ¡Êı
 	DIV_Disp_Num(NIXIE6,num1/10%10);
 	DIV_Disp_Num(NIXIE5,num1%10);
 	}
-	else if(count==2){//Á½Î»Ğ¡Êı
-		if(count1==1)  //Ò»Î»ÕûÊı
+	else if(count==2){//ä¸¤ä½å°æ•°
+		if(count1==1)  //ä¸€ä½æ•´æ•°
 		{		
 					//DIV_Disp_Num(NIXIE7,num%10);
-			  //ÅäºÏÌØÊâÏÔÊ¾
+			  //é…åˆç‰¹æ®Šæ˜¾ç¤º
 	if(num==0)
 	{
 	   DIV_Disp_Num(NIXIE7,NUMNULL);
@@ -932,7 +932,7 @@ else if(count==0)   //Ã»ÓĞĞ¡Êı
 //				DIV_Disp_Num(NIXIE8,num/10%10);
 //				DIV_Disp_Num(NIXIE7,num%10);
 			
-			//ÅäºÏÌØÊâÏÔÊ¾
+			//é…åˆç‰¹æ®Šæ˜¾ç¤º
 			if(num==0)
 			{
 							DIV_Disp_Num(NIXIE1,NUMNULL);
@@ -944,7 +944,7 @@ else if(count==0)   //Ã»ÓĞĞ¡Êı
 				DIV_Disp_Num(NIXIE2,num%10);
 			}
 		}
-		//¶şÈıÎ»ÕûÊı	
+		//äºŒä¸‰ä½æ•´æ•°	
 		DIV_Disp_Num(NIXIE6,num1/10%10);
 		DIV_Disp_Num(NIXIE5,num1%10);
 	//	DIV_Disp_Symbol(NIXIE7,Symbol_point);
@@ -967,9 +967,9 @@ else if(count==0)   //Ã»ÓĞĞ¡Êı
 	 DIV_Disp_Num(NIXIE5,num1%10);
 //	DIV_Disp_Symbol(NIXIE6,Symbol_point);
 		DIV_Disp_SetPoint(SecondScreen,P6);
-	}else if(count==0)   //Ã»ÓĞĞ¡Êı
+	}else if(count==0)   //æ²¡æœ‰å°æ•°
 {
-	 //DIV_Disp_Num(NIXIE8,num/1000%10);   //¸ºÊı×î¸ßÎ»ÊÇ¸öÌØÊâ·ûºÅ²»ÏÔÊ¾
+	 //DIV_Disp_Num(NIXIE8,num/1000%10);   //è´Ÿæ•°æœ€é«˜ä½æ˜¯ä¸ªç‰¹æ®Šç¬¦å·ä¸æ˜¾ç¤º
 				DIV_Disp_Num(NIXIE7,num/100%10);
 				DIV_Disp_Num(NIXIE6,num/10%10);
 	  	DIV_Disp_Num(NIXIE5,num%10);
@@ -978,7 +978,7 @@ else if(count==0)   //Ã»ÓĞĞ¡Êı
 }
 
 
-//ÏÔÊ¾ÕûÊı
+//æ˜¾ç¤ºæ•´æ•°
 void DIV_Disp_Uint16Num(uint8_t screen,uint16_t num)
 {
 	if(screen==MainScreen)
@@ -1013,7 +1013,7 @@ void DIV_Disp_Uint16Num(uint8_t screen,uint16_t num)
 
 
 
-//ÏÔÊ¾·ûºÅ
+//æ˜¾ç¤ºç¬¦å·
 void DIV_Disp_Symbol(uint8_t nixie,uint8_t symbol)
 {
 	uint8_t address1,address2,address3;
@@ -1117,7 +1117,7 @@ void DIV_Disp_Symbol(uint8_t nixie,uint8_t symbol)
 				HAL_Disp_W_Data(dataid,address3,data3);
 		}
 }
-//nixie²ÎÊı¿ÉÒÔÊÇ NIXIE1  alphabet²ÎÊı¿ÉÒÔÊÇ Alphabet_A
+//nixieå‚æ•°å¯ä»¥æ˜¯ NIXIE1  alphabetå‚æ•°å¯ä»¥æ˜¯ Alphabet_A
 void DIV_Disp_Alphabet(uint8_t nixie,uint8_t alphabet)
 {
 	  uint8_t address1,address2,address3;
@@ -1308,7 +1308,7 @@ void DIV_Disp_Num(uint8_t nixie,uint8_t num)
 }
 
 
-//³õÊ¼»¯
+//åˆå§‹åŒ–
 void DIV_Disp_Init(void)
 {
 		HAL_Disp_Init();
