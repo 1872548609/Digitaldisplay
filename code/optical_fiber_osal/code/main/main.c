@@ -91,7 +91,7 @@ int main(void)
 
     // 初始化硬件抽象层（HAL）驱动（如定时器、ADC、SPI等）
     HalDriverInit();
-
+ 
     // 初始化非易失性存储系统（NV：Non-Volatile，如Flash存储）
     //osal_nv_init(NULL);
 

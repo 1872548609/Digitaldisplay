@@ -74,9 +74,7 @@ extern "C"
 **************************************************-*****************^******************************/
 #include "iot_app_common_data.h"
 #include "iot_app.h"
-#include "keyadjust_app.h"
 #include "menu_app.h"
-#include "iot_app_optical.h"
 
 /***************************************************************************************************
 *                                            MACRO DEFINED
