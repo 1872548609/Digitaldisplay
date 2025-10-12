@@ -10,7 +10,7 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060528::V5.06 update 5 (build 528)::ARMCC</pCCUsed>
+      <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
           <Device>APM32F051K8</Device>
@@ -619,11 +619,6 @@
               <FileType>1</FileType>
               <FilePath>..\code\components\driver\lib\apm32f0xx\src\apm32f0xx_wwdt.c</FilePath>
             </File>
-            <File>
-              <FileName>apm32f0xx_hal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\code\components\driver\lib\apm32f0xx\src\apm32f0xx_hal.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -640,19 +635,29 @@
               <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_gpio.h</FilePath>
             </File>
             <File>
-              <FileName>iot_driver_clock.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_clock.c</FilePath>
-            </File>
-            <File>
               <FileName>iot_driver_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_flash.c</FilePath>
             </File>
             <File>
+              <FileName>iot_driver_clock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_clock.c</FilePath>
+            </File>
+            <File>
               <FileName>iot_driver_clock.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_clock.h</FilePath>
+            </File>
+            <File>
+              <FileName>iot_dirver_divhal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\components\driver\usr\apm32f0xx\iot_dirver_divhal.c</FilePath>
+            </File>
+            <File>
+              <FileName>iot_driver_divhal.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_divhal.h</FilePath>
             </File>
             <File>
               <FileName>iot_driver_div.c</FileName>
@@ -665,14 +670,14 @@
               <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_div.h</FilePath>
             </File>
             <File>
-              <FileName>iot_driver_menu.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_menu.h</FilePath>
-            </File>
-            <File>
               <FileName>iot_driver_font.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_font.h</FilePath>
+            </File>
+            <File>
+              <FileName>iot_driver_menu.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_menu.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -784,11 +789,6 @@
               <FileType>5</FileType>
               <FilePath>..\code\components\hal\include\hal_uart.h</FilePath>
             </File>
-            <File>
-              <FileName>hal_nixietube_display.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\code\components\hal\include\hal_nixietube_display.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -823,11 +823,6 @@
               <FileName>hal_timer.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\code\components\hal\target\apm32f051\hal_timer.h</FilePath>
-            </File>
-            <File>
-              <FileName>hal_nixietube_display.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\code\components\hal\target\apm32f051\hal_nixietube_display.c</FilePath>
             </File>
           </Files>
         </Group>

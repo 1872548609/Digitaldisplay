@@ -3,6 +3,10 @@
 
 #include "main.h"
 
+#define INCALLBACK 	1
+
+#define OUTCALLBACK 2
+
 // 菜单项结构体
 typedef struct MenuItem MenuItem; // 结构体内部需要引用自身类型
 struct MenuItem {
@@ -23,35 +27,6 @@ typedef struct {
     MenuItem *root;         	// 根菜单项（顶级菜单）
     bool running;           	// 菜单系统是否运行中
 } MenuSystem;
-
-extern MenuSystem menuSystem;
-
-extern MenuItem* root;
-
-extern MenuItem* basic_setting;
-
-extern MenuItem* power_setting;
-
-extern MenuItem* FinE_mode ;
-
-extern MenuItem* highspeed_mode;
-
-extern MenuItem* mega_mode;
-
-extern MenuItem* super_mode;
-
-extern MenuItem* att_setting;
-
-extern MenuItem* sta_setting;
-
-extern MenuItem* end_setting;
-
-extern MenuItem* end_end;
-
-// 回调函数
-extern void onItem1Click(MenuItem* item); 
-
-void onItem2Click(MenuItem* item);
 
 // 统一创建菜单树，返回树根
 MenuItem* CreateTestMenu(void);
@@ -96,6 +71,42 @@ MenuItem* Menu_GetCurrent(void);
 
 // 执行当前菜单项的回调函数
 void Menu_Execute(char wichcallback);
+
+
+
+extern MenuSystem menuSystem;
+
+extern MenuItem* root;
+
+extern MenuItem* basic_setting;
+
+extern MenuItem* power_setting;
+
+extern MenuItem* FinE_mode ;
+
+extern MenuItem* highspeed_mode;
+
+extern MenuItem* mega_mode;
+
+extern MenuItem* super_mode;
+
+extern MenuItem* att_setting;
+
+extern MenuItem* sta_setting;
+
+extern MenuItem* end_setting;
+
+extern MenuItem* end_end;
+
+
+// 回调函数
+extern void onItem1Click(MenuItem* item); 
+
+void onItem2Click(MenuItem* item);
+
+
+
+
 
 
 

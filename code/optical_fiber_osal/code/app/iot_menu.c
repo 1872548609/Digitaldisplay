@@ -5,134 +5,7 @@
 如果需要添加东西自行建立一个模块，调用本身存在的接口，不要修改本身内容
 */
 
-
 MenuSystem menuSystem = {0};
-
-// 创建并初始化一个菜单项
-MenuItem* CreateMenuItem(const char* text, void (*func)(MenuItem*), bool enabled , int level) {
-    MenuItem* item = osal_mem_alloc(sizeof(MenuItem));
-    if (item == NULL) return NULL;
-    
-    strncpy(item->text, text, sizeof(item->text) - 1);
-    item->text[sizeof(item->text) - 1] = '\0';
-    item->func = func;
-    item->enabled = enabled;
-    item->parent = NULL;
-    item->children = NULL;
-    item->childCount = 0;
-	item->level = level;  // 初始等级设为0 
-	
-    return item;
-}
- 
-// 为父菜单项添加子菜单项
-void MenuItem_AddChild(MenuItem* parent, MenuItem* child) {
-    if (parent == NULL || child == NULL) return;
-    
-    // 设置子项的父指针
-    child->parent = parent;
-	
-	// 设置子项的等级
-    child->level = parent->level + 1;
-    
-    // 如果父项还没有子项数组，先创建
-    if (parent->children == NULL) {
-        parent->children = osal_mem_alloc(sizeof(MenuItem*));
-        if (parent->children == NULL) return;
-        
-        parent->children[0] = child;
-        parent->childCount = 1;
-    } 
-    else {
-        // 否则重新分配内存以容纳新的子项
-        MenuItem** newChildren = osal_mem_alloc(sizeof(MenuItem*) * (parent->childCount + 1));
-        if (newChildren == NULL) return;
-        
-        // 复制原有子项指针
-        for (int i = 0; i < parent->childCount; i++) {
-            newChildren[i] = parent->children[i];
-        }
-        
-        // 添加新子项
-        newChildren[parent->childCount] = child;
-        parent->childCount++;
-        
-        // 释放旧数组（如果有）
-        if (parent->children != NULL) {
-            osal_mem_free(parent->children);
-        }
-        
-        parent->children = newChildren;
-    }
-}
-
-// 在父菜单项的指定位置插入子菜单项
-// position: 插入位置索引（从0开始），如果大于当前子项数量，则追加到末尾
-void MenuItem_InsertChild(MenuItem* parent, MenuItem* child, int position) {
-    if (parent == NULL || child == NULL) return;
-    
-    // 设置子项的父指针
-    child->parent = parent;
-    
-    // 如果位置超出范围，调整为末尾
-    if (position < 0) position = 0;
-    
-    // 情况1：父项还没有子项
-    if (parent->children == NULL || parent->childCount == 0) {
-        parent->children = osal_mem_alloc(sizeof(MenuItem*));
-        if (parent->children == NULL) return;
-        
-        parent->children[0] = child;
-        parent->childCount = 1;
-        return;
-    }
-    
-    // 确保位置不超过子项数量
-    if (position > parent->childCount) {
-        position = parent->childCount;
-    }
-    
-    // 分配新数组（多一个位置）
-    MenuItem** newChildren = osal_mem_alloc(sizeof(MenuItem*) * (parent->childCount + 1));
-    if (newChildren == NULL) return;
-    
-    // 复制插入位置前的子项
-    for (int i = 0; i < position; i++) {
-        newChildren[i] = parent->children[i];
-    }
-    
-    // 插入新子项
-    newChildren[position] = child;
-    
-    // 复制插入位置后的子项
-    for (int i = position; i < parent->childCount; i++) {
-        newChildren[i + 1] = parent->children[i];
-    }
-    
-    // 更新父项信息
-    parent->childCount++;
-    
-    // 释放旧数组
-    if (parent->children != NULL) {
-        osal_mem_free(parent->children);
-    }
-    
-    parent->children = newChildren;
-}
- 
-// 在父菜单项中查找指定文本的子菜单项
-MenuItem* MenuItem_FindChild(MenuItem* parent, const char* text) {
-    if (parent == NULL || text == NULL || parent->children == NULL) return NULL;
-    
-    for (int i = 0; i < parent->childCount; i++) {
-        if (strcmp(parent->children[i]->text, text) == 0) {
-            return parent->children[i];
-        }
-    }
-    
-    return NULL;
-}
-
 
 // 初始化菜单系统
 void MenuSystem_Init(MenuItem* root) {
@@ -170,6 +43,104 @@ int Menu_GetCurrentLevel() {
     return -1;  // 如果当前菜单项为空，返回-1表示错误
 }
  
+
+// 进入当前菜单的子菜单（下一级）
+void Menu_Enter() {
+    if (menuSystem.current->childCount > 0) {
+		
+		// 菜单退出回调
+		Menu_Execute(2);
+		
+        // 如果有记录的子菜单指针，则进入该记录的子菜单
+        if (menuSystem.current->childrenmenu != NULL) {
+            menuSystem.current = menuSystem.current->childrenmenu;
+        } 
+        // 否则进入第一个子菜单
+        else {
+            menuSystem.current = menuSystem.current->children[0];
+        }
+		
+		// 菜单进入回调
+		Menu_Execute(1);
+    }
+}
+
+// 返回父菜单（上一级）
+// record 是否记录当前子菜单（true=记录，false=不记录）
+void Menu_Back(bool record) {
+    if (menuSystem.current->parent != NULL) {
+		
+		// 菜单退出回调
+		Menu_Execute(2);
+		
+        // 如果需要记录，则更新父菜单的 childrenmenu
+        if (record) {
+            menuSystem.current->parent->childrenmenu = menuSystem.current;
+        }
+		
+        // 返回父菜单
+        menuSystem.current = menuSystem.current->parent;
+		
+		// 菜单进入回调
+		Menu_Execute(1);
+    }
+}
+
+// 切换到下一个同级菜单
+void Menu_Next() {
+    MenuItem* parent = menuSystem.current->parent;
+    if (parent == NULL) return; // 根菜单没有同级菜单
+	
+	// 菜单退出回调
+	Menu_Execute(2);
+ 
+    for (int i = 0; i < parent->childCount; i++) {
+        if (parent->children[i] == menuSystem.current) {
+            int nextIdx = (i + 1) % parent->childCount; // 循环切换
+            menuSystem.current = parent->children[nextIdx];
+			
+			// 菜单进入回调
+			Menu_Execute(1);
+			
+            break;
+        }
+    }
+}
+
+// 切换到上一个同级菜单
+void Menu_Prev() {
+    MenuItem* parent = menuSystem.current->parent;
+    if (parent == NULL) return; // 根菜单没有同级菜单
+ 
+	// 菜单退出回调
+	Menu_Execute(2);
+	
+    for (int i = 0; i < parent->childCount; i++) {
+        if (parent->children[i] == menuSystem.current) {
+            int prevIdx = (i - 1 + parent->childCount) % parent->childCount; // 循环切换
+            menuSystem.current = parent->children[prevIdx];
+			
+			// 菜单进入回调
+			Menu_Execute(1);
+			
+            break;
+        }
+    }
+}
+
+// 获取当前菜单项
+MenuItem* Menu_GetCurrent() {
+    return menuSystem.current;
+}
+
+// 执行当前菜单项的回调函数
+void Menu_Execute(char wichcallback) {
+    if (menuSystem.current->func != NULL && menuSystem.current->enabled) {
+        menuSystem.current->whichcallback = wichcallback;		
+		menuSystem.current->func(menuSystem.current);
+    }
+}
+
 /*
 * 递归查找菜单项
 * current 当前菜单项
@@ -281,104 +252,135 @@ bool Menu_NavigateTo(const char* targetText) {
     return false;
 }
 
-// 进入当前菜单的子菜单（下一级）
-void Menu_Enter() {
-    if (menuSystem.current->childCount > 0) {
-		
-		// 菜单退出回调
-		Menu_Execute(2);
-		
-        // 如果有记录的子菜单指针，则进入该记录的子菜单
-        if (menuSystem.current->childrenmenu != NULL) {
-            menuSystem.current = menuSystem.current->childrenmenu;
-        } 
-        // 否则进入第一个子菜单
-        else {
-            menuSystem.current = menuSystem.current->children[0];
-        }
-		
-		// 菜单进入回调
-		Menu_Execute(1);
-    }
-}
 
-// 返回父菜单（上一级）
-// record 是否记录当前子菜单（true=记录，false=不记录）
-void Menu_Back(bool record) {
-    if (menuSystem.current->parent != NULL) {
-		
-		// 菜单退出回调
-		Menu_Execute(2);
-		
-        // 如果需要记录，则更新父菜单的 childrenmenu
-        if (record) {
-            menuSystem.current->parent->childrenmenu = menuSystem.current;
-        }
-		
-        // 返回父菜单
-        menuSystem.current = menuSystem.current->parent;
-		
-		// 菜单进入回调
-		Menu_Execute(1);
-    }
-}
-
-// 切换到下一个同级菜单
-void Menu_Next() {
-    MenuItem* parent = menuSystem.current->parent;
-    if (parent == NULL) return; // 根菜单没有同级菜单
-	
-	// 菜单退出回调
-	Menu_Execute(2);
- 
-    for (int i = 0; i < parent->childCount; i++) {
-        if (parent->children[i] == menuSystem.current) {
-            int nextIdx = (i + 1) % parent->childCount; // 循环切换
-            menuSystem.current = parent->children[nextIdx];
-			
-			// 菜单进入回调
-			Menu_Execute(1);
-			
-            break;
-        }
-    }
-}
-
-// 切换到上一个同级菜单
-void Menu_Prev() {
-    MenuItem* parent = menuSystem.current->parent;
-    if (parent == NULL) return; // 根菜单没有同级菜单
- 
-	// 菜单退出回调
-	Menu_Execute(2);
-	
-    for (int i = 0; i < parent->childCount; i++) {
-        if (parent->children[i] == menuSystem.current) {
-            int prevIdx = (i - 1 + parent->childCount) % parent->childCount; // 循环切换
-            menuSystem.current = parent->children[prevIdx];
-			
-			// 菜单进入回调
-			Menu_Execute(1);
-			
-            break;
-        }
-    }
-}
-
-// 获取当前菜单项
-MenuItem* Menu_GetCurrent() {
-    return menuSystem.current;
-}
-
-// 执行当前菜单项的回调函数
-void Menu_Execute(char wichcallback) {
-    if (menuSystem.current->func != NULL && menuSystem.current->enabled) {
-        menuSystem.current->whichcallback = wichcallback;		
-		menuSystem.current->func(menuSystem.current);
-    }
-}
 //如果需要添加东西自行建立一个模块，调用本身存在的接口，不要修改本身内容
 //=========================END============================
+
+// 创建并初始化一个菜单项
+//MenuItem* CreateMenuItem(const char* text, void (*func)(MenuItem*), bool enabled , int level) {
+//    MenuItem* item = osal_mem_alloc(sizeof(MenuItem));
+//    if (item == NULL) return NULL;
+//    
+//    strncpy(item->text, text, sizeof(item->text) - 1);
+//    item->text[sizeof(item->text) - 1] = '\0';
+//    item->func = func;
+//    item->enabled = enabled;
+//    item->parent = NULL;
+//    item->children = NULL;
+//    item->childCount = 0;
+//	item->level = level;  // 初始等级设为0 
+//	
+//    return item;
+//}
+ 
+// 为父菜单项添加子菜单项
+//void MenuItem_AddChild(MenuItem* parent, MenuItem* child) {
+//    if (parent == NULL || child == NULL) return;
+//    
+//    // 设置子项的父指针
+//    child->parent = parent;
+//	
+//	// 设置子项的等级
+//    child->level = parent->level + 1;
+//    
+//    // 如果父项还没有子项数组，先创建
+//    if (parent->children == NULL) {
+//        parent->children = osal_mem_alloc(sizeof(MenuItem*));
+//        if (parent->children == NULL) return;
+//        
+//        parent->children[0] = child;
+//        parent->childCount = 1;
+//    } 
+//    else {
+//        // 否则重新分配内存以容纳新的子项
+//        MenuItem** newChildren = osal_mem_alloc(sizeof(MenuItem*) * (parent->childCount + 1));
+//        if (newChildren == NULL) return;
+//        
+//        // 复制原有子项指针
+//        for (int i = 0; i < parent->childCount; i++) {
+//            newChildren[i] = parent->children[i];
+//        }
+//        
+//        // 添加新子项
+//        newChildren[parent->childCount] = child;
+//        parent->childCount++;
+//        
+//        // 释放旧数组（如果有）
+//        if (parent->children != NULL) {
+//            osal_mem_free(parent->children);
+//        }
+//        
+//        parent->children = newChildren;
+//    }
+//}
+
+// 在父菜单项的指定位置插入子菜单项
+// position: 插入位置索引（从0开始），如果大于当前子项数量，则追加到末尾
+//void MenuItem_InsertChild(MenuItem* parent, MenuItem* child, int position) {
+//    if (parent == NULL || child == NULL) return;
+//    
+//    // 设置子项的父指针
+//    child->parent = parent;
+//    
+//    // 如果位置超出范围，调整为末尾
+//    if (position < 0) position = 0;
+//    
+//    // 情况1：父项还没有子项
+//    if (parent->children == NULL || parent->childCount == 0) {
+//        parent->children = osal_mem_alloc(sizeof(MenuItem*));
+//        if (parent->children == NULL) return;
+//        
+//        parent->children[0] = child;
+//        parent->childCount = 1;
+//        return;
+//    }
+//    
+//    // 确保位置不超过子项数量
+//    if (position > parent->childCount) {
+//        position = parent->childCount;
+//    }
+//    
+//    // 分配新数组（多一个位置）
+//    MenuItem** newChildren = osal_mem_alloc(sizeof(MenuItem*) * (parent->childCount + 1));
+//    if (newChildren == NULL) return;
+//    
+//    // 复制插入位置前的子项
+//    for (int i = 0; i < position; i++) {
+//        newChildren[i] = parent->children[i];
+//    }
+//    
+//    // 插入新子项
+//    newChildren[position] = child;
+//    
+//    // 复制插入位置后的子项
+//    for (int i = position; i < parent->childCount; i++) {
+//        newChildren[i + 1] = parent->children[i];
+//    }
+//    
+//    // 更新父项信息
+//    parent->childCount++;
+//    
+//    // 释放旧数组
+//    if (parent->children != NULL) {
+//        osal_mem_free(parent->children);
+//    }
+//    
+//    parent->children = newChildren;
+//}
+// 
+
+// 在父菜单项中查找指定文本的子菜单项
+//MenuItem* MenuItem_FindChild(MenuItem* parent, const char* text) {
+//    if (parent == NULL || text == NULL || parent->children == NULL) return NULL;
+//    
+//    for (int i = 0; i < parent->childCount; i++) {
+//        if (strcmp(parent->children[i]->text, text) == 0) {
+//            return parent->children[i];
+//        }
+//    }
+//    
+//    return NULL;
+//}
 
 // 回调函数
 //void onItem1Click(MenuItem* item) {

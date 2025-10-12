@@ -24,12 +24,12 @@
 #define NUM9     9
 #define NUMNULL     10
 
-#define Symbol_slash 0     // /
-#define Symbol_minus 1     // -
-#define Symbol_saw 		2     // |
-#define Symbol_point 3     // .
-#define Symbol_Negativeone  4 //-1
-#define Symbol_x    5     //*
+#define Symbol_slash 		0     		// /
+#define Symbol_minus 		1     		// -
+#define Symbol_saw 			2     	// |
+#define Symbol_point 		3     		// .
+#define Symbol_Negativeone  4 	//-1
+#define Symbol_x    		5     		//*
 
 #define NIXIE1    0
 #define NIXIE2    1
