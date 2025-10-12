@@ -1,6 +1,6 @@
 #include "iot_driver_div.h"
 #include "iot_driver_font.h"
-#include "apm32f0xx_hal.h"
+#include "iot_driver_divhal.h"
 
 Disp_Management disp_management;
 
@@ -625,13 +625,13 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //显示
 //把字符串从左往右依次显示在屏幕上字符占一位，无则不显示
 void DIV_Disp_Snprintf(int screen,const char * data1,...)
 {  
-	  char data[9]={0};
-			int size = sizeof(data);
-   va_list ps;
-			va_start(ps,data1);
-	  vsnprintf(data,size,data1,ps);
-			DIV_Disp_ByString(screen,data);
-			va_end(ps);   
+	char data[9]={0};
+	int size = sizeof(data);
+	va_list ps;
+	va_start(ps,data1);
+	vsnprintf(data,size,data1,ps);
+	DIV_Disp_ByString(screen,data);
+	va_end(ps);   
 }
 
 //显示浮点带一位小数的

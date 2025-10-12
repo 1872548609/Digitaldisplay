@@ -65,7 +65,7 @@ int main(void)
 
     // 初始化滴答
     iot_driver_clock_init();
-	
+
     // 冷初始化（硬件初始化）板载I/O（如GPIO、外设时钟等）
     InitBoard( OB_COLD );
 
@@ -80,7 +80,7 @@ int main(void)
 
     // 准备就绪后的板载最终初始化（如启用高级外设功能）
     InitBoard( OB_READY );
-
+	
     // **启动OSAL调度系统（从此函数不再返回，进入任务轮询或事件驱动模式）
     osal_start_system(); // No Return from here
 

@@ -7,7 +7,7 @@
 ..\output\bsp_key.o: ..\FWLib\inc\apm32f0xx_usart.h
 ..\output\bsp_key.o: ..\User\Main\apm32f0xx.h
 ..\output\bsp_key.o: ..\CMSIS\core_cm0plus.h
-..\output\bsp_key.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\bsp_key.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\bsp_key.o: ..\CMSIS\core_cmInstr.h
 ..\output\bsp_key.o: ..\CMSIS\core_cmFunc.h
 ..\output\bsp_key.o: ..\User\Main\system_apm32f0xx.h

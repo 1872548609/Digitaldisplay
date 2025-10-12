@@ -61,11 +61,11 @@ void APM_EVAL_DelayInit(void)
 {
     SysTick_ConfigCLKSource(SysTick_CLKSource_HCLK);
     //if use SYSTEM_CLOCK_48MHz Uncomment the following to replace.
-    cntUs = SystemCoreClock / 1000000;
-    cntMs = (uint16_t)cntUs * 1000;
-		 
-    //cntUs = SystemCoreClock / 8000000;
+    //cntUs = SystemCoreClock / 1000000;
     //cntMs = (uint16_t)cntUs * 1000;
+		 
+    cntUs = SystemCoreClock / 8000000;
+    cntMs = (uint16_t)cntUs * 1000;
 }
 
 /*!

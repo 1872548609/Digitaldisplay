@@ -52,6 +52,6 @@
 "..\output\user_usart_div.o"
 "..\output\user_flash_div.o"
 --strict --scatter "..\Output\Ddps.sct"
---summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list ".\Listings\Ddps.map" -o ..\Output\Ddps.axf

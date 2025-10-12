@@ -3,6 +3,10 @@
 
 #include "main.h"
 
+#ifndef HAL_DIV
+#define HAL_DIV TRUE
+#endif
+
 #define MainScreen 1
 #define SecondScreen 0 
 #define Out1Screen 2

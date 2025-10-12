@@ -104,7 +104,7 @@ int main(void)
     while (1)
     {					
 								
-
+DIV_Disp_ByString(MainScreen,"NoRM");
 
 			
 

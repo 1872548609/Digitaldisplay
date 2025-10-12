@@ -1,10 +1,10 @@
-#ifndef _IOT_DRIVER_HAL_H
-#define _IOT_DRIVER_HAL_H
+#ifndef _IOT_DRIVER_DIVHAL_H
+#define _IOT_DRIVER_DIVHAL_H
 
 #include "main.h"
 
 
-//Òı½Å¶¨Òå
+//å¼•è„šå®šä¹‰
 #define CS_PIN   	GPIO_PIN_7
 #define CS_PORT  	GPIOB
 
@@ -18,7 +18,7 @@
 
 #define DISP_ALL_PERIPH_PORT  RCM_AHB_PERIPH_GPIOB
 
-//Òı½Å²Ù×÷
+//å¼•è„šæ“ä½œ
 #define CS_0    GPIO_ClearBit(CS_PORT,CS_PIN)
 #define CS_1    GPIO_SetBit(CS_PORT,CS_PIN)
 #define WR_0    GPIO_ClearBit(WR_PORT,WR_PIN)
@@ -26,7 +26,7 @@
 #define DATA_0  GPIO_ClearBit(DATA_PORT,DATA_PIN)
 #define DATA_1  GPIO_SetBit(DATA_PORT,DATA_PIN)
 
-//²Ù×÷¶ÏÂëÆÁÒı½Å
+//æ“ä½œæ–­ç å±å¼•è„š
 #define Disp_W_CS(x) 		HAL_Disp_Write_Pin(W_CS,x)
 #define Disp_W_WR(x) 		HAL_Disp_Write_Pin(W_WR,x)
 #define Disp_W_DATA(x) HAL_Disp_Write_Pin(W_DATA,x)
@@ -36,7 +36,7 @@
 #define W_WR   1
 #define W_DATA 2
 
-//×Ö¶Î³¤
+//å­—æ®µé•¿
 #define Id_length 3
 #define Cmd_Length 9  
 
@@ -47,14 +47,14 @@
 #define cmdid 			0x4
 #define dataid   0x5
 		
-//ÃüÁî
-#define SYS_DIS 0x00     //ÉÏµçÄ¬ÈÏ¹Ø±Õ
+//å‘½ä»¤
+#define SYS_DIS 0x00     //ä¸Šç”µé»˜è®¤å…³é—­
 #define SYS_EN  0x01
 #define LCD_OFF 0x02
 #define LCD_ON 	0x03
 #define TIMERS_DIS 0x04
 #define TIMER_EN 0x06
-#define RC_256K 	0x18   //ÉÏµçÄ¬ÈÏÄÚ²¿RC
+#define RC_256K 	0x18   //ä¸Šç”µé»˜è®¤å†…éƒ¨RC
 
 #define BIAS_1_2_2_COMS  0x20
 #define BIAS_1_2_3_COMS  0x24
@@ -68,7 +68,7 @@
 #define NORMAL 0xE3
 
 //RAM
-#define MAX_ADDR 0x31 //RAM×î´óµØÖ·
+#define MAX_ADDR 0x31 //RAMæœ€å¤§åœ°å€
 
 #define WR_Delay_us 5
 
@@ -77,19 +77,19 @@ void HAL_Disp_Write_Pin(uint8_t cmd,uint8_t level);
 
 void HAL_Disp_Init(void);
 
-//Ğ´ÃüÁî  ÃüÁîID  °ËÎ»ÃüÁî
+//å†™å‘½ä»¤  å‘½ä»¤ID  å…«ä½å‘½ä»¤
 void HAL_Disp_W_Cmd(uint8_t id,uint16_t cmd);
 
-//Ğ´Ä³Î»RAM   Êı¾İID   6Î»µØÖ·0x00~0x3f  4Î»Êı¾İ0x00~0x0f
+//å†™æŸä½RAM   æ•°æ®ID   6ä½åœ°å€0x00~0x3f  4ä½æ•°æ®0x00~0x0f
 void HAL_Disp_W_Data(uint8_t id,uint16_t address,uint16_t data);
 
-//Á¬ĞøĞ´µØÖ·×ÔÔö   Êı¾İID  ÆğÊ¼µØÖ· Êı¾İÊı×é ³¤¶È
+//è¿ç»­å†™åœ°å€è‡ªå¢   æ•°æ®ID  èµ·å§‹åœ°å€ æ•°æ®æ•°ç»„ é•¿åº¦
 void HAL_Disp_WrSeriesData(uint8_t id,uint16_t startaddress, uint8_t * data, uint16_t length);
 
-//ÌîÂú
+//å¡«æ»¡
 void HAL_Disp_Fill(uint8_t data);
 
-//ÇåÆÁ
+//æ¸…å±
 void HAL_Disp_ClearALL(void);
 
 
