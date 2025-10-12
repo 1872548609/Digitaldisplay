@@ -14,11 +14,8 @@ extern "C"
 /*************************************************-*************************************************
 *                                             DEFINES
 **************************************************-*****************^******************************/
-#define IOT_APP_KEY_MASK                                            (HAL_KEY_SET|HAL_KEY_MODE|HAL_KEY_MEGA|HAL_KEY_SW6|HAL_KEY_RIGHT_SUB|HAL_KEY_LEFT_ADD)
+#define IOT_APP_KEY_MASK                                            (HAL_KEY_MODE|HAL_KEY_RIGHT_SUB|HAL_KEY_LEFT_ADD)
 
-// 目标扇区（SECTOR_1，地址 0x0800f800 ~ 0x0800Fc00）
-#define TARGET_SECTOR_ADDR  0x0800f800
-#define TARGET_SECTOR_NUM   ((TARGET_SECTOR_ADDR - STM32_FLASH_BASE) / STM32_SECTOR_SIZE)	
 /*************************************************-*************************************************
 *                                             CONSTANTS
 **************************************************-*****************^******************************/

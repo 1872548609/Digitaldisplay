@@ -112,8 +112,20 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
         }
     }
 	
-
+	if(press_keys & HAL_KEY_MODE)
+	{
+		int i =0;
+	}
 	
+	if(press_keys & HAL_KEY_LEFT_ADD)
+	{
+		int i =0;
+	}
+	
+	if(press_keys & HAL_KEY_RIGHT_SUB)
+	{
+		int i =0;
+	}
 	
 	return scan_flag;
 }
