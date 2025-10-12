@@ -62,7 +62,6 @@ extern "C"
 #include "iot_driver_clock.h"
 #include "iot_driver_gpio.h"
 #include "iot_driver_flash.h"
-#include "hal_nixietube_display.h"
 /*************************************************-*************************************************
 *                                             INCLUDES
 **************************************************-*****************^******************************/

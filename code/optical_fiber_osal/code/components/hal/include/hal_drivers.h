@@ -74,8 +74,6 @@ extern "C"
 #ifdef CC2591_COMPRESSION_WORKAROUND
   #include "mac_rx.h"        // MAC层接收修复（特定场景）
 #endif
-#include "hal_nixietube_display.h"
-
 
 /**************************************************************************************************
  * MACROS

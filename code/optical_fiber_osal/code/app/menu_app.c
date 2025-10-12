@@ -50,18 +50,7 @@ const int8_t boot_animation_string[] = "8888A002"; // 开机文字
 
 uint8 keycount = 0;
 
-// 定义闪烁类型枚举
-typedef enum {
-	FLASH_NO,
-    FLASH_LEFT,
-    FLASH_RIGHT,
-	FLASH_ALL,
-} FlashType;
 
-static FlashType current_type = FLASH_NO;
-
-uint8_t defaultreset = 0 ; // 是否恢复出厂设置 0 否 1 是
-uint8 resetreturncont = 0;
 
 /*************************************************-*************************************************
 *                                          LOCAL VARIABLES
