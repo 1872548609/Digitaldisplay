@@ -120,8 +120,10 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 void iot_app_init(uint8 task_id)
 {
     iot_app_task_id = task_id; // 保存任务ID
-			
-	DIV_Disp_FloatByString(MainScreen,"AAAA");
+	
+	osal_start_reload_timer(iot_app_task_id,IOT_APP_TIMER_EVT,IOT_APP_TIMER_INTERVAL);
+	
+	
 	
     // 注册按键回调函数
     HalKeyCallbackRegister(iot_app_key_callback);
@@ -162,8 +164,14 @@ uint16 iot_app_process_event(uint8 task_id, uint16 events)
 	
 	
 	
-
+	if(events & IOT_APP_TIMER_EVT)
+	{
+		DIV_Disp_FloatByString(MainScreen,"1234");
+		
+		return (events ^ IOT_APP_TIMER_EVT);
+	}
 	
+		
 	
 	
 	
