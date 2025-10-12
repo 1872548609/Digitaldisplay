@@ -382,259 +382,212 @@ bool Menu_NavigateTo(const char* targetText) {
 //    return NULL;
 //}
 
-// 回调函数
-void onItem1Click(MenuItem* item) {}
+// callback 0
+__attribute__((weak)) void onItem1Click(MenuItem* item) {}
+	
+// callback 1
+__attribute__((weak)) void normset_click(MenuItem* item) {}
+	
+__attribute__((weak)) void proset_click(MenuItem* item) {}
+	
+// callback 2	
+__attribute__((weak)) void out1mode_click(MenuItem* item) {}	
+	
+__attribute__((weak)) void out1easy_click(MenuItem* item) {}	
 
+__attribute__((weak)) void out1hsy_click(MenuItem* item) {}	
+	
+__attribute__((weak)) void out1wcmp_click(MenuItem* item) {}		
+	
+		
+__attribute__((weak)) void out2mode_click(MenuItem* item) {}	
+	
+__attribute__((weak)) void out2no_click(MenuItem* item) {}
+	
+__attribute__((weak)) void out2easy_click(MenuItem* item) {}	
 
-//}
-
-
+__attribute__((weak)) void out2hsy_click(MenuItem* item) {}	
+	
+__attribute__((weak)) void out2wcmp_click(MenuItem* item) {}		
+	
+// root 
 MenuItem* root;
 
-MenuItem* basic_setting;
+// menu 1
+MenuItem* normset_menu;
 
-MenuItem* power_setting;
+MenuItem* proset_menu;
+	
+// menu 2
+MenuItem* out1mode_menu;	
+MenuItem* out2mode_menu;
+	
+	
+// menu 3	
+MenuItem* out1easy_menu;
+MenuItem* out1hsy_menu;
+MenuItem* out1wcmp_menu;
 
-MenuItem* FinE_mode ;
-
-MenuItem* highspeed_mode;
-
-MenuItem* mega_mode;
-
-MenuItem* super_mode;
-
-MenuItem* att_setting;
-
-MenuItem* sta_setting;
-
-MenuItem* end_setting;
-
-MenuItem* end_end;
-
+MenuItem* out2no_menu;	
+MenuItem* out2easy_menu;
+MenuItem* out2hsy_menu;
+MenuItem* out2wcmp_menu;	
+	
 // 统一创建菜单树，返回树根 ，注册回调
 MenuItem* CreateTestMenu() {
     // 创建根项
     root = osal_mem_alloc(sizeof(MenuItem));
-    strcpy(root->text, "Root Menu");
+    strcpy(root->text, "Root");
     root->func = NULL;
     root->enabled = true;
     root->parent = NULL;
     root->children = NULL;
     root->childCount = 0;
 	root->level = 0;
+	{
+		 // 1.NROMSET
+		normset_menu = osal_mem_alloc(sizeof(MenuItem));
+		strcpy(normset_menu->text, "NORMSET");
+		normset_menu->func = normset_click;
+		normset_menu->enabled = true;
+		normset_menu->parent = root;  
+		normset_menu->children = NULL;
+		normset_menu->childCount = 0;
+		normset_menu->level = 1;
+		{
+			// 通道1模式
+			out1mode_menu = osal_mem_alloc(sizeof(MenuItem));
+			strcpy(out1mode_menu->text, "OUT1MODE");
+			out1mode_menu->func = out1mode_click;
+			out1mode_menu->enabled = true;
+			out1mode_menu->parent = normset_menu;  
+			out1mode_menu->children = NULL;
+			out1mode_menu->childCount = 0;
+			out1mode_menu->level = 2;
+			{
+				// OUT1ESAY模式
+				out1easy_menu = osal_mem_alloc(sizeof(MenuItem));
+				strcpy(out1easy_menu->text, "OUT1EASY");
+				out1easy_menu->func = out1easy_click;
+				out1easy_menu->enabled = true;
+				out1easy_menu->parent = out1mode_menu;  
+				out1easy_menu->children = NULL;
+				out1easy_menu->childCount = 0;
+				out1easy_menu->level = 3;
+				
+				// OUT1HSY模式
+				out1hsy_menu = osal_mem_alloc(sizeof(MenuItem));
+				strcpy(out1hsy_menu->text, "OUT1HSY");
+				out1hsy_menu->func = out1hsy_click;
+				out1hsy_menu->enabled = true;
+				out1hsy_menu->parent = out1mode_menu;  
+				out1hsy_menu->children = NULL;
+				out1hsy_menu->childCount = 0;
+				out1hsy_menu->level = 3;
+				
+				// OUT1WCMP模式
+				out1wcmp_menu = osal_mem_alloc(sizeof(MenuItem));
+				strcpy(out1wcmp_menu->text, "OUT1WCMP");
+				out1wcmp_menu->func = out1wcmp_click;
+				out1wcmp_menu->enabled = true;
+				out1wcmp_menu->parent = out1mode_menu;  
+				out1wcmp_menu->children = NULL;
+				out1wcmp_menu->childCount = 0;
+				out1wcmp_menu->level = 3;
+				
+				// 分配根项子菜单数组
+				out1mode_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 3);
+				out1mode_menu->childCount = 3;
+				out1mode_menu->children[0] = out1easy_menu;
+				out1mode_menu->children[1] = out1hsy_menu;
+				out1mode_menu->children[2] = out1wcmp_menu;
+			}
+		
+			// 通道2模式
+			out2mode_menu = osal_mem_alloc(sizeof(MenuItem));
+			strcpy(out2mode_menu->text, "OUT2MODE");
+			out2mode_menu->func = normset_click;
+			out2mode_menu->enabled = true;
+			out2mode_menu->parent = root;  
+			out2mode_menu->children = NULL;
+			out2mode_menu->childCount = 0;
+			out2mode_menu->level = 2;
+			{
+				// OUT2NO模式
+				out2no_menu = osal_mem_alloc(sizeof(MenuItem));
+				strcpy(out2no_menu->text, "OUT2NO");
+				out2no_menu->func = out2no_click;
+				out2no_menu->enabled = true;
+				out2no_menu->parent = out2mode_menu;  
+				out2no_menu->children = NULL;
+				out2no_menu->childCount = 0;
+				out2no_menu->level = 3;
+				
+				// OUT2ESAY模式
+				out2easy_menu = osal_mem_alloc(sizeof(MenuItem));
+				strcpy(out2easy_menu->text, "OUT2EASY");
+				out2easy_menu->func = out2easy_click;
+				out2easy_menu->enabled = true;
+				out2easy_menu->parent = out2mode_menu;  
+				out2easy_menu->children = NULL;
+				out2easy_menu->childCount = 0;
+				out2easy_menu->level = 3;
+				
+				// OUT2HSY模式
+				out2hsy_menu = osal_mem_alloc(sizeof(MenuItem));
+				strcpy(out2hsy_menu->text, "OUT2HSY");
+				out2hsy_menu->func = out2hsy_click;
+				out2hsy_menu->enabled = true;
+				out2hsy_menu->parent = out2mode_menu;  
+				out2hsy_menu->children = NULL;
+				out2hsy_menu->childCount = 0;
+				out2hsy_menu->level = 3;
+				
+				// OUT2WCMP模式
+				out2wcmp_menu = osal_mem_alloc(sizeof(MenuItem));
+				strcpy(out2wcmp_menu->text, "OUT2WCMP");
+				out2wcmp_menu->func = out2wcmp_click;
+				out2wcmp_menu->enabled = true;
+				out2wcmp_menu->parent = out2mode_menu;  
+				out2wcmp_menu->children = NULL;
+				out2wcmp_menu->childCount = 0;
+				out2wcmp_menu->level = 3;
+				
+				// 分配根项子菜单数组
+				out2mode_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 4);	
+				out2mode_menu->childCount = 4;
+				out2mode_menu->children[0] = out2no_menu;
+				out2mode_menu->children[1] = out2easy_menu;
+				out2mode_menu->children[2] = out2hsy_menu;
+				out2mode_menu->children[3] = out2wcmp_menu;
+			}
+			
+			// 分配根项子菜单数组
+			normset_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 2);		
+			normset_menu->childCount = 2;
+			normset_menu->children[0] = out1mode_menu;
+			normset_menu->children[1] = out2mode_menu;
+		}	
 
-    // 1.基础设置
-    basic_setting = osal_mem_alloc(sizeof(MenuItem));
-    strcpy(basic_setting->text, "basicset");
-    basic_setting->func = onItem1Click;
-    basic_setting->enabled = true;
-    basic_setting->parent = root;  // 父菜单是根菜单
-    basic_setting->children = NULL;
-    basic_setting->childCount = 0;
-	basic_setting->level = 1;
+		// 2.PROSET
+		proset_menu = osal_mem_alloc(sizeof(MenuItem));
+		strcpy(proset_menu->text, "PROSET");
+		proset_menu->func = normset_click;
+		proset_menu->enabled = true;
+		proset_menu->parent = root;  
+		proset_menu->children = NULL;
+		proset_menu->childCount = 0;
+		proset_menu->level = 1;
+
+		// 分配根项子菜单数组
+		root->children = osal_mem_alloc(sizeof(MenuItem*) * 2);
+		root->childCount = 2;
+		root->children[0] = normset_menu;
+		root->children[1] = proset_menu;
+	}
 	
-		// 1.1功率设置
-		power_setting = osal_mem_alloc(sizeof(MenuItem));
-		strcpy(power_setting->text, "basicset");
-		power_setting->func = onItem1Click;
-		power_setting->enabled = true;
-		power_setting->parent = basic_setting;  // 父菜单是basic_setting
-		power_setting->children = NULL;
-		power_setting->childCount = 0;
-		power_setting->level = 2;
-
-			// 1.1.1fine模式
-			FinE_mode = osal_mem_alloc(sizeof(MenuItem));
-			strcpy(FinE_mode->text, "FinE1234");
-			FinE_mode->func = onItem1Click;
-			FinE_mode->enabled = true;
-			FinE_mode->parent = power_setting;  
-			FinE_mode->children = NULL;
-			FinE_mode->childCount = 0;
-			FinE_mode->level = 3;
-			
-			// 1.1.2highspeed模式
-			highspeed_mode = osal_mem_alloc(sizeof(MenuItem));
-			strcpy(highspeed_mode->text, " hsp1234");
-			highspeed_mode->func = onItem1Click;
-			highspeed_mode->enabled = true;
-			highspeed_mode->parent = power_setting; 
-			highspeed_mode->children = NULL;
-			highspeed_mode->childCount = 0;
-			highspeed_mode->level = 3;
-
-			mega_mode = osal_mem_alloc(sizeof(MenuItem));
-			strcpy(mega_mode->text, "mega1234");
-			mega_mode->func = onItem1Click;
-			mega_mode->enabled = true;
-			mega_mode->parent = power_setting;  
-			mega_mode->children = NULL;
-			mega_mode->childCount = 0;
-			mega_mode->level = 3;
-			
-			super_mode = osal_mem_alloc(sizeof(MenuItem));
-			strcpy(super_mode->text, "supr1234");
-			super_mode->func = onItem1Click;
-			super_mode->enabled = true;
-			super_mode->parent = power_setting;  
-			super_mode->children = NULL;
-			super_mode->childCount = 0;
-			super_mode->level = 3;
-
-			// 分配功率设置的子菜单数组
-			power_setting->children = osal_mem_alloc(sizeof(MenuItem*) * 4);
-			power_setting->children[0] = FinE_mode;
-			power_setting->children[1] = highspeed_mode;
-			power_setting->children[2] = mega_mode;
-			power_setting->children[3] = super_mode;
-			power_setting->childCount = 4;
-			
-		// 1.2 ATT设置
-		att_setting = osal_mem_alloc(sizeof(MenuItem));
-		strcpy(att_setting->text, " Att set");
-		att_setting->func = onItem1Click;
-		att_setting->enabled = true;
-		att_setting->parent = basic_setting;  // 父菜单是basic_setting
-		att_setting->children = NULL;
-		att_setting->childCount = 0;
-		att_setting->level = 2;
-		
-		// 1.2.1 STA设置
-		sta_setting = osal_mem_alloc(sizeof(MenuItem));
-		strcpy(sta_setting->text, " STA set");
-		sta_setting->func = onItem1Click;
-		sta_setting->enabled = true;
-		sta_setting->parent = basic_setting;  // 父菜单是basic_setting
-		sta_setting->children = NULL;
-		sta_setting->childCount = 0;
-		sta_setting->level = 2;
-		
-		//1.3 有关灵敏度设置的菜单
-//		MenuItem* about_setting = osal_mem_alloc(sizeof(MenuItem));
-//		strcpy(about_setting->text, "aboutset");
-//		about_setting->func = onItem1Click;  
-//		about_setting->enabled = true;
-//		about_setting->parent = basic_setting;
-//		about_setting->children = NULL;
-//		about_setting->childCount = 0;
-//		about_setting->level = 2;
-			
-//			// 1.3.1 标志灵敏度设置
-//			MenuItem* sensitivity_mode = osal_mem_alloc(sizeof(MenuItem));
-//			strcpy(sensitivity_mode->text, " SET std");
-//			sensitivity_mode->func = onItem1Click;
-//			sensitivity_mode->enabled = true;
-//			sensitivity_mode->parent = about_setting;  
-//			sensitivity_mode->children = NULL;
-//			sensitivity_mode->childCount = 0;
-//			sensitivity_mode->level = 3;
-//			
-//			// 1.3.1 百分比校准
-//			MenuItem* percentage_mode = osal_mem_alloc(sizeof(MenuItem));
-//			strcpy(percentage_mode->text, " SETSETP");
-//			percentage_mode->func = onItem1Click;
-//			percentage_mode->enabled = true;
-//			percentage_mode->parent = about_setting;  
-//			percentage_mode->children = NULL;
-//			percentage_mode->childCount = 0;
-//			percentage_mode->level = 3;
-//			
-//			// 1.3.1 零点迁移
-//			MenuItem* zeroshift_mode = osal_mem_alloc(sizeof(MenuItem));
-//			strcpy(zeroshift_mode->text, " SETOSET");
-//			zeroshift_mode->func = onItem1Click;
-//			zeroshift_mode->enabled = true;
-//			zeroshift_mode->parent = about_setting;  
-//			zeroshift_mode->children = NULL;
-//			zeroshift_mode->childCount = 0;
-//			zeroshift_mode->level = 3;
-
-//			// 分配功率设置的子菜单数组
-//			about_setting->children = osal_mem_alloc(sizeof(MenuItem*) * 3);
-//			about_setting->children[0] = sensitivity_mode;
-//			about_setting->children[1] = percentage_mode;
-//			about_setting->children[2] = zeroshift_mode;
-//			about_setting->childCount = 3;
-			
-			
-		//1.4 有关三大模式设置的菜单
-		end_setting = osal_mem_alloc(sizeof(MenuItem));
-		strcpy(end_setting->text, "     End");
-		end_setting->func = onItem1Click;  
-		end_setting->enabled = true;
-		end_setting->parent = basic_setting;
-		end_setting->children = NULL;
-		end_setting->childCount = 0;
-		end_setting->level = 2;
-//			
-//			// 1.4.1检测设置
-//			MenuItem* check_setting = osal_mem_alloc(sizeof(MenuItem));
-//			strcpy(check_setting->text, "stg- Fun");
-//			check_setting->func = onItem1Click;
-//			check_setting->enabled = true;
-//			check_setting->parent = end_setting;
-//			check_setting->children = NULL;
-//			check_setting->childCount = 0;
-//			check_setting->level = 3;
-
-//			// 1.4.2显示设置
-//			MenuItem* disp_setting = osal_mem_alloc(sizeof(MenuItem));
-//			strcpy(disp_setting->text, "stg-disp");
-//			disp_setting->func = onItem1Click;
-//			disp_setting->enabled = true;
-//			disp_setting->parent = end_setting;
-//			disp_setting->children = NULL;
-//			disp_setting->childCount = 0;
-//			disp_setting->level = 3;
-
-//			// 1.4.3系统设置
-//			MenuItem* sys_setting = osal_mem_alloc(sizeof(MenuItem));
-//			strcpy(sys_setting->text, "stg- SYS");
-//			sys_setting->func = onItem1Click;
-//			sys_setting->enabled = true;
-//			sys_setting->parent = end_setting;
-//			sys_setting->children = NULL;
-//			sys_setting->childCount = 0;
-//			sys_setting->level = 3;	
-//			
-//			// 分配三大模式设置的子菜单数组
-//			end_setting->children = osal_mem_alloc(sizeof(MenuItem*) * 3);
-//			end_setting->children[0] = check_setting;
-//			end_setting->children[1] = disp_setting;
-//			end_setting->children[2] = sys_setting;
-//			end_setting->childCount = 3;
-		//1.5 结束项
-		end_end = osal_mem_alloc(sizeof(MenuItem));
-		strcpy(end_end->text, "   End  ");
-		end_end->func = onItem1Click;  
-		end_end->enabled = true;
-		end_end->parent = basic_setting;
-		end_end->children = NULL;
-		end_end->childCount = 0;
-		end_end->level = 2;
-
-	// 分配基础设置的子菜单数组
-//	basic_setting->children = osal_mem_alloc(sizeof(MenuItem*) * 5);
-//	basic_setting->children[0] = power_setting;
-//	basic_setting->children[1] = att_setting;
-//	basic_setting->children[2] = about_setting;
-//	basic_setting->children[3] = end_setting;
-//	basic_setting->children[4] = end_end;
-//	basic_setting->childCount = 5;
-	basic_setting->children = osal_mem_alloc(sizeof(MenuItem*) * 5);
-	basic_setting->children[0] = power_setting;
-	basic_setting->children[1] = att_setting;
-	basic_setting->children[2] = sta_setting;
-	basic_setting->children[3] = end_setting;
-	basic_setting->children[4] = end_end;
-	basic_setting->childCount = 5;
-
-
-    // 分配根项子菜单数组
-    root->children = osal_mem_alloc(sizeof(MenuItem*) * 1);
-    root->children[0] = basic_setting;
-    root->childCount = 1;
-			
+   
+    
     return root;
 }
 

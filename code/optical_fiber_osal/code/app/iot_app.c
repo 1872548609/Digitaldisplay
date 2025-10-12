@@ -122,6 +122,9 @@ void iot_app_init(uint8 task_id)
 {
     iot_app_task_id = task_id; // 保存任务ID
 	
+	MenuItem* root = CreateTestMenu(); // 动态创建菜单，所有菜单都在这个函数里编辑好
+    MenuSystem_Init(root);	// 初始化系统菜单
+	
 	osal_start_reload_timer(iot_app_task_id,IOT_APP_TIMER_EVT,IOT_APP_TIMER_INTERVAL);
 	
     // 注册按键回调函数
