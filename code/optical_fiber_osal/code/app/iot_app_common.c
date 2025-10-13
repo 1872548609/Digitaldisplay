@@ -59,8 +59,8 @@ uint32_t out2compare_status = compare2_off;
 
 #define  	noncstatus_1o2o     0
 #define		noncstatus_1o2c     1
-#define		noncstatus_1c2c     3
 #define		noncstatus_1c2o     2
+#define		noncstatus_1c2c     3
 
 #define 	out1nc  1
 #define     out1no  0
@@ -271,11 +271,11 @@ void noncmode_click(MenuItem* item)
 		{
 			if(outnonc_status>noncstatus_1o2o)
 			{
-				outnonc_status=outnonc_status>>1;
+				outnonc_status--;
 			}
 			else
 			{
-				outnonc_status=noncstatus_1c2o;
+				outnonc_status=noncstatus_1c2c;
 			}	
 		}
 		else
@@ -290,9 +290,9 @@ void noncmode_click(MenuItem* item)
 	{
 		if(out2compare_status != compare2_off)
 		{
-			if(outnonc_status<noncstatus_1c2o)
+			if(outnonc_status<noncstatus_1c2c)
 			{
-				outnonc_status=outnonc_status<<1;
+				outnonc_status++;
 			}
 			else
 			{
