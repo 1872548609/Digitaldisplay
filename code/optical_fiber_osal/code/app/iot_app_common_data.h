@@ -54,6 +54,9 @@ extern "C"
 
 extern uint8_t system_state;	// 系统运行状态全局变量
 
+#define MENU_CBK_MODE 3
+#define MENU_CBK_ADD  4
+#define MENU_CBK_SUB  5
 
 /*************************************************-*************************************************
 *                                             FUNCTION

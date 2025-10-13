@@ -3,11 +3,8 @@
 
 #include "main.h"
 
-
-
 // 执行进入还是退出回调
 #define INCALLBACK 	1
-
 #define OUTCALLBACK 2
 
 // 菜单项结构体

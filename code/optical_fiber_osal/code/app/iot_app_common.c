@@ -51,7 +51,7 @@ void normset_click(MenuItem* item)
 		DIV_Disp_ByString(MainScreen,"NoRM");         
 		DIV_Disp_ByString(SecondScreen,"Mode");	
 	}
-	else if (item->whichcallback == OUTCALLBACK)
+	else if (item->whichcallback == MENU_CBK_MODE)
 	{
 		DIV_Disp_ByString(MainScreen,"    ");         
 		DIV_Disp_ByString(SecondScreen,"    ");	
@@ -84,7 +84,13 @@ void out1easy_click(MenuItem* item)
 		DIV_Disp_ByString(MainScreen,"EASY");         
 		DIV_Disp_ByString(SecondScreen,"Out1");	
 	}
-	else if (item->whichcallback == OUTCALLBACK)
+	else if (item->whichcallback == MENU_CBK_ADD)
+	{
+		Menu_Prev();
+		
+		Menu_Execute(INCALLBACK);
+	}
+	else if (item->whichcallback == MENU_CBK_SUB)
 	{
 		Menu_Next();
 		
@@ -99,7 +105,13 @@ void out1hsy_click(MenuItem* item)
 		DIV_Disp_ByString(MainScreen," HSY");         
 		DIV_Disp_ByString(SecondScreen,"Out1");	
 	}
-	else if (item->whichcallback == OUTCALLBACK)
+	else if (item->whichcallback == MENU_CBK_ADD)
+	{
+		Menu_Prev();
+		
+		Menu_Execute(INCALLBACK);
+	}
+	else if (item->whichcallback == MENU_CBK_SUB)
 	{
 		Menu_Next();
 		
@@ -115,7 +127,13 @@ void out1wcmp_click(MenuItem* item)
 		DIV_Disp_ByString(MainScreen,"WCMP");         
 		DIV_Disp_ByString(SecondScreen,"Out1");
 	}
-	else if (item->whichcallback == OUTCALLBACK)
+	else if (item->whichcallback == MENU_CBK_ADD)
+	{
+		Menu_Prev();
+		
+		Menu_Execute(INCALLBACK);
+	}
+	else if (item->whichcallback == MENU_CBK_SUB)
 	{
 		Menu_Next();
 		

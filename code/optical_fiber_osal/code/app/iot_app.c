@@ -116,7 +116,7 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 	{
 		if(system_state == MENU_STATE)
 		{
-			Menu_Execute(OUTCALLBACK);
+			Menu_Execute(MENU_CBK_MODE);
 		}
 	}
 	
@@ -124,7 +124,7 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 	{
 		if(system_state == MENU_STATE)
 		{
-			Menu_Execute(OUTCALLBACK);
+			Menu_Execute(MENU_CBK_ADD);
 		}
 	}
 	
@@ -132,7 +132,7 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 	{
 		if(system_state == MENU_STATE)
 		{
-			Menu_Execute(OUTCALLBACK);
+			Menu_Execute(MENU_CBK_SUB);
 		}
 	}
 	
