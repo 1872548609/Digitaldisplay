@@ -496,7 +496,15 @@ MenuItem* CreateTestMenu() {
 		proset_menu->level = 1;
 		{
 		
-		
+			
+			
+			// 分配根项子菜单数组
+			proset_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 4);		
+			proset_menu->childCount = 4;
+			proset_menu->children[0] = 0;
+			proset_menu->children[1] = 0;
+			proset_menu->children[2] = 0;
+			proset_menu->children[3] = 0;
 		}
 
 		// 分配根项子菜单数组
