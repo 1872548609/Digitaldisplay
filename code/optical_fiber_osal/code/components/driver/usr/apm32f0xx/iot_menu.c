@@ -392,23 +392,10 @@ __attribute__((weak)) void proset_click(MenuItem* item) {}
 	
 // callback 2	
 __attribute__((weak)) void out1mode_click(MenuItem* item) {}	
-	
-__attribute__((weak)) void out1easy_click(MenuItem* item) {}	
-
-__attribute__((weak)) void out1hsy_click(MenuItem* item) {}	
-	
-__attribute__((weak)) void out1wcmp_click(MenuItem* item) {}		
+__attribute__((weak)) void out2mode_click(MenuItem* item) {}		
+__attribute__((weak)) void noncmode_click(MenuItem* item) {}		
 	
 		
-__attribute__((weak)) void out2mode_click(MenuItem* item) {}	
-	
-__attribute__((weak)) void out2no_click(MenuItem* item) {}
-	
-__attribute__((weak)) void out2easy_click(MenuItem* item) {}	
-
-__attribute__((weak)) void out2hsy_click(MenuItem* item) {}	
-	
-__attribute__((weak)) void out2wcmp_click(MenuItem* item) {}		
 	
 // root 
 MenuItem* root;
@@ -421,7 +408,7 @@ MenuItem* proset_menu;
 // menu 2
 MenuItem* out1mode_menu;	
 MenuItem* out2mode_menu;
-	
+MenuItem* NONCmode_menu;
 	
 // menu 3	
 MenuItem* out1easy_menu;
@@ -432,6 +419,8 @@ MenuItem* out2no_menu;
 MenuItem* out2easy_menu;
 MenuItem* out2hsy_menu;
 MenuItem* out2wcmp_menu;	
+
+
 	
 // 统一创建菜单树，返回树根 ，注册回调
 MenuItem* CreateTestMenu() {
@@ -464,45 +453,7 @@ MenuItem* CreateTestMenu() {
 			out1mode_menu->children = NULL;
 			out1mode_menu->childCount = 0;
 			out1mode_menu->level = 2;
-			{
-				// OUT1ESAY模式
-				out1easy_menu = osal_mem_alloc(sizeof(MenuItem));
-				strcpy(out1easy_menu->text, "OUT1EASY");
-				out1easy_menu->func = out1easy_click;
-				out1easy_menu->enabled = true;
-				out1easy_menu->parent = out1mode_menu;  
-				out1easy_menu->children = NULL;
-				out1easy_menu->childCount = 0;
-				out1easy_menu->level = 3;
-				
-				// OUT1HSY模式
-				out1hsy_menu = osal_mem_alloc(sizeof(MenuItem));
-				strcpy(out1hsy_menu->text, "OUT1HSY");
-				out1hsy_menu->func = out1hsy_click;
-				out1hsy_menu->enabled = true;
-				out1hsy_menu->parent = out1mode_menu;  
-				out1hsy_menu->children = NULL;
-				out1hsy_menu->childCount = 0;
-				out1hsy_menu->level = 3;
-				
-				// OUT1WCMP模式
-				out1wcmp_menu = osal_mem_alloc(sizeof(MenuItem));
-				strcpy(out1wcmp_menu->text, "OUT1WCMP");
-				out1wcmp_menu->func = out1wcmp_click;
-				out1wcmp_menu->enabled = true;
-				out1wcmp_menu->parent = out1mode_menu;  
-				out1wcmp_menu->children = NULL;
-				out1wcmp_menu->childCount = 0;
-				out1wcmp_menu->level = 3;
-				
-				// 分配根项子菜单数组
-				out1mode_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 3);
-				out1mode_menu->childCount = 3;
-				out1mode_menu->children[0] = out1easy_menu;
-				out1mode_menu->children[1] = out1hsy_menu;
-				out1mode_menu->children[2] = out1wcmp_menu;
-			}
-		
+			
 			// 通道2模式
 			out2mode_menu = osal_mem_alloc(sizeof(MenuItem));
 			strcpy(out2mode_menu->text, "OUT2MODE");
@@ -512,55 +463,7 @@ MenuItem* CreateTestMenu() {
 			out2mode_menu->children = NULL;
 			out2mode_menu->childCount = 0;
 			out2mode_menu->level = 2;
-			{
-				// OUT2NO模式
-				out2no_menu = osal_mem_alloc(sizeof(MenuItem));
-				strcpy(out2no_menu->text, "OUT2NO");
-				out2no_menu->func = out2no_click;
-				out2no_menu->enabled = true;
-				out2no_menu->parent = out2mode_menu;  
-				out2no_menu->children = NULL;
-				out2no_menu->childCount = 0;
-				out2no_menu->level = 3;
-				
-				// OUT2ESAY模式
-				out2easy_menu = osal_mem_alloc(sizeof(MenuItem));
-				strcpy(out2easy_menu->text, "OUT2EASY");
-				out2easy_menu->func = out2easy_click;
-				out2easy_menu->enabled = true;
-				out2easy_menu->parent = out2mode_menu;  
-				out2easy_menu->children = NULL;
-				out2easy_menu->childCount = 0;
-				out2easy_menu->level = 3;
-				
-				// OUT2HSY模式
-				out2hsy_menu = osal_mem_alloc(sizeof(MenuItem));
-				strcpy(out2hsy_menu->text, "OUT2HSY");
-				out2hsy_menu->func = out2hsy_click;
-				out2hsy_menu->enabled = true;
-				out2hsy_menu->parent = out2mode_menu;  
-				out2hsy_menu->children = NULL;
-				out2hsy_menu->childCount = 0;
-				out2hsy_menu->level = 3;
-				
-				// OUT2WCMP模式
-				out2wcmp_menu = osal_mem_alloc(sizeof(MenuItem));
-				strcpy(out2wcmp_menu->text, "OUT2WCMP");
-				out2wcmp_menu->func = out2wcmp_click;
-				out2wcmp_menu->enabled = true;
-				out2wcmp_menu->parent = out2mode_menu;  
-				out2wcmp_menu->children = NULL;
-				out2wcmp_menu->childCount = 0;
-				out2wcmp_menu->level = 3;
-				
-				// 分配根项子菜单数组
-				out2mode_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 4);	
-				out2mode_menu->childCount = 4;
-				out2mode_menu->children[0] = out2no_menu;
-				out2mode_menu->children[1] = out2easy_menu;
-				out2mode_menu->children[2] = out2hsy_menu;
-				out2mode_menu->children[3] = out2wcmp_menu;
-			}
+		
 			
 			// 分配根项子菜单数组
 			normset_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 2);		

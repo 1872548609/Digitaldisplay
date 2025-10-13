@@ -43,7 +43,22 @@ uint8_t system_state = RUN_STATE;
 **************************************************-*****************^******************************/
 // 局部变量定义区域	
 	
+
+#define		compare1_EASY 		1
+#define		compare1_HSY 		2
+#define		compare1_WCMP 		3
+
+#define   	compare2_off	 	1 
+#define		compare2_EASY 		2
+#define		compare2_HSY 		3
+#define		compare2_WCMP 		4
+
+uint32_t out1compare_status = compare1_EASY;	
+	
+uint32_t out2compare_status = compare2_off;	
+	
 // 菜单回调
+// callback 1
 void normset_click(MenuItem* item) 
 {
 	if(item->whichcallback == INCALLBACK)
@@ -61,8 +76,129 @@ void normset_click(MenuItem* item)
 		Menu_Execute(INCALLBACK);
 	}
 }
-
+// callback 2
 void out1mode_click(MenuItem* item) 
+{
+	if(item->whichcallback == INCALLBACK)
+	{
+		
+	}
+	else if (item->whichcallback == OUTCALLBACK)
+	{
+		
+	}
+	else if (item->whichcallback == MENU_CBK_MODE)
+	{
+		 Menu_Next();
+		
+		 Menu_Execute(INCALLBACK);
+		
+		return;
+	}
+	else if (item->whichcallback == MENU_CBK_ADD)
+	{
+		if(out1compare_status>compare1_EASY)
+		{
+			out1compare_status--;
+		}
+		else
+		{
+			out1compare_status=compare1_WCMP;
+		}	
+	}
+	else if (item->whichcallback == MENU_CBK_SUB)
+	{
+		if(out1compare_status<compare1_WCMP)
+		{
+			out1compare_status++;
+		}
+		else
+		{
+			out1compare_status=compare1_EASY;
+		}	
+	}
+	
+	switch(out1compare_status)
+	{
+		case compare1_EASY:{
+			DIV_Disp_ByString(MainScreen,"EASY");         
+			DIV_Disp_ByString(SecondScreen,"Out1");	
+		}break;
+		case compare1_HSY:{
+			DIV_Disp_ByString(MainScreen," HSY");         
+			DIV_Disp_ByString(SecondScreen,"Out1");	
+		}break;
+		case compare1_WCMP:{
+			DIV_Disp_ByString(MainScreen,"WCMP");         
+			DIV_Disp_ByString(SecondScreen,"Out1");
+		}break;	
+	}
+}	
+
+void out2mode_click(MenuItem* item) 
+{
+	if(item->whichcallback == INCALLBACK)
+	{
+		
+	}
+	else if (item->whichcallback == OUTCALLBACK)
+	{
+		
+	}
+	else if (item->whichcallback == MENU_CBK_MODE)
+	{
+		 Menu_Next();
+		
+		Menu_Execute(INCALLBACK);
+		
+		return;
+	}
+	else if (item->whichcallback == MENU_CBK_ADD)
+	{
+		if(out2compare_status>compare2_off)
+		{
+			out2compare_status--;
+		}
+		else
+		{
+			out2compare_status=compare2_WCMP;
+		}	
+	}
+	else if (item->whichcallback == MENU_CBK_SUB)
+	{
+		if(out2compare_status<compare2_WCMP)
+		{
+			out2compare_status++;
+		}
+		else
+		{
+			out2compare_status=compare2_off;
+		}	
+	}
+	
+	switch(out2compare_status)
+	{
+		case compare2_off:{
+			DIV_Disp_ByString(MainScreen," OFF");         
+			DIV_Disp_ByString(SecondScreen,"Out2");
+		}break;
+		case compare2_EASY:{
+			DIV_Disp_ByString(MainScreen,"EASY");         
+			DIV_Disp_ByString(SecondScreen,"Out2");	
+		}break;
+		case compare2_HSY:{
+			DIV_Disp_ByString(MainScreen," HSY");         
+			DIV_Disp_ByString(SecondScreen,"Out2");	
+		}break;
+		case compare2_WCMP:{
+			DIV_Disp_ByString(MainScreen,"WCMP");         
+			DIV_Disp_ByString(SecondScreen,"Out2");
+		}break;	
+	}
+
+}	
+
+void noncmode_click(MenuItem* item)
 {
 	if(item->whichcallback == INCALLBACK)
 	{
@@ -72,85 +208,13 @@ void out1mode_click(MenuItem* item)
 	}
 	else if (item->whichcallback == OUTCALLBACK)
 	{
-		
-	}
-
-}	
-
-void out1easy_click(MenuItem* item) 
-{
-	if(item->whichcallback == INCALLBACK)
-	{
-		DIV_Disp_ByString(MainScreen,"EASY");         
-		DIV_Disp_ByString(SecondScreen,"Out1");	
-	}
-	else if (item->whichcallback == MENU_CBK_ADD)
-	{
-		Menu_Prev();
-		
-		Menu_Execute(INCALLBACK);
-	}
-	else if (item->whichcallback == MENU_CBK_SUB)
-	{
 		Menu_Next();
 		
 		Menu_Execute(INCALLBACK);
 	}
-}	
+}
 
-void out1hsy_click(MenuItem* item) 
-{
-	if(item->whichcallback == INCALLBACK)
-	{
-		DIV_Disp_ByString(MainScreen," HSY");         
-		DIV_Disp_ByString(SecondScreen,"Out1");	
-	}
-	else if (item->whichcallback == MENU_CBK_ADD)
-	{
-		Menu_Prev();
-		
-		Menu_Execute(INCALLBACK);
-	}
-	else if (item->whichcallback == MENU_CBK_SUB)
-	{
-		Menu_Next();
-		
-		Menu_Execute(INCALLBACK);
-	}
-}	
-
-void out1wcmp_click(MenuItem* item)
-{
-
-	if(item->whichcallback == INCALLBACK)
-	{
-		DIV_Disp_ByString(MainScreen,"WCMP");         
-		DIV_Disp_ByString(SecondScreen,"Out1");
-	}
-	else if (item->whichcallback == MENU_CBK_ADD)
-	{
-		Menu_Prev();
-		
-		Menu_Execute(INCALLBACK);
-	}
-	else if (item->whichcallback == MENU_CBK_SUB)
-	{
-		Menu_Next();
-		
-		Menu_Execute(INCALLBACK);
-	}
-
-}		
-
-
-void out2mode_click(MenuItem* item) {}	
-
-void out2no_click(MenuItem* item) {}
-
-void out2easy_click(MenuItem* item) {}	
-
-void out2hsy_click(MenuItem* item) {}	
-
-void out2wcmp_click(MenuItem* item) {}		
 	
+
+
 #endif

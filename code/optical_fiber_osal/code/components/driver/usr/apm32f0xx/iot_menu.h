@@ -7,6 +7,9 @@
 #define INCALLBACK 	1
 #define OUTCALLBACK 2
 
+#define TRUE_RELOAD 1
+#define FALSE_RELOAD 0
+
 // 菜单项结构体
 typedef struct MenuItem MenuItem; // 结构体内部需要引用自身类型
 struct MenuItem {
@@ -73,40 +76,9 @@ MenuItem* Menu_GetCurrent(void);
 void Menu_Execute(char wichcallback);
 
 
-
 extern MenuSystem menuSystem;
 
 extern MenuItem* root;
-
-extern MenuItem* basic_setting;
-
-extern MenuItem* power_setting;
-
-extern MenuItem* FinE_mode ;
-
-extern MenuItem* highspeed_mode;
-
-extern MenuItem* mega_mode;
-
-extern MenuItem* super_mode;
-
-extern MenuItem* att_setting;
-
-extern MenuItem* sta_setting;
-
-extern MenuItem* end_setting;
-
-extern MenuItem* end_end;
-
-
-// 回调函数
-extern void onItem1Click(MenuItem* item); 
-
-void onItem2Click(MenuItem* item);
-
-
-
-
 
 
 
