@@ -22,7 +22,7 @@
   its documentation for any purpose.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
+  PROVIDED æ‚S IS?WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE, 
   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -58,23 +58,23 @@ extern "C"
  * CONSTANTS
  */
 
-/* LEDS - The LED number is the same as the bit position */
-#define HAL_LED_1     0x01  // ¶þ½øÖÆ: 0001 (bit 0)
-#define HAL_LED_2     0x02  // ¶þ½øÖÆ: 0010 (bit 1)
-#define HAL_LED_3     0x04  // ¶þ½øÖÆ: 0100 (bit 2)
-#define HAL_LED_4     0x08  // ¶þ½øÖÆ: 1000 (bit 3)
-#define HAL_LED_ALL   (HAL_LED_1 | HAL_LED_2 | HAL_LED_3 | HAL_LED_4)  // 0x0F (ËùÓÐLED)
+/* LEDS - The LED number is the same as the bit position */		
+#define HAL_LED_1     0x01  // äºŒè¿›åˆ¶: 0001 (bit 0)
+#define HAL_LED_2     0x02  // äºŒè¿›åˆ¶: 0010 (bit 1)
+#define HAL_LED_3     0x04  // äºŒè¿›åˆ¶: 0100 (bit 2)
+#define HAL_LED_4     0x08  // äºŒè¿›åˆ¶: 1000 (bit 3)
+#define HAL_LED_ALL   (HAL_LED_1 | HAL_LED_2 | HAL_LED_3 | HAL_LED_4)  // 0x0F (æ‰€æœ‰LED)
 /* Modes */
-#define HAL_LED_MODE_OFF     0x00  // ¹Ø±Õ
-#define HAL_LED_MODE_ON      0x01  // ³£ÁÁ
-#define HAL_LED_MODE_BLINK   0x02  // ºôÎüµÆ£¨PWM µ÷¹â£©
-#define HAL_LED_MODE_FLASH   0x04  // ÉÁË¸£¨¹Ì¶¨´ÎÊý£©
-#define HAL_LED_MODE_TOGGLE  0x08  // ×´Ì¬·­×ª£¨¿ª¡ú¹Ø »ò ¹Ø¡ú¿ª£©
+#define HAL_LED_MODE_OFF     0x00  // å…³é—­
+#define HAL_LED_MODE_ON      0x01  // å¸¸äº®
+#define HAL_LED_MODE_BLINK   0x02  // å‘¼å¸ç¯ï¼ˆPWM è°ƒå…‰ï¼‰
+#define HAL_LED_MODE_FLASH   0x04  // é—ªçƒï¼ˆå›ºå®šæ¬¡æ•°ï¼‰
+#define HAL_LED_MODE_TOGGLE  0x08  // çŠ¶æ€ç¿»è½¬ï¼ˆå¼€â†’å…³ æˆ– å…³â†’å¼€ï¼‰
 /* Defaults */
-#define HAL_LED_DEFAULT_MAX_LEDS      4       // Ä¬ÈÏÖ§³Ö 4 ¸ö LED
-#define HAL_LED_DEFAULT_DUTY_CYCLE    5       // Ä¬ÈÏ PWM Õ¼¿Õ±È£¨0-100£©
-#define HAL_LED_DEFAULT_FLASH_COUNT   50      // Ä¬ÈÏÉÁË¸´ÎÊý
-#define HAL_LED_DEFAULT_FLASH_TIME    1000    // Ä¬ÈÏÉÁË¸¼ä¸ô£¨ms£©
+#define HAL_LED_DEFAULT_MAX_LEDS      4       // é»˜è®¤æ”¯æŒ 4 ä¸ª LED
+#define HAL_LED_DEFAULT_DUTY_CYCLE    5       // é»˜è®¤ PWM å ç©ºæ¯”ï¼ˆ0-100ï¼‰
+#define HAL_LED_DEFAULT_FLASH_COUNT   50      // é»˜è®¤é—ªçƒæ¬¡æ•°
+#define HAL_LED_DEFAULT_FLASH_TIME    1000    // é»˜è®¤é—ªçƒé—´éš”ï¼ˆmsï¼‰
 
 /*********************************************************************
  * TYPEDEFS

@@ -179,6 +179,11 @@ void iot_app_init(uint8 task_id)
 {
     iot_app_task_id = task_id; // 保存任务ID
 	
+	DIV_Disp_Snprintf(MainScreen,"RL01");  //显示款型
+	DIV_Disp_Snprintf(SecondScreen," NPN");//显示npn款
+	
+	HalLedSet(HAL_LED_ALL,HAL_LED_MODE_ON);
+	
 	MenuItem* root = CreateTestMenu(); // 动态创建菜单，所有菜单都在这个函数里编辑好
     MenuSystem_Init(root);	// 初始化系统菜单
 

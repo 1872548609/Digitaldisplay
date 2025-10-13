@@ -200,10 +200,6 @@ void Hal_ProcessPoll(void)
     usbHidProcessEvents();
     #endif
 
-    #if (defined HAL_NIXIETTUBE_DISPLAY_H)
-    //display_scan();
-    #endif
-
     #if defined(POWER_SAVING)
     /* 允许进入睡眠模式（节能） */
     ALLOW_SLEEP_MODE();

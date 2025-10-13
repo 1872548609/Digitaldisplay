@@ -36,6 +36,61 @@ extern "C"
 #define HAL_KEY3_READ()                                             (!GPIO_ReadInputBit(HAL_KEY3_PORT, HAL_KEY3_PIN))
 
 /*************************************************-*************************************************
+*                                        LED Configuration
+**************************************************-*****************^******************************/
+#define ACTIVE_LOW                                                  !
+#define ACTIVE_HIGH                                                 !!    /* double negation forces result to be '1' */
+
+#define HAL_NUM_LEDS                                                4
+
+#define HAL_LED_BLINK_DELAY()                                       st( { volatile uint32 i; for (i=0; i<0x5800; i++) { }; } )
+
+#define HAL_ALL_LED 												(HAL_THREED_RED|HAL_ONE_RED|HAL_DOUBLE_GREED|HAL_ONE_GREED)
+
+#define HAL_THREED_RED												HAL_LED_1                                             
+#define HAL_LED1_PORT                                               GPIOA
+#define HAL_LED1_PIN                                                GPIO_PIN_12
+#define HAL_LED1_POLARITY                                           ACTIVE_HIGH
+
+#define HAL_TURN_OFF_LED1()                                        	st(GPIO_ClearBit(HAL_LED1_PORT, HAL_LED1_PIN);)
+#define HAL_TURN_ON_LED1()                                          st(GPIO_SetBit(HAL_LED1_PORT, HAL_LED1_PIN);)
+#define HAL_TOGGLE_LED1()                                           st(if (HAL_STATE_LED1()){HAL_TURN_OFF_LED1();}else{HAL_TURN_ON_LED1();})
+#define HAL_STATE_LED1()                                            (HAL_LED1_POLARITY(GPIO_ReadInputBit(HAL_LED1_PORT, HAL_LED1_PIN)))
+
+
+#define HAL_ONE_RED													HAL_LED_2
+#define HAL_LED2_PORT                                               GPIOA
+#define HAL_LED2_PIN                                                GPIO_PIN_4
+#define HAL_LED2_POLARITY                                           ACTIVE_HIGH
+
+#define HAL_TURN_OFF_LED2()                                         st(GPIO_ClearBit(HAL_LED2_PORT, HAL_LED2_PIN);)
+#define HAL_TURN_ON_LED2()                                          st(GPIO_SetBit(HAL_LED2_PORT, HAL_LED2_PIN);)
+#define HAL_TOGGLE_LED2()                                           st(if (HAL_STATE_LED2()){HAL_TURN_OFF_LED2();}else{HAL_TURN_ON_LED2();})
+#define HAL_STATE_LED2()                                            (HAL_LED2_POLARITY(GPIO_ReadInputBit(HAL_LED2_PORT, HAL_LED2_PIN)))
+
+
+#define HAL_DOUBLE_GREED											HAL_LED_3
+#define HAL_LED3_PORT                                               GPIOA
+#define HAL_LED3_PIN                                                GPIO_PIN_15
+#define HAL_LED3_POLARITY                                           ACTIVE_HIGH
+
+#define HAL_TURN_OFF_LED3()                                         st(GPIO_ClearBit(HAL_LED3_PORT, HAL_LED3_PIN);)
+#define HAL_TURN_ON_LED3()                                          st(GPIO_SetBit(HAL_LED3_PORT, HAL_LED3_PIN);)
+#define HAL_TOGGLE_LED3()                                           st(if (HAL_STATE_LED3()){HAL_TURN_OFF_LED3();}else{HAL_TURN_ON_LED3();})
+#define HAL_STATE_LED3()                                            (HAL_LED3_POLARITY(GPIO_ReadInputBit(HAL_LED3_PORT, HAL_LED3_PIN)))
+
+
+#define HAL_ONE_GREED												HAL_LED_4                                             
+#define HAL_LED4_PORT                                               GPIOA
+#define HAL_LED4_PIN                                                GPIO_PIN_5
+#define HAL_LED4_POLARITY                                           ACTIVE_HIGH
+
+#define HAL_TURN_OFF_LED4()                                         st(GPIO_ClearBit(HAL_LED4_PORT, HAL_LED4_PIN);)
+#define HAL_TURN_ON_LED4()                                          st(GPIO_SetBit(HAL_LED4_PORT, HAL_LED4_PIN);)
+#define HAL_TOGGLE_LED4()                                           st(if (HAL_STATE_LED4()){HAL_TURN_OFF_LED4();}else{HAL_TURN_ON_LED4();})
+#define HAL_STATE_LED4()                                            (HAL_LED3_POLARITY(GPIO_ReadInputBit(HAL_LED4_PORT, HAL_LED4_PIN)))
+
+/*************************************************-*************************************************
 *                                             CONSTANTS
 **************************************************-*****************^******************************/
 

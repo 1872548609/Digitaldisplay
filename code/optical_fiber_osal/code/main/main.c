@@ -62,7 +62,7 @@ int main(void)
 {	
     // 关闭所有中断（防止初始化过程中被中断打断）
     osal_int_disable( INTS_ALL );
-
+	
     // 初始化滴答
     iot_driver_clock_init();
 

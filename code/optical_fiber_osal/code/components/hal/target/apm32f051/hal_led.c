@@ -117,43 +117,8 @@ void HalLedInit(void)
 {
     #if defined(HAL_LED) && (HAL_LED == TRUE)
     
-    //-- 初始化IO口为输出
-    GPIO_Config_T gpioConfig;
-
-    RCM_EnableAHBPeriphClock(RCM_AHB_PERIPH_GPIOB);
-    RCM_EnableAHBPeriphClock(RCM_AHB_PERIPH_GPIOA);
-
-    gpioConfig.pin = HAL_LED1_PIN;
-    gpioConfig.mode = GPIO_MODE_OUT;
-    gpioConfig.outtype = GPIO_OUT_TYPE_PP;
-    gpioConfig.speed = GPIO_SPEED_50MHz;
-    gpioConfig.pupd = GPIO_PUPD_NO;
-    GPIO_Config(HAL_LED1_PORT, &gpioConfig);
-
-    gpioConfig.pin = HAL_LED2_PIN;
-    gpioConfig.mode = GPIO_MODE_OUT;
-    gpioConfig.outtype = GPIO_OUT_TYPE_PP;
-    gpioConfig.speed = GPIO_SPEED_50MHz;
-    gpioConfig.pupd = GPIO_PUPD_NO;
-    GPIO_Config(HAL_LED2_PORT, &gpioConfig);
-
-    gpioConfig.pin = HAL_LED3_PIN;
-    gpioConfig.mode = GPIO_MODE_OUT;
-    gpioConfig.outtype = GPIO_OUT_TYPE_PP;
-    gpioConfig.speed = GPIO_SPEED_50MHz;
-    gpioConfig.pupd = GPIO_PUPD_NO;
-    GPIO_Config(HAL_LED3_PORT, &gpioConfig);
-
-    gpioConfig.pin = GPIO_PIN_8;
-    gpioConfig.mode = GPIO_MODE_OUT;
-    gpioConfig.outtype = GPIO_OUT_TYPE_PP;
-    gpioConfig.speed = GPIO_SPEED_50MHz;
-    gpioConfig.pupd = GPIO_PUPD_NO;
-    GPIO_Config(GPIOA, &gpioConfig);
-    //GPIO_SetBit(GPIOA, GPIO_PIN_8);
-    GPIO_ClearBit(GPIOA, GPIO_PIN_8);
-
-
+	HAL_LED_Init();
+	
     /* 初始化所有LED为关闭状态 */
     HalLedSet (HAL_LED_ALL, HAL_LED_MODE_OFF);
     #endif /* HAL_LED */
