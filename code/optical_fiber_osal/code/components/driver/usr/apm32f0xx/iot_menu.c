@@ -474,6 +474,8 @@ MenuItem* CreateTestMenu() {
 			MAINColormode_menu->childCount = 0;
 			MAINColormode_menu->level = 2;
 			
+			
+			
 			// 分配根项子菜单数组
 			normset_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 4);		
 			normset_menu->childCount = 4;
@@ -486,12 +488,16 @@ MenuItem* CreateTestMenu() {
 		// 2.PROSET
 		proset_menu = osal_mem_alloc(sizeof(MenuItem));
 		strcpy(proset_menu->text, "PROSET");
-		proset_menu->func = normset_click;
+		proset_menu->func = proset_click;
 		proset_menu->enabled = true;
 		proset_menu->parent = root;  
 		proset_menu->children = NULL;
 		proset_menu->childCount = 0;
 		proset_menu->level = 1;
+		{
+		
+		
+		}
 
 		// 分配根项子菜单数组
 		root->children = osal_mem_alloc(sizeof(MenuItem*) * 2);

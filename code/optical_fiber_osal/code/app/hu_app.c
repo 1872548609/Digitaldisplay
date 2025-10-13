@@ -83,12 +83,12 @@ uint8 hu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milli
         if (cur_keys & key_mask)
         {
             // 短按检测
-            if (hal_key_press_time_count[k] > 2)
+            if (hal_key_press_time_count[k] == 2)
             {
                islongorshortpress = 1;
             }
             // 超长按检测（>3s）
-			if (hal_key_press_time_count[k] >= 30)
+			if (hal_key_press_time_count[k] == 30)
             {
 				islongorshortpress = 2;
                 longpress_morethan_3s_keys |= key_mask;
@@ -180,11 +180,12 @@ uint16 hu_app_process_event(uint8 task_id, uint16 events)
 
 	
 	//判断他是否成功调度起来了，添加成功就会进你的事件管理
-	if(events & IOT_APP_TIMER_EVT)
+	if(events & HU_APP_TIMER_EVT)
 	{
+		// 事件到了就执行
+		osal_stop_timerEx(hu_app_task_id,HU_APP_TIMER_EVT);
 		
-		
-		return (events ^ IOT_APP_TIMER_EVT);
+		return (events ^ HU_APP_TIMER_EVT);
 	}
 		
 	

@@ -96,6 +96,25 @@ void normset_click(MenuItem* item)
 		Menu_Execute(INCALLBACK);
 	}
 }
+
+void proset_click(MenuItem* item) 
+{
+	if(item->whichcallback == INCALLBACK)
+	{
+		DIV_Disp_ByString(MainScreen," PRO");         
+		DIV_Disp_ByString(SecondScreen,"Mode");	
+	}
+	else if (item->whichcallback == MENU_CBK_MODE)
+	{
+		DIV_Disp_ByString(MainScreen,"    ");         
+		DIV_Disp_ByString(SecondScreen,"    ");	
+		
+		Menu_Enter();
+		
+		Menu_Execute(INCALLBACK);
+	}
+}
+
 // callback 2
 void out1mode_click(MenuItem* item) 
 {
