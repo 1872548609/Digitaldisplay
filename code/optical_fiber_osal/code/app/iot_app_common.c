@@ -79,6 +79,16 @@ uint32_t maincolor_status = R_ON;
 	
 // 菜单回调
 // callback 1
+
+void root_Click(MenuItem* item) 
+{
+	if (item->whichcallback == OUTCALLBACK)
+	{
+		DIV_Disp_ByString(MainScreen,"    ");         
+		DIV_Disp_ByString(SecondScreen,"    ");	
+	}
+}
+
 void normset_click(MenuItem* item) 
 {
 	if(item->whichcallback == INCALLBACK)

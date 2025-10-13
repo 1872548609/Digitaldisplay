@@ -417,7 +417,7 @@ MenuItem* CreateTestMenu() {
     // 创建根项
     root = osal_mem_alloc(sizeof(MenuItem));
     strcpy(root->text, "Root");
-    root->func = NULL;
+    root->func = root_Click;
     root->enabled = true;
     root->parent = NULL;
     root->children = NULL;
