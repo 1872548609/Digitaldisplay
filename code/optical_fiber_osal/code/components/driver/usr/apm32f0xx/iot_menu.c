@@ -394,7 +394,7 @@ __attribute__((weak)) void proset_click(MenuItem* item) {}
 __attribute__((weak)) void out1mode_click(MenuItem* item) {}	
 __attribute__((weak)) void out2mode_click(MenuItem* item) {}		
 __attribute__((weak)) void noncmode_click(MenuItem* item) {}		
-	
+__attribute__((weak)) void maincolormode_click(MenuItem* item) {}	
 		
 	
 // root 
@@ -409,6 +409,7 @@ MenuItem* proset_menu;
 MenuItem* out1mode_menu;	
 MenuItem* out2mode_menu;
 MenuItem* NONCmode_menu;
+MenuItem* MAINColormode_menu;
 	
 	
 // 统一创建菜单树，返回树根 ，注册回调
@@ -463,12 +464,23 @@ MenuItem* CreateTestMenu() {
 			NONCmode_menu->childCount = 0;
 			NONCmode_menu->level = 2;
 			
+			// maincolor模式
+			MAINColormode_menu = osal_mem_alloc(sizeof(MenuItem));
+			strcpy(MAINColormode_menu->text, "MAINCOLORMODE");
+			MAINColormode_menu->func = maincolormode_click;
+			MAINColormode_menu->enabled = true;
+			MAINColormode_menu->parent = normset_menu;  
+			MAINColormode_menu->children = NULL;
+			MAINColormode_menu->childCount = 0;
+			MAINColormode_menu->level = 2;
+			
 			// 分配根项子菜单数组
-			normset_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 3);		
-			normset_menu->childCount = 3;
+			normset_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 4);		
+			normset_menu->childCount = 4;
 			normset_menu->children[0] = out1mode_menu;
 			normset_menu->children[1] = out2mode_menu;
 			normset_menu->children[2] = NONCmode_menu;
+			normset_menu->children[3] = MAINColormode_menu;
 		}	
 
 		// 2.PROSET

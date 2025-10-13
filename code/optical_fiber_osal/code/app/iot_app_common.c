@@ -70,7 +70,12 @@ uint32_t out2compare_status = compare2_off;
 
 uint32_t outnonc_status = noncstatus_1o2o;
 
+#define  		R_ON 	     1
+#define			G_ON 	     2
+#define			AL_RED 	     3
+#define			AL_GREEN     4
 
+uint32_t maincolor_status = R_ON;
 	
 // 菜单回调
 // callback 1
@@ -315,6 +320,70 @@ void noncmode_click(MenuItem* item)
 }
 
 	
+
+
+void maincolormode_click(MenuItem* item)
+{
+	if(item->whichcallback == INCALLBACK)
+	{
+		
+	}
+	else if (item->whichcallback == OUTCALLBACK)
+	{
+		
+	}
+	else if (item->whichcallback == MENU_CBK_MODE)
+	{
+		 Menu_Next();
+		
+		Menu_Execute(INCALLBACK);
+		
+		return;
+	}
+	else if (item->whichcallback == MENU_CBK_ADD)
+	{
+		if(maincolor_status>R_ON)
+		{
+			maincolor_status--;
+		}
+		else
+		{
+			maincolor_status=AL_GREEN;
+		}	
+	}
+	else if (item->whichcallback == MENU_CBK_SUB)
+	{
+		if(maincolor_status<AL_GREEN)
+		{
+			maincolor_status++;
+		}
+		else
+		{
+			maincolor_status=R_ON;
+		}	
+	}
+	
+	switch(maincolor_status)
+	{
+		case R_ON:{
+			DIV_Disp_ByString(MainScreen,"R-oN");         
+			DIV_Disp_ByString(SecondScreen,"CLoR");
+		}break;
+		case G_ON:{
+			DIV_Disp_ByString(MainScreen,"G-oN");         
+			DIV_Disp_ByString(SecondScreen,"CLoR");	
+		}break;
+		case AL_RED:{
+			DIV_Disp_ByString(MainScreen," RED");         
+			DIV_Disp_ByString(SecondScreen,"CLoR");	
+		}break;
+		case AL_GREEN:{
+			DIV_Disp_ByString(MainScreen,"GREN");         
+			DIV_Disp_ByString(SecondScreen,"CLoR");
+		}break;	
+	}
+
+}	
 
 
 #endif
