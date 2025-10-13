@@ -410,17 +410,6 @@ MenuItem* out1mode_menu;
 MenuItem* out2mode_menu;
 MenuItem* NONCmode_menu;
 	
-// menu 3	
-MenuItem* out1easy_menu;
-MenuItem* out1hsy_menu;
-MenuItem* out1wcmp_menu;
-
-MenuItem* out2no_menu;	
-MenuItem* out2easy_menu;
-MenuItem* out2hsy_menu;
-MenuItem* out2wcmp_menu;	
-
-
 	
 // 统一创建菜单树，返回树根 ，注册回调
 MenuItem* CreateTestMenu() {
@@ -464,12 +453,22 @@ MenuItem* CreateTestMenu() {
 			out2mode_menu->childCount = 0;
 			out2mode_menu->level = 2;
 		
+			// nonc模式
+			NONCmode_menu = osal_mem_alloc(sizeof(MenuItem));
+			strcpy(NONCmode_menu->text, "NONCMODE");
+			NONCmode_menu->func = noncmode_click;
+			NONCmode_menu->enabled = true;
+			NONCmode_menu->parent = normset_menu;  
+			NONCmode_menu->children = NULL;
+			NONCmode_menu->childCount = 0;
+			NONCmode_menu->level = 2;
 			
 			// 分配根项子菜单数组
-			normset_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 2);		
-			normset_menu->childCount = 2;
+			normset_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 3);		
+			normset_menu->childCount = 3;
 			normset_menu->children[0] = out1mode_menu;
 			normset_menu->children[1] = out2mode_menu;
+			normset_menu->children[2] = NONCmode_menu;
 		}	
 
 		// 2.PROSET

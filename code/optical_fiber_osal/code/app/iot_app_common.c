@@ -56,6 +56,21 @@ uint8_t system_state = RUN_STATE;
 uint32_t out1compare_status = compare1_EASY;	
 	
 uint32_t out2compare_status = compare2_off;	
+
+#define  	noncstatus_1o2o     0
+#define		noncstatus_1o2c     1
+#define		noncstatus_1c2c     3
+#define		noncstatus_1c2o     2
+
+#define 	out1nc  1
+#define     out1no  0
+
+#define 	out1   2
+#define 	out2   1
+
+uint32_t outnonc_status = noncstatus_1o2o;
+
+
 	
 // 菜单回调
 // callback 1
@@ -202,15 +217,100 @@ void noncmode_click(MenuItem* item)
 {
 	if(item->whichcallback == INCALLBACK)
 	{
-		Menu_Enter();
 		
-		Menu_Execute(INCALLBACK);
 	}
 	else if (item->whichcallback == OUTCALLBACK)
+	{
+		
+	}
+	else if (item->whichcallback == MENU_CBK_MODE)
 	{
 		Menu_Next();
 		
 		Menu_Execute(INCALLBACK);
+		
+		return;
+	}
+	else if (item->whichcallback == MENU_CBK_ADD)
+	{
+		if(out2compare_status != compare2_off)
+		{
+			if(outnonc_status>noncstatus_1o2o)
+			{
+				outnonc_status=outnonc_status>>1;
+			}
+			else
+			{
+				outnonc_status=noncstatus_1c2o;
+			}	
+		}
+		else
+		{
+			uint32_t temp = outnonc_status & out1;
+			
+			if(!temp){outnonc_status |= out1;}
+			else{outnonc_status &= ~out1;}
+		}
+	}
+	else if (item->whichcallback == MENU_CBK_SUB)
+	{
+		if(out2compare_status != compare2_off)
+		{
+			if(outnonc_status<noncstatus_1c2o)
+			{
+				outnonc_status=outnonc_status<<1;
+			}
+			else
+			{
+				outnonc_status=noncstatus_1o2o;
+			}	
+		}
+		else
+		{
+			uint32_t temp = outnonc_status & out1;
+			
+			if(!temp){outnonc_status |= out1;}
+			else{outnonc_status &= ~out1;}
+		}
+	}
+	
+	if(out2compare_status != compare2_off)
+	{
+		switch(outnonc_status)
+		{
+			case noncstatus_1o2o:{
+				DIV_Disp_ByString(MainScreen,"1o2o");         
+				DIV_Disp_ByString(SecondScreen,"NONC");
+			}break;
+			case noncstatus_1o2c:{
+				DIV_Disp_ByString(MainScreen,"1o2c");         
+				DIV_Disp_ByString(SecondScreen,"NONC");	
+			}break;
+			case noncstatus_1c2c:{
+				DIV_Disp_ByString(MainScreen,"1c2c");         
+				DIV_Disp_ByString(SecondScreen,"NONC");	
+			}break;
+			case noncstatus_1c2o:{
+				DIV_Disp_ByString(MainScreen,"1c2o");         
+				DIV_Disp_ByString(SecondScreen,"NONC");
+			}break;	
+		}
+	}
+	else
+	{
+		uint8_t temp = (outnonc_status & out1)?1:0;
+		
+		switch(temp)
+		{
+			case out1no:{
+				DIV_Disp_ByString(MainScreen," 1NO");         
+				DIV_Disp_ByString(SecondScreen,"NONC");
+			}break;
+			case out1nc:{
+				DIV_Disp_ByString(MainScreen," 1NC");         
+				DIV_Disp_ByString(SecondScreen,"NONC");
+			}break;
+		}
 	}
 }
 
