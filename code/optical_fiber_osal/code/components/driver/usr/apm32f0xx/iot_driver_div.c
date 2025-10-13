@@ -4,6 +4,7 @@
 
 Disp_Management disp_management;
 
+//为了适配各种单位转换写的，有很多问题，需要完善
 void DIV_Disp_ClearAllPoint(uint8_t screen)
 {
 	if(screen)
@@ -642,10 +643,12 @@ void DIV_Disp_floatNum(uint8_t screen,float num)   //显示浮点数
 			
 			if(length<10)
 			{
-        DIV_Disp_FloatByString(screen,buffer); //可以显示最多三位小数
+				DIV_Disp_FloatByString(screen,buffer); //可以显示最多三位小数
 			}
 	
 }
+
+//屏显示====================================================
 //显示字符串
 void DIV_Disp_ByString(int mainscreen,char * string)
 { 
@@ -1013,6 +1016,8 @@ void DIV_Disp_Uint16Num(uint8_t screen,uint16_t num)
 
 
 
+
+//位显示====================================================
 //显示符号
 void DIV_Disp_Symbol(uint8_t nixie,uint8_t symbol)
 {
@@ -1308,7 +1313,9 @@ void DIV_Disp_Num(uint8_t nixie,uint8_t num)
 }
 
 
-//初始化
+
+
+//初始化======================================================
 void DIV_Disp_Init(void)
 {
 		HAL_Disp_Init();
