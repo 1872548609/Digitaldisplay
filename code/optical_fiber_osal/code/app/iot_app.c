@@ -184,7 +184,7 @@ void iot_app_init(uint8 task_id)
 	
 	HalLedSet(HAL_LED_ALL,HAL_LED_MODE_ON);// 打开背光
 	
-	HalLedBlink(HAL_LED_ALL,0,10,10);
+	//HalLedBlink(HAL_LED_ALL,0,10,10);
 	
 	MenuItem* root = CreateTestMenu(); // 动态创建菜单，所有菜单都在这个函数里编辑好
     MenuSystem_Init(root);	// 初始化系统菜单

@@ -694,6 +694,16 @@
               <FileType>5</FileType>
               <FilePath>..\code\components\driver\usr\apm32f0xx\iot_menu.h</FilePath>
             </File>
+            <File>
+              <FileName>iot_driver_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_led.c</FilePath>
+            </File>
+            <File>
+              <FileName>iot_driver_led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_led.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
