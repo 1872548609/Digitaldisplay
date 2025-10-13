@@ -53,20 +53,6 @@ extern "C"
 // 局部变量定义区域
 uint8 iot_app_task_id;
 
-
-void normset_click(MenuItem* item) {
-
-	if(item->whichcallback)
-	{
-		DIV_Disp_ByString(MainScreen,"NoRM");         //显示输出1的预设
-		DIV_Disp_ByString(SecondScreen,"Mode");	
-	}
-	else
-	{
-	
-	}
-}
-
 uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milliseconds)
 {
     uint8  k;
@@ -128,22 +114,37 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 	
 	if(press_keys & HAL_KEY_MODE)
 	{
-		
+		if(system_state == MENU_STATE)
+		{
+			Menu_Execute(OUTCALLBACK);
+		}
 	}
 	
 	if(press_keys & HAL_KEY_LEFT_ADD)
 	{
-		
+		if(system_state == MENU_STATE)
+		{
+			Menu_Execute(OUTCALLBACK);
+		}
 	}
 	
 	if(press_keys & HAL_KEY_RIGHT_SUB)
 	{
-		
+		if(system_state == MENU_STATE)
+		{
+			Menu_Execute(OUTCALLBACK);
+		}
 	}
 	
 	if(longpress_morethan_3s_keys & HAL_KEY_MODE)
 	{
-		Menu_Enter(); // 进入根下第一个菜单
+		if(system_state == RUN_STATE)
+		{
+			MenuSystem_Start();		// 启动菜单
+			Menu_Enter(); // 进入根下第一个菜单
+			Menu_Execute(INCALLBACK);
+			system_state = MENU_STATE; 
+		}
 	}
 	
 	
@@ -157,8 +158,7 @@ void iot_app_init(uint8 task_id)
 	
 	MenuItem* root = CreateTestMenu(); // 动态创建菜单，所有菜单都在这个函数里编辑好
     MenuSystem_Init(root);	// 初始化系统菜单
-	MenuSystem_Start();
-	
+
 	osal_start_reload_timer(iot_app_task_id,IOT_APP_TIMER_EVT,IOT_APP_TIMER_INTERVAL);
 	
     // 注册按键回调函数

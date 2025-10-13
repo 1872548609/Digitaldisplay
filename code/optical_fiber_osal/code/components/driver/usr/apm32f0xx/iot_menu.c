@@ -49,7 +49,7 @@ void Menu_Enter() {
     if (menuSystem.current->childCount > 0) {
 		
 		// 菜单退出回调
-		Menu_Execute(2);
+		//Menu_Execute(2);
 		
         // 如果有记录的子菜单指针，则进入该记录的子菜单
         if (menuSystem.current->childrenmenu != NULL) {
@@ -61,7 +61,7 @@ void Menu_Enter() {
         }
 		
 		// 菜单进入回调
-		Menu_Execute(1);
+		//Menu_Execute(1);
     }
 }
 
@@ -71,7 +71,7 @@ void Menu_Back(bool record) {
     if (menuSystem.current->parent != NULL) {
 		
 		// 菜单退出回调
-		Menu_Execute(2);
+		//Menu_Execute(2);
 		
         // 如果需要记录，则更新父菜单的 childrenmenu
         if (record) {
@@ -82,7 +82,7 @@ void Menu_Back(bool record) {
         menuSystem.current = menuSystem.current->parent;
 		
 		// 菜单进入回调
-		Menu_Execute(1);
+		//Menu_Execute(1);
     }
 }
 
@@ -92,7 +92,7 @@ void Menu_Next() {
     if (parent == NULL) return; // 根菜单没有同级菜单
 	
 	// 菜单退出回调
-	Menu_Execute(2);
+	//Menu_Execute(2);
  
     for (int i = 0; i < parent->childCount; i++) {
         if (parent->children[i] == menuSystem.current) {
@@ -100,7 +100,7 @@ void Menu_Next() {
             menuSystem.current = parent->children[nextIdx];
 			
 			// 菜单进入回调
-			Menu_Execute(1);
+			//Menu_Execute(1);
 			
             break;
         }
@@ -113,7 +113,7 @@ void Menu_Prev() {
     if (parent == NULL) return; // 根菜单没有同级菜单
  
 	// 菜单退出回调
-	Menu_Execute(2);
+	//Menu_Execute(2);
 	
     for (int i = 0; i < parent->childCount; i++) {
         if (parent->children[i] == menuSystem.current) {
@@ -121,7 +121,7 @@ void Menu_Prev() {
             menuSystem.current = parent->children[prevIdx];
 			
 			// 菜单进入回调
-			Menu_Execute(1);
+			//Menu_Execute(1);
 			
             break;
         }
@@ -506,9 +506,9 @@ MenuItem* CreateTestMenu() {
 			// 通道2模式
 			out2mode_menu = osal_mem_alloc(sizeof(MenuItem));
 			strcpy(out2mode_menu->text, "OUT2MODE");
-			out2mode_menu->func = normset_click;
+			out2mode_menu->func = out2mode_click;
 			out2mode_menu->enabled = true;
-			out2mode_menu->parent = root;  
+			out2mode_menu->parent = normset_menu;  
 			out2mode_menu->children = NULL;
 			out2mode_menu->childCount = 0;
 			out2mode_menu->level = 2;

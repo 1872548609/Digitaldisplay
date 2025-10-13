@@ -3,7 +3,7 @@ Filename:       iot_app.c
 Revised:        $Date: 2019-8-20 15:35
 Revision:       $Revision: V1.0.0
 
-Description:    IoTÓ¦ÓÃ³ÌĞòÖ÷ÎÄ¼ş£¬°üº¬ÈÎÎñ³õÊ¼»¯¡¢°´¼ü´¦ÀíºÍÊÂ¼ş´¦ÀíµÈ¹¦ÄÜ
+Description:    IoTåº”ç”¨ç¨‹åºä¸»æ–‡ä»¶ï¼ŒåŒ…å«ä»»åŠ¡åˆå§‹åŒ–ã€æŒ‰é”®å¤„ç†å’Œäº‹ä»¶å¤„ç†ç­‰åŠŸèƒ½
 
 Copyright 2021 uwaycon. All rights reserved.
 **************************************************-*****************^******************************/
@@ -19,38 +19,38 @@ extern "C"
 /*************************************************-*************************************************
 *                                               NOTE
 **************************************************-*****************^******************************/
-//-- source insightÊ¹ÓÃUTF-8±àÂë£¬File->Reload As Encoding...->UTF-8
-//-- source insightÉèÖÃÄ¬ÈÏ±àÂë£¬Option->Preferences->Files->Default encoding->UTF-8
+//-- source insightä½¿ç”¨UTF-8ç¼–ç ï¼ŒFile->Reload As Encoding...->UTF-8
+//-- source insightè®¾ç½®é»˜è®¤ç¼–ç ï¼ŒOption->Preferences->Files->Default encoding->UTF-8
 
 /*************************************************-*************************************************
 *                                             INCLUDES
 **************************************************-*****************^******************************/
-// Í·ÎÄ¼ş°üº¬ÇøÓò£¨Êµ¼ÊÊ¹ÓÃÊ±ĞèÒª°üº¬±ØÒªµÄÍ·ÎÄ¼ş£©
+// å¤´æ–‡ä»¶åŒ…å«åŒºåŸŸï¼ˆå®é™…ä½¿ç”¨æ—¶éœ€è¦åŒ…å«å¿…è¦çš„å¤´æ–‡ä»¶ï¼‰
 
 /*************************************************-*************************************************
 *                                               MACRO
 **************************************************-*****************^******************************/
-// ºê¶¨ÒåÇøÓò
+// å®å®šä¹‰åŒºåŸŸ
 
 /*************************************************-*************************************************
 *                                          CONSTANT DEFINED
 **************************************************-*****************^******************************/
-// ³£Á¿¶¨ÒåÇøÓò
+// å¸¸é‡å®šä¹‰åŒºåŸŸ
 
 /*************************************************-*************************************************
 *                                           STRUCT DEFINED
 **************************************************-*****************^******************************/
-// ½á¹¹Ìå¶¨ÒåÇøÓò
+// ç»“æ„ä½“å®šä¹‰åŒºåŸŸ
 
 /*************************************************-*************************************************
 *                                          GLOBAL VARIABLES
 **************************************************-*****************^******************************/
-// È«¾Ö±äÁ¿¶¨ÒåÇøÓò
+// å…¨å±€å˜é‡å®šä¹‰åŒºåŸŸ
 
 /*************************************************-*************************************************
 *                                          LOCAL VARIABLES
 **************************************************-*****************^******************************/
-// ¾Ö²¿±äÁ¿¶¨ÒåÇøÓò
+// å±€éƒ¨å˜é‡å®šä¹‰åŒºåŸŸ
 uint8 hu_app_task_id;
 
 uint8 hu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milliseconds)
@@ -58,48 +58,48 @@ uint8 hu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milli
     uint8  k;
     uint8  key_mask = HAL_KEY_1;
     uint8  scan_flag = 1;
-    uint8  press_keys = 0;      // °´ÏÂµÄ°´¼ü
-    //uint8  hold_keys = 0;       // °´×¡µÄ°´¼ü
-	uint8  release_keys = 0;    // ÊÍ·ÅµÄ°´¼ü
-	static uint8 islongorshortpress = 0; // ³¤°´»ò¶Ì°´±êÖ¾
-	uint8_t longpress_morethan_3s_keys = 0; // ³¤°´³¬¹ı3ÃëµÄ°´¼ü
+    uint8  press_keys = 0;      // æŒ‰ä¸‹çš„æŒ‰é”®
+    //uint8  hold_keys = 0;       // æŒ‰ä½çš„æŒ‰é”®
+	uint8  release_keys = 0;    // é‡Šæ”¾çš„æŒ‰é”®
+	static uint8 islongorshortpress = 0; // é•¿æŒ‰æˆ–çŸ­æŒ‰æ ‡å¿—
+	uint8_t longpress_morethan_3s_keys = 0; // é•¿æŒ‰è¶…è¿‡3ç§’çš„æŒ‰é”®
 	
-    // Ö»´¦ÀíÓĞĞ§µÄ°´¼ü
+    // åªå¤„ç†æœ‰æ•ˆçš„æŒ‰é”®
     cur_keys &= HU_APP_KEY_MASK;
     pre_keys &= HU_APP_KEY_MASK;
 
-    // ±éÀúËùÓĞ°´¼ü
+    // éå†æ‰€æœ‰æŒ‰é”®
     for (k = 0; k < 8; k++,key_mask<<=1)
     {
-        IOT_WATCHDOG_RESET(); // Î¹¹·
+        IOT_WATCHDOG_RESET(); // å–‚ç‹—
 
-        // Ìø¹ıÎŞĞ§°´¼ü
+        // è·³è¿‡æ— æ•ˆæŒ‰é”®
         if (!(key_mask & HU_APP_KEY_MASK))
         {
             continue;
         }
         
-        // °´¼ü°´ÏÂ´¦Àí
+        // æŒ‰é”®æŒ‰ä¸‹å¤„ç†
         if (cur_keys & key_mask)
         {
-            // ¶Ì°´¼ì²â
+            // çŸ­æŒ‰æ£€æµ‹
             if (hal_key_press_time_count[k] > 2)
             {
                islongorshortpress = 1;
             }
-            // ³¬³¤°´¼ì²â£¨>3s£©
+            // è¶…é•¿æŒ‰æ£€æµ‹ï¼ˆ>3sï¼‰
 			if (hal_key_press_time_count[k] >= 30)
             {
 				islongorshortpress = 2;
                 longpress_morethan_3s_keys |= key_mask;
             }
         }
-        // °´¼üÊÍ·Å´¦Àí
+        // æŒ‰é”®é‡Šæ”¾å¤„ç†
         else
         {
 			if((pre_keys & key_mask) && !(cur_keys & key_mask))
 			{
-				// ¶Ì°´´¦Àí
+				// çŸ­æŒ‰å¤„ç†
 				if(islongorshortpress == 1)
 				{
 					press_keys |= key_mask;
@@ -114,17 +114,17 @@ uint8 hu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milli
 	
 		if(press_keys & HAL_KEY_MODE)
 		{
-			DIV_Disp_ByString(SecondScreen ,"AAAA");
+			//DIV_Disp_ByString(SecondScreen ,"AAAA");
 		}
 		
 		if(press_keys & HAL_KEY_LEFT_ADD)
 		{
-			DIV_Disp_ByString(SecondScreen ,"VVVV");
+			//DIV_Disp_ByString(SecondScreen ,"VVVV");
 		}
 		
 		if(press_keys & HAL_KEY_RIGHT_SUB)
 		{
-			DIV_Disp_ByString(SecondScreen ,"CXXX");
+			//DIV_Disp_ByString(SecondScreen ,"CXXX");
 		}
 		
 	
@@ -133,30 +133,30 @@ uint8 hu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milli
 
 void hu_app_init(uint8 task_id)
 {
-    hu_app_task_id = task_id; // ±£´æÈÎÎñID
+    hu_app_task_id = task_id; // ä¿å­˜ä»»åŠ¡ID
 			
-		// ×¢²áÊÂ¼ş
+		// æ³¨å†Œäº‹ä»¶
 		osal_start_reload_timer(hu_app_task_id,HU_APP_TIMER_EVT,HU_APP_TIMER_INTERVAL);
 	
-    // ×¢²á°´¼ü»Øµ÷º¯Êı
+    // æ³¨å†ŒæŒ‰é”®å›è°ƒå‡½æ•°
     HalKeyCallbackRegister(hu_app_key_callback);
 }
 
 uint16 hu_app_process_event(uint8 task_id, uint16 events)
 {
-    (void)task_id; // ÏÔÊ½ºöÂÔÎ´ÒıÓÃ²ÎÊı£¨±ÜÃâ±àÒëÆ÷¾¯¸æ£©
+    (void)task_id; // æ˜¾å¼å¿½ç•¥æœªå¼•ç”¨å‚æ•°ï¼ˆé¿å…ç¼–è¯‘å™¨è­¦å‘Šï¼‰
      
-    // ´¦ÀíÏµÍ³ÏûÏ¢ÊÂ¼ş
+    // å¤„ç†ç³»ç»Ÿæ¶ˆæ¯äº‹ä»¶
     if ( events & SYS_EVENT_MSG )
     {
-        // ½ÓÊÕÏûÏ¢¶ÓÁĞÖĞµÄÏûÏ¢
+        // æ¥æ”¶æ¶ˆæ¯é˜Ÿåˆ—ä¸­çš„æ¶ˆæ¯
         uint8* msg_packet = (uint8 *)osal_msg_receive(hu_app_task_id);
         while ( msg_packet )
         {
-            // ¸ù¾İÏûÏ¢ÊÂ¼şÀàĞÍ·Ö·¢´¦Àí
+            // æ ¹æ®æ¶ˆæ¯äº‹ä»¶ç±»å‹åˆ†å‘å¤„ç†
             //switch ( msg_packet->hdr.event )
             //{
-            //case KEY_CHANGE://°´¼üÊÂ¼ş´¦Àí
+            //case KEY_CHANGE://æŒ‰é”®äº‹ä»¶å¤„ç†
             // //UserApp_HandleKeys( ((keyChange_t *)MSGpkt)->state, ((keyChange_t *)MSGpkt)->keys );
             // break;
 
@@ -164,14 +164,14 @@ uint16 hu_app_process_event(uint8 task_id, uint16 events)
             // break;
             //}
 
-            // ÊÍ·ÅÏûÏ¢ÄÚ´æ
+            // é‡Šæ”¾æ¶ˆæ¯å†…å­˜
             osal_msg_deallocate((uint8 *)msg_packet);
 
-            // ½ÓÊÕÏÂÒ»ÌõÏûÏ¢
+            // æ¥æ”¶ä¸‹ä¸€æ¡æ¶ˆæ¯
             msg_packet = (uint8 *)osal_msg_receive(hu_app_task_id);
         }
 
-        // ·µ»ØÎ´´¦ÀíµÄÊÂ¼ş£¨Çå³ıÒÑ´¦ÀíµÄSYS_EVENT_MSG£©
+        // è¿”å›æœªå¤„ç†çš„äº‹ä»¶ï¼ˆæ¸…é™¤å·²å¤„ç†çš„SYS_EVENT_MSGï¼‰
         return (events ^ SYS_EVENT_MSG);
     }
 	
@@ -179,7 +179,7 @@ uint16 hu_app_process_event(uint8 task_id, uint16 events)
 	
 
 	
-	//ÅĞ¶ÏËûÊÇ·ñ³É¹¦µ÷¶ÈÆğÀ´ÁË£¬Ìí¼Ó³É¹¦¾Í»á½øÄãµÄÊÂ¼ş¹ÜÀí
+	//åˆ¤æ–­ä»–æ˜¯å¦æˆåŠŸè°ƒåº¦èµ·æ¥äº†ï¼Œæ·»åŠ æˆåŠŸå°±ä¼šè¿›ä½ çš„äº‹ä»¶ç®¡ç†
 	if(events & IOT_APP_TIMER_EVT)
 	{
 		
@@ -188,7 +188,7 @@ uint16 hu_app_process_event(uint8 task_id, uint16 events)
 	}
 		
 	
-	// ¶ªÆúÎ´ÖªÊÂ¼ş
+	// ä¸¢å¼ƒæœªçŸ¥äº‹ä»¶
     return 0;
 }
 
