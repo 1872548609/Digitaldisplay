@@ -4,71 +4,9 @@
 
 Disp_Management disp_management;
 
-//为了适配各种单位转换写的，有很多问题，需要完善
-void DIV_Disp_ClearAllPoint(uint8_t screen)
-{
-	if(screen)
-	{
-	    disp_management.Disp_S1Point&=~(0xe);
-	}
-	else
-	{
-		   disp_management.Disp_S2Point&=~(0xe);
-	}		 	
-}
 
-//取消设置小数点
-void DIV_Disp_UnSetPoint(uint8_t screen ,uint8_t p)
-{
-	if(screen==MainScreen)
-	{
-	 		disp_management.Disp_S1Point&=~(p);
 
-	}
-
-	 if(screen==SecondScreen)
-		{
-				disp_management.Disp_S2Point&=~(p);
-		}
-		
-		if(screen==Out1Screen)
-		{
-					disp_management.Disp_S1Point&=~(p);
-		}
-		
-		if(screen==Out2Screen)
-		{
-					disp_management.Disp_S2Point&=~(p);
-		}
-}
-
-//设置小数点
-void DIV_Disp_SetPoint(uint8_t screen ,uint8_t p)
-{
-	if(screen==MainScreen)
-	{
-	 		disp_management.Disp_S1Point&=~(0x0e-p);
-		disp_management.Disp_S1Point|=p;
-	
-	}
-
-	 if(screen==SecondScreen)
-		{
-				disp_management.Disp_S2Point&=~(0x0e-p);
-		disp_management.Disp_S2Point|=p;
-		}
-		
-		if(screen==Out1Screen)
-		{
-				disp_management.Disp_S1Point|=p;
-		}
-		
-		if(screen==Out2Screen)
-		{
-				disp_management.Disp_S2Point|=p;
-		}
-}
-
+//为了适配各种单位转换写的，有很多问题，需要完善======================
 //显示浮点带0到3位小数的
 void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //显示浮点数
 {
@@ -623,18 +561,6 @@ void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //显示
 }
 
 
-//把字符串从左往右依次显示在屏幕上字符占一位，无则不显示
-void DIV_Disp_Snprintf(int screen,const char * data1,...)
-{  
-	char data[9]={0};
-	int size = sizeof(data);
-	va_list ps;
-	va_start(ps,data1);
-	vsnprintf(data,size,data1,ps);
-	DIV_Disp_ByString(screen,data);
-	va_end(ps);   
-}
-
 //显示浮点带一位小数的
 void DIV_Disp_floatNum(uint8_t screen,float num)   //显示浮点数
 {
@@ -647,112 +573,6 @@ void DIV_Disp_floatNum(uint8_t screen,float num)   //显示浮点数
 			}
 	
 }
-
-//屏显示====================================================
-//显示字符串
-void DIV_Disp_ByString(int mainscreen,char * string)
-{ 
-	uint16_t sz;
-	uint16_t length; 
-	int temp;
-	int i;     
-
- sz=0;
-	length=4;
-	
-		  for(i=sz;i<length;i++)
-			{  
-				temp= i;
-				if(!mainscreen)
-					{
-							if(i==0){temp=7;}if(i==1){temp=6;}if(i==2){temp=5;}if(i==3){temp=4;}	
-					}
-						
-					if((string[i]>='a'&& string[i]<='z')||(string[i]>='A'&& string[i]<='Z'))
-					{
-						switch(string[i]){
-								case 'a':{DIV_Disp_Alphabet(temp,Alphabet_a);}break;
-								case 'b':{DIV_Disp_Alphabet(temp,Alphabet_b);}break;
-								case 'c':{DIV_Disp_Alphabet(temp,Alphabet_c);}break;
-								case 'd':{DIV_Disp_Alphabet(temp,Alphabet_d);}break;
-								case 'e':{DIV_Disp_Alphabet(temp,Alphabet_e);}break;
-								case 'f':{DIV_Disp_Alphabet(temp,Alphabet_f);}break;
-								case 'g':{DIV_Disp_Alphabet(temp,Alphabet_g);}break;
-								case 'h':{DIV_Disp_Alphabet(temp,Alphabet_h);}break;
-								case 'i':{DIV_Disp_Alphabet(temp,Alphabet_i);}break;
-								case 'j':{DIV_Disp_Alphabet(temp,Alphabet_j);}break;
-								case 'k':{DIV_Disp_Alphabet(temp,Alphabet_k);}break;
-								case 'l':{DIV_Disp_Alphabet(temp,Alphabet_l);}break;
-								case 'm':{DIV_Disp_Alphabet(temp,Alphabet_m);}break;
-								case 'n':{DIV_Disp_Alphabet(temp,Alphabet_n);}break;
-								case 'o':{DIV_Disp_Alphabet(temp,Alphabet_o);}break;
-								case 'p':{DIV_Disp_Alphabet(temp,Alphabet_p);}break;
-								case 'q':{DIV_Disp_Alphabet(temp,Alphabet_q);}break;
-								case 'r':{DIV_Disp_Alphabet(temp,Alphabet_r);}break;
-								case 's':{DIV_Disp_Alphabet(temp,Alphabet_s);}break;
-								case 't':{DIV_Disp_Alphabet(temp,Alphabet_t);}break;
-								case 'u':{DIV_Disp_Alphabet(temp,Alphabet_u);}break;
-								case 'v':{DIV_Disp_Alphabet(temp,Alphabet_v);}break;
-								case 'w':{DIV_Disp_Alphabet(temp,Alphabet_w);}break;
-								case 'x':{DIV_Disp_Alphabet(temp,Alphabet_x);}break;
-								case 'y':{DIV_Disp_Alphabet(temp,Alphabet_y);}break;
-								case 'z':{DIV_Disp_Alphabet(temp,Alphabet_z);}break;
-								case 'A':{DIV_Disp_Alphabet(temp,Alphabet_A);}break;
-								case 'B':{DIV_Disp_Alphabet(temp,Alphabet_B);}break;
-								case 'C':{DIV_Disp_Alphabet(temp,Alphabet_C);}break;
-								case 'D':{DIV_Disp_Alphabet(temp,Alphabet_D);}break;
-								case 'E':{DIV_Disp_Alphabet(temp,Alphabet_E);}break;
-								case 'F':{DIV_Disp_Alphabet(temp,Alphabet_F);}break;
-								case 'G':{DIV_Disp_Alphabet(temp,Alphabet_G);}break;
-								case 'H':{DIV_Disp_Alphabet(temp,Alphabet_H);}break;
-								case 'I':{DIV_Disp_Alphabet(temp,Alphabet_I);}break;
-								case 'J':{DIV_Disp_Alphabet(temp,Alphabet_J);}break;
-								case 'K':{DIV_Disp_Alphabet(temp,Alphabet_K);}break;
-								case 'L':{DIV_Disp_Alphabet(temp,Alphabet_L);}break;
-								case 'M':{DIV_Disp_Alphabet(temp,Alphabet_M);}break;
-								case 'N':{DIV_Disp_Alphabet(temp,Alphabet_N);}break;
-								case 'O':{DIV_Disp_Alphabet(temp,Alphabet_O);}break;
-								case 'P':{DIV_Disp_Alphabet(temp,Alphabet_P);}break;
-								case 'Q':{DIV_Disp_Alphabet(temp,Alphabet_Q);}break;
-								case 'R':{DIV_Disp_Alphabet(temp,Alphabet_R);}break;
-								case 'S':{DIV_Disp_Alphabet(temp,Alphabet_S);}break;
-								case 'T':{DIV_Disp_Alphabet(temp,Alphabet_T);}break;
-								case 'U':{DIV_Disp_Alphabet(temp,Alphabet_U);}break;
-								case 'V':{DIV_Disp_Alphabet(temp,Alphabet_V);}break;
-								case 'W':{DIV_Disp_Alphabet(temp,Alphabet_W);}break;
-								case 'X':{DIV_Disp_Alphabet(temp,Alphabet_X);}break;
-								case 'Y':{DIV_Disp_Alphabet(temp,Alphabet_Y);}break;
-								case 'Z':{DIV_Disp_Alphabet(temp,Alphabet_Z);}break;}	
-					}
-					else if(string[i]>='0' && string[i]<='9')
-					{
-					    switch(string[i])
-									{
-										case '0':{DIV_Disp_Num(temp,NUM0);}break;
-										case '1':{DIV_Disp_Num(temp,NUM1);}break;
-										case '2':{DIV_Disp_Num(temp,NUM2);}break;
-										case '3':{DIV_Disp_Num(temp,NUM3);}break;
-										case '4':{DIV_Disp_Num(temp,NUM4);}break;
-										case '5':{DIV_Disp_Num(temp,NUM5);}break;
-										case '6':{DIV_Disp_Num(temp,NUM6);}break;
-										case '7':{DIV_Disp_Num(temp,NUM7);}break;
-										case '8':{DIV_Disp_Num(temp,NUM8);}break;
-										case '9':{DIV_Disp_Num(temp,NUM9);}break;
-									} 
-					}
-					else if(string[i]=='-'||string[i]=='|'||string[i]=='/')
-					{
-					    switch(string[i])
-									{
-										case '-':{DIV_Disp_Symbol(temp,Symbol_minus);}break;
-										case '|':{DIV_Disp_Symbol(temp,Symbol_saw);}break;
-										case '/':{DIV_Disp_Symbol(temp,Symbol_slash);}break;
-									} 
-					}
-				else{DIV_Disp_Num(temp,NUMNULL);}
-			}		
-}
-
 
 //显示浮点字符串，最多三个小数,长度四位 空位不显示，需要清除  范围-1050~1050
 void DIV_Disp_FloatByString(uint8_t screen ,char * string)
@@ -979,6 +799,342 @@ else if(count==0)   //没有小数
 }	
 }
 }
+
+
+
+//屏显示====================================================
+// 清除小数点
+void DIV_Disp_ClearAllPoint(uint8_t screen)
+{
+	if(screen)
+	{
+	    disp_management.Disp_S1Point&=~(0xe);
+	}
+	else
+	{
+		   disp_management.Disp_S2Point&=~(0xe);
+	}		 	
+}
+
+//取消设置小数点
+void DIV_Disp_UnSetPoint(uint8_t screen ,uint8_t p)
+{
+	if(screen==MainScreen)
+	{
+	 		disp_management.Disp_S1Point&=~(p);
+
+	}
+
+	 if(screen==SecondScreen)
+		{
+				disp_management.Disp_S2Point&=~(p);
+		}
+		
+		if(screen==Out1Screen)
+		{
+					disp_management.Disp_S1Point&=~(p);
+		}
+		
+		if(screen==Out2Screen)
+		{
+					disp_management.Disp_S2Point&=~(p);
+		}
+}
+
+//设置小数点
+void DIV_Disp_SetPoint(uint8_t screen ,uint8_t p)
+{
+	if(screen==MainScreen)
+	{
+	 		disp_management.Disp_S1Point&=~(0x0e-p);
+		disp_management.Disp_S1Point|=p;
+	
+	}
+
+	 if(screen==SecondScreen)
+		{
+				disp_management.Disp_S2Point&=~(0x0e-p);
+		disp_management.Disp_S2Point|=p;
+		}
+		
+		if(screen==Out1Screen)
+		{
+				disp_management.Disp_S1Point|=p;
+		}
+		
+		if(screen==Out2Screen)
+		{
+				disp_management.Disp_S2Point|=p;
+		}
+}
+
+
+//把字符串从左往右依次显示在屏幕上字符占一位，无则不显示
+void DIV_Disp_Snprintf(int screen,const char * data1,...)
+{  
+	char data[9]={0};
+	int size = sizeof(data);
+	va_list ps;
+	va_start(ps,data1);
+	vsnprintf(data,size,data1,ps);
+	DIV_Disp_ByString(screen,data);
+	va_end(ps);   
+}
+// 新版显示浮点数
+void DIV_Disp_floatNumByString(int screen,const char * data1,...)
+{
+	// 获取字符串参数
+	char data[20]={0};
+	int size = sizeof(data);
+	va_list ps;
+	va_start(ps,data1);
+	vsnprintf(data,size,data1,ps);
+	va_end(ps);   
+	
+	char * string = data;
+	
+//	// 判断是否是负数
+//	uint8 isNegative = 0;
+//	if (data[0] == '-') {
+//		string++;
+//		isNegative = 0;
+//    } 
+	
+	// 获取长度
+	int len = strlen(data);
+	if (len >= 20) return; // 或报错处理
+	
+	// 获取小数点
+	int ader =0;	// 小数点位置
+	int i;			
+	for(i=0;i<len;i++)
+	{
+		if(string[i]=='.')
+		{
+				ader = i;
+		}
+	}
+	if(!ader){return;}// 没有小数就返回
+	
+	// 获取小数点前后的数字
+	char frontdate[10]={0};// 获取小数点前的字符串
+	char afterdate[10]={0};// 获取小数点后的字符串
+	
+	int numfront = 0;
+	int countfront = 0;
+	
+	int numafter = 0;
+	int countafter = 0;
+		
+	uint8_t head2=0;     //不要逗号初始化然后第一个不写初始值
+	uint8_t head3=0;
+	
+	if(ader<len)
+	{
+		for(i=0;i<ader;i++)
+		{
+			frontdate[i]=string[i];
+			head2++;
+		}  
+		frontdate[head2]='\0';
+
+		numfront = atoi(frontdate);
+		countfront = strlen(frontdate);
+		
+		for(i=ader+1;string[i]!='\0';i++)
+		{  
+			afterdate[head3]=string[i];
+			head3++;
+		}
+		afterdate[head3]='\0';
+		
+		numafter = atoi(afterdate);
+		countafter = strlen(afterdate);
+	}
+	
+	// 显示
+	char disp[20] = {0};
+	
+	if(screen)// 主屏
+	{
+		if(countfront==1){
+			if(numfront==0)
+			{
+				sprintf(disp," %s",afterdate);
+			}
+			else
+			{
+				sprintf(disp,"%s%s",frontdate,afterdate);
+			}
+			DIV_Disp_SetPoint(MainScreen,P1);
+		}
+		if(countfront==2){
+			if(numfront==0)
+			{
+				sprintf(disp,"  %s",afterdate);
+			}
+			else
+			{
+				sprintf(disp,"%s%s",frontdate,afterdate);
+			}
+			DIV_Disp_SetPoint(MainScreen,P2);
+		}
+		if(countfront==3){
+			if(numfront==0)
+			{
+				sprintf(disp,"   %s",afterdate);
+			}
+			else
+			{
+				sprintf(disp,"%s%s",frontdate,afterdate);
+			}
+			DIV_Disp_SetPoint(MainScreen,P3);
+		}
+		DIV_Disp_ByString(MainScreen,disp);
+	}
+	else
+	{
+		if(countfront==1){
+			if(numfront==0)
+			{
+				sprintf(disp," %s",afterdate);
+			}
+			else
+			{
+				sprintf(disp,"%s%s",frontdate,afterdate);
+			}
+			DIV_Disp_SetPoint(SecondScreen,P1);
+		}
+		if(countfront==2){
+			if(numfront==0)
+			{
+				sprintf(disp,"  %s",afterdate);
+			}
+			else
+			{
+				sprintf(disp,"%s%s",frontdate,afterdate);
+			}
+			DIV_Disp_SetPoint(SecondScreen,P2);
+		}
+		if(countfront==3){
+			if(numfront==0)
+			{
+				sprintf(disp,"   %s",afterdate);
+			}
+			else
+			{
+				sprintf(disp,"%s%s",frontdate,afterdate);
+			}
+			DIV_Disp_SetPoint(SecondScreen,P3);
+		}
+		DIV_Disp_ByString(SecondScreen,disp);
+	}
+}
+
+//显示字符串
+void DIV_Disp_ByString(int mainscreen,char * string)
+{ 
+	uint16_t sz;
+	uint16_t length; 
+	int temp;
+	int i;     
+
+ sz=0;
+	length=4;
+	
+		  for(i=sz;i<length;i++)
+			{  
+				temp= i;
+				if(!mainscreen)
+					{
+							if(i==0){temp=7;}if(i==1){temp=6;}if(i==2){temp=5;}if(i==3){temp=4;}	
+					}
+						
+					if((string[i]>='a'&& string[i]<='z')||(string[i]>='A'&& string[i]<='Z'))
+					{
+						switch(string[i]){
+								case 'a':{DIV_Disp_Alphabet(temp,Alphabet_a);}break;
+								case 'b':{DIV_Disp_Alphabet(temp,Alphabet_b);}break;
+								case 'c':{DIV_Disp_Alphabet(temp,Alphabet_c);}break;
+								case 'd':{DIV_Disp_Alphabet(temp,Alphabet_d);}break;
+								case 'e':{DIV_Disp_Alphabet(temp,Alphabet_e);}break;
+								case 'f':{DIV_Disp_Alphabet(temp,Alphabet_f);}break;
+								case 'g':{DIV_Disp_Alphabet(temp,Alphabet_g);}break;
+								case 'h':{DIV_Disp_Alphabet(temp,Alphabet_h);}break;
+								case 'i':{DIV_Disp_Alphabet(temp,Alphabet_i);}break;
+								case 'j':{DIV_Disp_Alphabet(temp,Alphabet_j);}break;
+								case 'k':{DIV_Disp_Alphabet(temp,Alphabet_k);}break;
+								case 'l':{DIV_Disp_Alphabet(temp,Alphabet_l);}break;
+								case 'm':{DIV_Disp_Alphabet(temp,Alphabet_m);}break;
+								case 'n':{DIV_Disp_Alphabet(temp,Alphabet_n);}break;
+								case 'o':{DIV_Disp_Alphabet(temp,Alphabet_o);}break;
+								case 'p':{DIV_Disp_Alphabet(temp,Alphabet_p);}break;
+								case 'q':{DIV_Disp_Alphabet(temp,Alphabet_q);}break;
+								case 'r':{DIV_Disp_Alphabet(temp,Alphabet_r);}break;
+								case 's':{DIV_Disp_Alphabet(temp,Alphabet_s);}break;
+								case 't':{DIV_Disp_Alphabet(temp,Alphabet_t);}break;
+								case 'u':{DIV_Disp_Alphabet(temp,Alphabet_u);}break;
+								case 'v':{DIV_Disp_Alphabet(temp,Alphabet_v);}break;
+								case 'w':{DIV_Disp_Alphabet(temp,Alphabet_w);}break;
+								case 'x':{DIV_Disp_Alphabet(temp,Alphabet_x);}break;
+								case 'y':{DIV_Disp_Alphabet(temp,Alphabet_y);}break;
+								case 'z':{DIV_Disp_Alphabet(temp,Alphabet_z);}break;
+								case 'A':{DIV_Disp_Alphabet(temp,Alphabet_A);}break;
+								case 'B':{DIV_Disp_Alphabet(temp,Alphabet_B);}break;
+								case 'C':{DIV_Disp_Alphabet(temp,Alphabet_C);}break;
+								case 'D':{DIV_Disp_Alphabet(temp,Alphabet_D);}break;
+								case 'E':{DIV_Disp_Alphabet(temp,Alphabet_E);}break;
+								case 'F':{DIV_Disp_Alphabet(temp,Alphabet_F);}break;
+								case 'G':{DIV_Disp_Alphabet(temp,Alphabet_G);}break;
+								case 'H':{DIV_Disp_Alphabet(temp,Alphabet_H);}break;
+								case 'I':{DIV_Disp_Alphabet(temp,Alphabet_I);}break;
+								case 'J':{DIV_Disp_Alphabet(temp,Alphabet_J);}break;
+								case 'K':{DIV_Disp_Alphabet(temp,Alphabet_K);}break;
+								case 'L':{DIV_Disp_Alphabet(temp,Alphabet_L);}break;
+								case 'M':{DIV_Disp_Alphabet(temp,Alphabet_M);}break;
+								case 'N':{DIV_Disp_Alphabet(temp,Alphabet_N);}break;
+								case 'O':{DIV_Disp_Alphabet(temp,Alphabet_O);}break;
+								case 'P':{DIV_Disp_Alphabet(temp,Alphabet_P);}break;
+								case 'Q':{DIV_Disp_Alphabet(temp,Alphabet_Q);}break;
+								case 'R':{DIV_Disp_Alphabet(temp,Alphabet_R);}break;
+								case 'S':{DIV_Disp_Alphabet(temp,Alphabet_S);}break;
+								case 'T':{DIV_Disp_Alphabet(temp,Alphabet_T);}break;
+								case 'U':{DIV_Disp_Alphabet(temp,Alphabet_U);}break;
+								case 'V':{DIV_Disp_Alphabet(temp,Alphabet_V);}break;
+								case 'W':{DIV_Disp_Alphabet(temp,Alphabet_W);}break;
+								case 'X':{DIV_Disp_Alphabet(temp,Alphabet_X);}break;
+								case 'Y':{DIV_Disp_Alphabet(temp,Alphabet_Y);}break;
+								case 'Z':{DIV_Disp_Alphabet(temp,Alphabet_Z);}break;}	
+					}
+					else if(string[i]>='0' && string[i]<='9')
+					{
+					    switch(string[i])
+									{
+										case '0':{DIV_Disp_Num(temp,NUM0);}break;
+										case '1':{DIV_Disp_Num(temp,NUM1);}break;
+										case '2':{DIV_Disp_Num(temp,NUM2);}break;
+										case '3':{DIV_Disp_Num(temp,NUM3);}break;
+										case '4':{DIV_Disp_Num(temp,NUM4);}break;
+										case '5':{DIV_Disp_Num(temp,NUM5);}break;
+										case '6':{DIV_Disp_Num(temp,NUM6);}break;
+										case '7':{DIV_Disp_Num(temp,NUM7);}break;
+										case '8':{DIV_Disp_Num(temp,NUM8);}break;
+										case '9':{DIV_Disp_Num(temp,NUM9);}break;
+									} 
+					}
+					else if(string[i]=='-'||string[i]=='|'||string[i]=='/')
+					{
+					    switch(string[i])
+									{
+										case '-':{DIV_Disp_Symbol(temp,Symbol_minus);}break;
+										case '|':{DIV_Disp_Symbol(temp,Symbol_saw);}break;
+										case '/':{DIV_Disp_Symbol(temp,Symbol_slash);}break;
+									} 
+					}
+				else{DIV_Disp_Num(temp,NUMNULL);}
+			}		
+}
+
 
 
 //显示整数
@@ -1339,10 +1495,6 @@ void DIV_Disp_ClearPoint(void)
 		 HAL_Disp_W_Data(dataid,0x16,0x0);
 }
           
-
-
-
-
 void DIV_disp_out12andpoint(void)
 {
 		 HAL_Disp_W_Data(dataid,0x15,disp_management.Disp_S1Point);

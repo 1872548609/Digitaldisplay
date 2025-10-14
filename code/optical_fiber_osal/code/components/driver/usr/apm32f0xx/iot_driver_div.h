@@ -41,14 +41,14 @@
 #define NIXIE8    7
 
 
-#define  S1  0x01
+#define  	S1  0x01
 #define 	P3  0x02
-#define  P2  0x04
+#define  	P2  0x04
 #define 	P1  0x08
-#define  S2  0x01
-#define  P6  0x02
-#define  P7  0x04
-#define  P8  0x08
+#define  	S2  0x01
+#define  	P6  0x02
+#define  	P7  0x04
+#define  	P8  0x08
 #define NUllPoint 0x00
 
 
@@ -89,86 +89,14 @@ typedef enum{
 }Disp_Frames;
 
 typedef struct{                               
-			 union{
-				    uint32_t memory;
-								struct{
-									uint8_t Nixie_DisMod : 2;
-									uint8_t Nixie_Num : 8 ;
-									uint8_t Nixie_Alphabet : 8;							
-								}Nixie1_Set;			
-				}Nixie1_Ctr;
-					union{
-				    uint32_t memory;
-								struct{
-									uint8_t Nixie_DisMod : 2;
-									uint8_t Nixie_Num : 8;
-									uint8_t Nixie_Alphabet : 8;							
-								}Nixie2_Set;
-				}Nixie2_Ctr;
-					union{
-				    uint32_t memory;
-								struct{
-									uint8_t Nixie_DisMod : 2;
-									uint8_t Nixie_Num : 8;
-									uint8_t Nixie_Alphabet : 8;							
-								}Nixie3_Set;
-				}Nixie3_Ctr;
-				union{
-				    uint32_t memory;
-								struct{
-									uint8_t Nixie_DisMod : 2;
-									uint8_t Nixie_Num : 8;
-									uint8_t Nixie_Alphabet : 8;									
-								}Nixie4_Set;			
-				}Nixie4_Ctr;
-				union{
-				    uint32_t memory;
-								struct{
-									uint8_t Nixie_DisMod : 2;
-									uint8_t Nixie_Num : 8;
-									uint8_t Nixie_Alphabet : 8;							
-								}Nixie5_Set;
-				}Nixie5_Ctr;
-				union{
-				    uint32_t memory;
-								struct{
-									uint8_t Nixie_DisMod : 2;
-									uint8_t Nixie_Num : 8;
-									uint8_t Nixie_Alphabet : 8;							
-								}Nixie6_Set;
-				}Nixie6_Ctr;
-				union{
-				    uint32_t memory;
-								struct{
-									uint8_t Nixie_DisMod : 2;
-									uint8_t Nixie_Num : 8;
-									uint8_t Nixie_Alphabet : 8;							
-								}Nixie7_Set;
-				}Nixie7_Ctr;
-				union{
-				    uint32_t memory;
-								struct{
-									uint8_t Nixie_DisMod : 2;
-									uint8_t Nixie_Num : 8;
-									uint8_t Nixie_Alphabet : 8;							
-								}Nixie8_Set;
-				}Nixie8_Ctr;
-				union{
-				    uint32_t memory;
-								struct{
-									uint8_t Nixie_DisMod : 2;
-									uint8_t Nixie_Num : 8;
-									uint8_t Nixie_Alphabet : 8;							
-								}Nixie9_Set;
-				}Nixie9_Ctr;
-				uint8_t Disp_WichOneFrame;
-				uint8_t Disp_S1Point;
-				uint8_t Disp_S2Point;
+	uint8_t Disp_WichOneFrame;
+	uint8_t Disp_S1Point;
+	uint8_t Disp_S2Point;
 }Disp_Management;
 
 extern Disp_Management disp_management;
 
-
+void DIV_Disp_floatNumByString(int screen,const char * data1,...);
 
 void DIV_Disp_ClearAllPoint(uint8_t screen) ;
 

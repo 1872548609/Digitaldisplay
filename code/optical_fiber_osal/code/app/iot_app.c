@@ -53,6 +53,7 @@ extern "C"
 // 局部变量定义区域
 uint8 iot_app_task_id;
 // 副屏显示================================================
+#if 1
 #define SECONDSCREEN_DISPAFTERTIME 0x0001
 
 uint32_t second_status = 0; // 副屏显示状态
@@ -60,10 +61,34 @@ uint32_t second_status = 0; // 副屏显示状态
 char second_screen_now[8]={0}; // 副屏当前显示
 char second_screen_save[8]={0}; // 保存副屏显示历史状态
 
+uint8_t Disp_S2Point_now=0;	// 副屏小数点显示
+uint8_t Disp_S2Point_save=0;	// 副屏小数点显示存储
+
+
+// 保存显示
+void second_screen_savestatus(void)
+{
+	strcpy(second_screen_save,second_screen_now);
+	
+	Disp_S2Point_save = Disp_S2Point_now;
+}
+// 回退显示
+void second_screen_returnstatus(void)
+{
+	DIV_Disp_ByString(SecondScreen,second_screen_save);
+	
+	DIV_Disp_SetPoint(SecondScreen,Disp_S2Point_save);
+		
+	strcpy(second_screen_now,second_screen_save);
+	
+	Disp_S2Point_now = Disp_S2Point_save;
+}
 // 插入显示一段时间后回到上一个显示状态
 void second_screen_dispaftertime(uint16_t time,const char * data1,...)
 {
-	strcpy(second_screen_save,second_screen_now);
+	DIV_Disp_ClearAllPoint(SecondScreen);
+	
+	second_screen_savestatus();
 	
 	char data[9]={0};
 	int size = sizeof(data);
@@ -81,7 +106,7 @@ void second_screen_dispaftertime(uint16_t time,const char * data1,...)
 // 副屏显示内容
 void second_screen_disp(const char * data1,...)
 {
-	char data[9]={0};
+	char data[10]={0};
 	int size = sizeof(data);
 	va_list ps;
 	va_start(ps,data1);
@@ -93,14 +118,131 @@ void second_screen_disp(const char * data1,...)
 	strcpy(second_screen_now,data);
 }
 
+//副屏显示浮点数
+void second_screen_dispfloat(const char * data1,...)
+{
+	// 获取字符串参数
+	char data[20]={0};
+	int size = sizeof(data);
+	va_list ps;
+	va_start(ps,data1);
+	vsnprintf(data,size,data1,ps);
+	va_end(ps);   
+	
+	char * string = data;
+	
+	// 判断是否是负数
+	uint8 isNegative = 0;
+	if (data[0] == '-') {
+		string++;
+		isNegative = 0;
+    } 
+	
+	// 获取长度
+	int len = strlen(data);
+	if (len >= 20) return; // 或报错处理
+	
+	// 获取小数点
+	int ader =0;	// 小数点位置
+	int i;			
+	for(i=0;i<len;i++)
+	{
+		if(string[i]=='.')
+		{
+				ader = i;
+		}
+	}
+	if(!ader){return;}// 没有小数就返回
+	
+	// 获取小数点前后的数字
+	char frontdate[10]={0};// 获取小数点前的字符串
+	char afterdate[10]={0};// 获取小数点后的字符串
+	
+	int numfront = 0;
+	int countfront = 0;
+	
+	int numafter = 0;
+	int countafter = 0;
+		
+	uint8_t head2=0;     //不要逗号初始化然后第一个不写初始值
+	uint8_t head3=0;
+	
+	if(ader<len)
+	{
+		for(i=0;i<ader;i++)
+		{
+			frontdate[i]=string[i];
+			head2++;
+		}  
+		frontdate[head2]='\0';
+
+		numfront = atoi(frontdate);
+		countfront = strlen(frontdate);
+		
+		for(i=ader+1;string[i]!='\0';i++)
+		{  
+			afterdate[head3]=string[i];
+			head3++;
+		}
+		afterdate[head3]='\0';
+		
+		numafter = atoi(afterdate);
+		countafter = strlen(afterdate);
+	}
+	
+	// 显示
+	char disp[20] = {0};
+	
+	char Disp_Point_save = 0;
+	
+	if(countfront==1){
+		if(numfront==0)
+		{
+			sprintf(disp," %s",afterdate);
+		}
+		else
+		{
+			sprintf(disp,"%s%s",frontdate,afterdate);
+		}
+		DIV_Disp_SetPoint(SecondScreen,P1);
+		Disp_Point_save |= P1;
+	}
+	if(countfront==2){
+		if(numfront==0)
+		{
+			sprintf(disp,"  %s",afterdate);
+		}
+		else
+		{
+			sprintf(disp,"%s%s",frontdate,afterdate);
+		}
+		DIV_Disp_SetPoint(SecondScreen,P2);
+		Disp_Point_save |= P2;
+	}
+	if(countfront==3){
+		if(numfront==0)
+		{
+			sprintf(disp,"   %s",afterdate);
+		}
+		else
+		{
+			sprintf(disp,"%s%s",frontdate,afterdate);
+		}
+		DIV_Disp_SetPoint(SecondScreen,P3);
+		Disp_Point_save |= P3;
+	}
+	DIV_Disp_ByString(SecondScreen,disp);
+	
+	strcpy(second_screen_now,disp); 
+	Disp_S2Point_now = Disp_Point_save ;
+}
+
 // 事件更新副屏
 uint8 second_screen_dispupdate(void)
 {
 	if(second_status & SECONDSCREEN_DISPAFTERTIME)
 	{
-		DIV_Disp_ByString(SecondScreen,second_screen_save);
-		
-		strcpy(second_screen_now,second_screen_save);
+		second_screen_returnstatus();
 		
 		return (second_status ^ SECONDSCREEN_DISPAFTERTIME);
 	}
@@ -110,7 +252,9 @@ uint8 second_screen_dispupdate(void)
 }
 
 
+#endif
 // 数据处理==================================================
+#if 1
 #define OUT1_MODE_COUNT 3
 #define OUT2_MODE_COUNT 4
 
@@ -405,7 +549,7 @@ void short_setycvalue(uint8_t addordown)
 
     // 更新参数值
     *current_value = temp;
-	DIV_Disp_MultiplefloatNum(SecondScreen,*current_value,3);	 
+	second_screen_dispfloat("%0.3f",*current_value); 
 }
 
 
@@ -512,8 +656,7 @@ void long_setycvalue(uint8_t addordown)
 				*current_value = peer_val;
 			}
 		}
-		DIV_Disp_MultiplefloatNum(SecondScreen,*current_value,3);
-		
+		second_screen_dispfloat("%0.3f",*current_value);
 		return; // 直接返回
 	}
 	
@@ -547,10 +690,14 @@ void long_setycvalue(uint8_t addordown)
 		
 		*current_value = temp;
 	}
-	DIV_Disp_MultiplefloatNum(SecondScreen,*current_value,3);	 
+	second_screen_dispfloat("%0.3f",*current_value);
+	
 }
 
+
+#endif
 // 背光调整=====================================
+#if 1
 void iot_allbacklight_set(uint8 en)
 {
 	if(en)
@@ -612,6 +759,7 @@ void iot_backlight_levelset(uint8_t level)
 	HalLedBlink(HAL_LED_ALL,0,level,10);
 }
 
+#endif
 // 任务区=====================================
 uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milliseconds)
 {

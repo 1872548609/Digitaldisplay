@@ -1338,5 +1338,5 @@ void DIV_Disp_ClearPoint(void)
 void DIV_disp_out12andpoint(void)
 {
 		 HAL_Disp_W_Data(dataid,0x15,disp_management.Disp_S1Point);
-			HAL_Disp_W_Data(dataid,0x16,disp_management.Disp_S2Point);
+		HAL_Disp_W_Data(dataid,0x16,disp_management.Disp_S2Point);
 }
