@@ -118,7 +118,7 @@ void second_screen_disp(const char * data1,...)
 	strcpy(second_screen_now,data);
 }
 
-//副屏显示浮点数
+//副屏显示浮点数最多三位小数
 void second_screen_dispfloat(const char * data1,...)
 {
 	// 获取字符串参数
@@ -135,7 +135,7 @@ void second_screen_dispfloat(const char * data1,...)
 	uint8 isNegative = 0;
 	if (data[0] == '-') {
 		string++;
-		isNegative = 0;
+		isNegative = 1;
     } 
 	
 	// 获取长度
@@ -149,7 +149,7 @@ void second_screen_dispfloat(const char * data1,...)
 	{
 		if(string[i]=='.')
 		{
-				ader = i;
+			ader = i;
 		}
 	}
 	if(!ader){return;}// 没有小数就返回
@@ -190,6 +190,10 @@ void second_screen_dispfloat(const char * data1,...)
 		countafter = strlen(afterdate);
 	}
 	
+	// 防止警告
+	if(numafter){}
+	if(countafter){}
+	
 	// 显示
 	char disp[20] = {0};
 	
@@ -204,6 +208,17 @@ void second_screen_dispfloat(const char * data1,...)
 		{
 			sprintf(disp,"%s%s",frontdate,afterdate);
 		}
+		if(isNegative)
+		{
+			if(numfront>=1)
+			{
+				sprintf(disp,"*%s",afterdate);
+			}
+			else
+			{
+				sprintf(disp,"-%s",afterdate);
+			}
+		}
 		DIV_Disp_SetPoint(SecondScreen,P1);
 		Disp_Point_save |= P1;
 	}
@@ -215,6 +230,18 @@ void second_screen_dispfloat(const char * data1,...)
 		else
 		{
 			sprintf(disp,"%s%s",frontdate,afterdate);
+			
+		}
+		if(isNegative)
+		{
+			if(numfront>=10)
+			{
+				sprintf(disp,"* %s",afterdate);
+			}
+			else
+			{
+				sprintf(disp,"- %s",afterdate);
+			}
 		}
 		DIV_Disp_SetPoint(SecondScreen,P2);
 		Disp_Point_save |= P2;
@@ -227,12 +254,24 @@ void second_screen_dispfloat(const char * data1,...)
 		else
 		{
 			sprintf(disp,"%s%s",frontdate,afterdate);
+			
 		}
+		if(isNegative)
+		{
+			if(numfront>=100)
+			{
+				sprintf(disp,"*  %s",afterdate);
+			}
+			else
+			{
+				sprintf(disp,"-  %s",afterdate);
+			}
+		}
+		
 		DIV_Disp_SetPoint(SecondScreen,P3);
 		Disp_Point_save |= P3;
 	}
 	DIV_Disp_ByString(SecondScreen,disp);
-	
 	strcpy(second_screen_now,disp); 
 	Disp_S2Point_now = Disp_Point_save ;
 }

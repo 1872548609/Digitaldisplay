@@ -5,8 +5,8 @@
 Disp_Management disp_management;
 
 
-
-//为了适配各种单位转换写的，有很多问题，需要完善======================
+#if 0
+//为了适配各种单位转换写的，有很多问题，需要完善======================已更新，这部分废案，内存杀手
 //显示浮点带0到3位小数的
 void DIV_Disp_MultiplefloatNum(uint8_t screen,float num,uint8_t xbit)   //显示浮点数
 {
@@ -802,6 +802,7 @@ else if(count==0)   //没有小数
 
 
 
+#endif
 //屏显示====================================================
 // 清除小数点
 void DIV_Disp_ClearAllPoint(uint8_t screen)
@@ -880,7 +881,7 @@ void DIV_Disp_Snprintf(int screen,const char * data1,...)
 	DIV_Disp_ByString(screen,data);
 	va_end(ps);   
 }
-// 新版显示浮点数
+// 显示浮点数最多3位小数
 void DIV_Disp_floatNumByString(int screen,const char * data1,...)
 {
 	// 获取字符串参数
@@ -893,12 +894,12 @@ void DIV_Disp_floatNumByString(int screen,const char * data1,...)
 	
 	char * string = data;
 	
-//	// 判断是否是负数
-//	uint8 isNegative = 0;
-//	if (data[0] == '-') {
-//		string++;
-//		isNegative = 0;
-//    } 
+	// 判断是否是负数
+	uint8 isNegative = 0;
+	if (data[0] == '-') {
+		string++;
+		isNegative = 1;
+    } 
 	
 	// 获取长度
 	int len = strlen(data);
@@ -952,21 +953,36 @@ void DIV_Disp_floatNumByString(int screen,const char * data1,...)
 		countafter = strlen(afterdate);
 	}
 	
+	// 防止警告
+	if(numafter){}
+	if(countafter){}
+	
 	// 显示
 	char disp[20] = {0};
 	
 	if(screen)// 主屏
 	{
 		if(countfront==1){
-			if(numfront==0)
+		if(numfront==0)
+		{
+			sprintf(disp," %s",afterdate);
+		}
+		else
+		{
+			sprintf(disp,"%s%s",frontdate,afterdate);
+		}
+		if(isNegative)
+		{
+			if(numfront>=1)
 			{
-				sprintf(disp," %s",afterdate);
+				sprintf(disp,"*%s",afterdate);
 			}
 			else
 			{
-				sprintf(disp,"%s%s",frontdate,afterdate);
+				sprintf(disp,"-%s",afterdate);
 			}
-			DIV_Disp_SetPoint(MainScreen,P1);
+		}
+		DIV_Disp_SetPoint(MainScreen,P1);
 		}
 		if(countfront==2){
 			if(numfront==0)
@@ -976,6 +992,18 @@ void DIV_Disp_floatNumByString(int screen,const char * data1,...)
 			else
 			{
 				sprintf(disp,"%s%s",frontdate,afterdate);
+				
+			}
+			if(isNegative)
+			{
+				if(numfront>=10)
+				{
+					sprintf(disp,"* %s",afterdate);
+				}
+				else
+				{
+					sprintf(disp,"- %s",afterdate);
+				}
 			}
 			DIV_Disp_SetPoint(MainScreen,P2);
 		}
@@ -987,7 +1015,20 @@ void DIV_Disp_floatNumByString(int screen,const char * data1,...)
 			else
 			{
 				sprintf(disp,"%s%s",frontdate,afterdate);
+				
 			}
+			if(isNegative)
+			{
+				if(numfront>=100)
+				{
+					sprintf(disp,"*  %s",afterdate);
+				}
+				else
+				{
+					sprintf(disp,"-  %s",afterdate);
+				}
+			}
+			
 			DIV_Disp_SetPoint(MainScreen,P3);
 		}
 		DIV_Disp_ByString(MainScreen,disp);
@@ -995,15 +1036,26 @@ void DIV_Disp_floatNumByString(int screen,const char * data1,...)
 	else
 	{
 		if(countfront==1){
-			if(numfront==0)
+		if(numfront==0)
+		{
+			sprintf(disp," %s",afterdate);
+		}
+		else
+		{
+			sprintf(disp,"%s%s",frontdate,afterdate);
+		}
+		if(isNegative)
+		{
+			if(numfront>=1)
 			{
-				sprintf(disp," %s",afterdate);
+				sprintf(disp,"*%s",afterdate);
 			}
 			else
 			{
-				sprintf(disp,"%s%s",frontdate,afterdate);
+				sprintf(disp,"-%s",afterdate);
 			}
-			DIV_Disp_SetPoint(SecondScreen,P1);
+		}
+		DIV_Disp_SetPoint(SecondScreen,P1);
 		}
 		if(countfront==2){
 			if(numfront==0)
@@ -1013,6 +1065,18 @@ void DIV_Disp_floatNumByString(int screen,const char * data1,...)
 			else
 			{
 				sprintf(disp,"%s%s",frontdate,afterdate);
+				
+			}
+			if(isNegative)
+			{
+				if(numfront>=10)
+				{
+					sprintf(disp,"* %s",afterdate);
+				}
+				else
+				{
+					sprintf(disp,"- %s",afterdate);
+				}
 			}
 			DIV_Disp_SetPoint(SecondScreen,P2);
 		}
@@ -1024,7 +1088,20 @@ void DIV_Disp_floatNumByString(int screen,const char * data1,...)
 			else
 			{
 				sprintf(disp,"%s%s",frontdate,afterdate);
+				
 			}
+			if(isNegative)
+			{
+				if(numfront>=100)
+				{
+					sprintf(disp,"*  %s",afterdate);
+				}
+				else
+				{
+					sprintf(disp,"-  %s",afterdate);
+				}
+			}
+			
 			DIV_Disp_SetPoint(SecondScreen,P3);
 		}
 		DIV_Disp_ByString(SecondScreen,disp);
@@ -1122,13 +1199,14 @@ void DIV_Disp_ByString(int mainscreen,char * string)
 										case '9':{DIV_Disp_Num(temp,NUM9);}break;
 									} 
 					}
-					else if(string[i]=='-'||string[i]=='|'||string[i]=='/')
+					else if(string[i]=='-'||string[i]=='|'||string[i]=='/'||string[i]=='*')
 					{
 					    switch(string[i])
 									{
 										case '-':{DIV_Disp_Symbol(temp,Symbol_minus);}break;
 										case '|':{DIV_Disp_Symbol(temp,Symbol_saw);}break;
 										case '/':{DIV_Disp_Symbol(temp,Symbol_slash);}break;
+										case '*':{DIV_Disp_Symbol(temp,Symbol_Negativeone);}break;
 									} 
 					}
 				else{DIV_Disp_Num(temp,NUMNULL);}
