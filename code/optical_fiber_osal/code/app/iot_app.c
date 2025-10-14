@@ -52,8 +52,117 @@ extern "C"
 **************************************************-*****************^******************************/
 // 局部变量定义区域
 uint8 iot_app_task_id;
+// 副屏显示================================================
+#define SECONDSCREEN_DISPAFTERTIME 0x0001
 
-//数据处理==================================================
+uint32_t second_status = 0; // 副屏显示状态
+
+char second_screen_now[8]={0}; // 副屏当前显示
+char second_screen_save[8]={0}; // 保存副屏显示历史状态
+
+// 插入显示一段时间后回到上一个显示状态
+void second_screen_dispaftertime(uint16_t time,const char * data1,...)
+{
+	strcpy(second_screen_save,second_screen_now);
+	
+	char data[9]={0};
+	int size = sizeof(data);
+	va_list ps;
+	va_start(ps,data1);
+	vsnprintf(data,size,data1,ps);	
+	va_end(ps);   
+
+	DIV_Disp_ByString(SecondScreen,data);
+	
+	second_status |= SECONDSCREEN_DISPAFTERTIME;
+	osal_start_timerEx(iot_app_task_id,IOT_APP_SECONDSCREEN_DISP_EVT,time);
+}
+
+// 副屏显示内容
+void second_screen_disp(const char * data1,...)
+{
+	char data[9]={0};
+	int size = sizeof(data);
+	va_list ps;
+	va_start(ps,data1);
+	vsnprintf(data,size,data1,ps);	
+	va_end(ps);   
+
+	DIV_Disp_ByString(SecondScreen,data);
+	
+	strcpy(second_screen_now,data);
+}
+
+// 事件更新副屏
+uint8 second_screen_dispupdate(void)
+{
+	if(second_status & SECONDSCREEN_DISPAFTERTIME)
+	{
+		DIV_Disp_ByString(SecondScreen,second_screen_save);
+		
+		strcpy(second_screen_now,second_screen_save);
+		
+		return (second_status ^ SECONDSCREEN_DISPAFTERTIME);
+	}
+	
+	
+	return 0;
+}
+
+
+// 数据处理==================================================
+#define OUT1_MODE_COUNT 3
+#define OUT2_MODE_COUNT 4
+
+#define ADD 1
+#define DOWN 0
+
+#define longpress 1 
+#define shortpress 0
+
+  // 输出1的模式
+typedef enum {
+    OT1_EASY=0,
+    OT1_HSY,
+    OT1_WCMP,
+} Output1Mode;
+ 
+// 输出2的模式
+typedef enum {
+    OT2_EASY=0,
+    OT2_HSY,
+    OT2_WCMP,
+    OT2_OFF,
+} Output2Mode;
+
+Output1Mode current_out1_mode = OT1_EASY;      //当前模式
+Output2Mode current_out2_mode = OT2_OFF;
+
+bool param_editable[OUT1_MODE_COUNT][OUT2_MODE_COUNT][6] = {
+    // Output1=Easy 时，不同 Output2 模式下的可修改参数
+    [OT1_EASY] = {    //p1    p2    hi1    lo1   hi2    lo2
+        [OT2_EASY] = {true, true, 	false, false, false, false},  	// 仅 p1, p2
+        [OT2_HSY] = 	{true, false, false, false, true, 	true},    // p1, hi2, lo2
+        [OT2_WCMP] = {true, false, false, false, true, 	true},   	// p1, hi2, lo2
+        [OT2_OFF] = 	{true, false, false, false, false, false},  	//仅p1
+    },
+    // Output1=HSY 时，不同 Output2 模式下的可修改参数
+    [OT1_HSY] = {
+        [OT2_EASY] = {false, true, true, true, false, false}, 		// 仅hi1, hi2 lo1 lo2
+        [OT2_HSY] = 	{false, false, true, true, true, true},   // 仅 hi1, hi2 lo1 lo2
+        [OT2_WCMP] = {false, false, true, true, true, true},  	//仅 hi1, hi2 lo1 lo2
+        [OT2_OFF] = 	{false, false, true, true, false,false},  // 仅hi1 lo1
+    },
+    // Output1=WCMP 时，不同 Output2 模式下的可修改参数
+    [OT1_WCMP] = {
+        [OT2_EASY] = {false, true, true, true, false, false},  		// 仅 lo1, lo2
+        [OT2_HSY] = 	{false, false, true, true, true, true},   	// p1, lo1
+        [OT2_WCMP] = {false, false, true, true, true, true},    // hi1, hi2, lo1, lo2
+        [OT2_OFF] = 	{false, false, true, true, false,false},   // 仅hi1 lo1   
+    },
+};
+
+
 #define set_no  0x00 //开机无设置
 #define set_P1 	0x01
 #define set_P2 	0x02
@@ -65,10 +174,64 @@ uint8 iot_app_task_id;
 #define PRESS_ADD 1
 #define PRESS_DOWN 0
 
-uint8_t nowsetwhichyc = set_P1;  //正在设置哪个
-uint8_t NOWCANSETWICH = set_no; //可以设置那些
+uint8_t nowsetwhichyc = set_no;  //正在设置哪个
+uint8_t nowcansetwhich = set_no; //可以设置那些
 uint8_t NOWChoice[6]={0};  //可设置选项
 uint8_t NOWChoicelength=0;
+
+#define DISPDELAYOFF  1000 // 按下mode显示后关闭的延时
+
+// 循环选择副屏的可修改值
+void get_nowycset(void) 					
+{
+	//选择模式
+	if(out1compare_status==compare1_EASY)	{current_out1_mode=OT1_EASY;} 
+	if(out1compare_status==compare1_WCMP)	{current_out1_mode=OT1_WCMP;}	
+	if(out1compare_status==compare1_HSY)	{current_out1_mode=OT1_HSY;}			
+
+	if(out2compare_status==compare2_EASY)	{current_out2_mode=OT2_EASY;} 
+	if(out2compare_status==compare2_WCMP)	{current_out2_mode=OT2_WCMP;}	
+	if(out2compare_status==compare2_HSY)	{current_out2_mode=OT2_HSY;}
+	if(out2compare_status==compare2_off)	{current_out2_mode=OT2_OFF;}
+
+	nowsetwhichyc=0;
+	NOWChoicelength = 0;
+
+	int i=0; 
+	const uint8_t param_masks[6] = {set_P1, set_P2, set_Hi1, set_Lo1, set_Hi2, set_Lo2};
+	for(i=0;i<6;i++)
+	{
+		if(param_editable[current_out1_mode][current_out2_mode][i])
+		{
+			nowsetwhichyc |= param_masks[i];          // 更新位掩码
+			NOWChoice[NOWChoicelength++] = param_masks[i]; // 存储宏定义值
+		}	
+	}
+
+	if(!nowsetwhichyc)
+	{
+		nowsetwhichyc=NOWChoice[0];
+	}
+}
+
+// 运行态下按mode键演示
+void modeset_choiceanddisplay(void)
+{
+	get_nowycset();
+	static uint8_t choice;
+	choice++;
+	choice%=NOWChoicelength;
+	nowsetwhichyc=NOWChoice[choice];
+	switch(nowsetwhichyc)      //显示当前设定值
+	{
+		case set_P1:{	second_screen_dispaftertime(DISPDELAYOFF," P-1");}break;
+		case set_P2:{	second_screen_dispaftertime(DISPDELAYOFF," P-2");}break;
+		case set_Hi1:{	second_screen_dispaftertime(DISPDELAYOFF,"Hi-1");}break;
+		case set_Lo1:{	second_screen_dispaftertime(DISPDELAYOFF,"Lo-1");}break;
+		case set_Hi2:{	second_screen_dispaftertime(DISPDELAYOFF,"Hi-2");}break;
+		case set_Lo2:{	second_screen_dispaftertime(DISPDELAYOFF,"Lo-2");}break;
+	}  
+}
 
 #define EPSILON 1e-6f   //误差容许
 #define MIN_DECIMAL_PRECISION 0.0001f   // 最小小数精度（根据实际需求调整）
@@ -105,7 +268,7 @@ uint8_t IsLastDecimalZero(float value,float current_increment)
 	   // 计算当前值对应的整数增量个数
     int steps = (int)(value / current_increment);
 	
-	   return steps %10==0;
+	 return steps %10==0;
 
 	
 	#if 0
@@ -508,8 +671,6 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
             {
                 longpresssetycvalue |= key_mask;
             }
-			
-			
         }
         // 按键释放处理
         else
@@ -563,6 +724,11 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 		{
 			Menu_Execute(MENU_CBK_MODE);
 		}
+		if(system_state == RUN_STATE)
+		{
+			modeset_choiceanddisplay();	// 按键选择应差设定
+		}
+		
 	}
 	
 	if(press_keys & HAL_KEY_LEFT_ADD)
@@ -627,7 +793,7 @@ void iot_app_init(uint8 task_id)
     iot_app_task_id = task_id; // 保存任务ID
 	
 	DIV_Disp_Snprintf(MainScreen,"RL01");  //显示款型
-	DIV_Disp_Snprintf(SecondScreen," NPN");//显示npn款
+	second_screen_disp(" NPN");//显示npn款
 	
 	iot_allbacklight_set(BACKLIGHT_ON);		// 打开背光
 	
@@ -681,11 +847,10 @@ uint16 iot_app_process_event(uint8 task_id, uint16 events)
 		return (events ^ IOT_APP_LONGKEYSET_YCVALUE_EVT);
 	}
 	
-	if(events & IOT_APP_TIMER_EVT)
+	if(events & IOT_APP_SECONDSCREEN_DISP_EVT)
 	{
-		
-		
-		return (events ^ IOT_APP_TIMER_EVT);
+		second_screen_dispupdate();
+		return (events ^ IOT_APP_SECONDSCREEN_DISP_EVT);
 	}
 	
 	
