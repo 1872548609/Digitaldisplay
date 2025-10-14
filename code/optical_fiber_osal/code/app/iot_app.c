@@ -62,11 +62,13 @@ uint8 iot_app_task_id;
 #define set_Hi2 0x10
 #define set_Lo2 0x20
 
-uint8_t nowsetwhichyc = set_no;  //正在设置哪个
+#define PRESS_ADD 1
+#define PRESS_DOWN 0
+
+uint8_t nowsetwhichyc = set_P1;  //正在设置哪个
 uint8_t NOWCANSETWICH = set_no; //可以设置那些
 uint8_t NOWChoice[6]={0};  //可设置选项
 uint8_t NOWChoicelength=0;
-
 
 #define EPSILON 1e-6f   //误差容许
 #define MIN_DECIMAL_PRECISION 0.0001f   // 最小小数精度（根据实际需求调整）
@@ -97,9 +99,55 @@ const ParamConfig param_table[] = {
     {&Hi2_Value, 	1.05, &Lo2_Value, 	1}, // set_Hi2: 必须 > Lo2
     {&Lo2_Value, 	1.05, &Hi2_Value, 	2}, // set_Lo2: 必须 < Hi2
 };
+// 小数是否清除
+uint8_t IsLastDecimalZero(float value,float current_increment)     
+{
+	   // 计算当前值对应的整数增量个数
+    int steps = (int)(value / current_increment);
+	
+	   return steps %10==0;
+
+	
+	#if 0
+     float abs_value = fabsf(value);
+    float decimal_part;
+    
+    // 使用 modf 分离整数和小数部分，避免精度问题
+    float int_part;
+    decimal_part = modff(abs_value, &int_part);
+ 
+    // 计算当前增量对应的小数位数
+    int decimal_places = 0;
+    if (current_increment == 0.001f)      decimal_places = 3;
+    else if (current_increment == 0.01f)  decimal_places = 2;
+    else if (current_increment == 0.1f)   decimal_places = 1;
+    else if (current_increment == 1.0f)   decimal_places = 0;
+    else return false; // 不支持的增量
+ 
+    // 如果没有小数部分，直接返回 true
+    if (decimal_places == 0) {
+        return ((int)int_part%10) == 0;
+    }
+ 
+    // 动态计算放大倍数（10^decimal_places）
+    int scale = 1;
+    for (int i = 0; i < decimal_places; i++) {
+        scale *= 10;
+    }
+ 
+    // 放大到整数并四舍五入，避免浮点误差
+    int scaled_decimal = (int)roundf(decimal_part * scale);
+ 
+    // 检查指定位数后的所有位是否为零
+    // 例如：decimal_places=2（0.01增量）时，检查 scaled_decimal 是否为整数（即小数部分在百分位后全零）
+    return (scaled_decimal * scale) == (int)(decimal_part * scale * scale / scale);
+		#endif
+}
 // 短按设置应差参数
 void short_setycvalue(uint8_t addordown)  
 {
+	if (nowsetwhichyc == set_no) return; // 未选择参数，直接返回
+	
 	float max_val = 0; // 参数设置上限 
 	float increment = 0;// 增量
 	
@@ -194,6 +242,149 @@ void short_setycvalue(uint8_t addordown)
 
     // 更新参数值
     *current_value = temp;
+	DIV_Disp_MultiplefloatNum(SecondScreen,*current_value,3);	 
+}
+
+
+static uint32_t key_press_start_time = 0;  // 按键按下开始时间
+static uint8_t fast_mode = 0;              // 加速模式标志
+static uint8_t super_fast_mode = 0;        // 超级加速模式标志
+static uint8_t keypressaddorsub = 0; 		//	长按加或减少
+void long_setclearstates(void)
+{
+	key_press_start_time=0;
+	fast_mode = 0; 
+	super_fast_mode = 0; 
+}
+// 长按设置应差参数
+void long_setycvalue(uint8_t addordown)          
+{
+    if (nowsetwhichyc == set_no) return; // 未选择参数，直接返回
+    
+    float max_val = 0; // 参数设置上限 
+    float increment = 0; // 增量
+    float base_increment = 0; // 基础增量（用于恢复）
+ 
+    // 获取当前参数配置
+    const ParamConfig *cfg = 0;
+    switch(nowsetwhichyc)       // 选择要设定的值
+    {
+        case set_P1: cfg = &param_table[0]; break;
+        case set_P2: cfg = &param_table[1]; break;
+        case set_Hi1: cfg = &param_table[2]; break;
+        case set_Lo1: cfg = &param_table[3]; break;
+        case set_Hi2: cfg = &param_table[4]; break;
+        case set_Lo2: cfg = &param_table[5]; break;
+    }
+    float *current_value = cfg->value;    // 获取设置参数
+    
+    // 选择不同单位的上限和增量
+    switch(unitconver_status)
+    {
+        case bAr: max_val = 1.05; increment = 0.001f; break;
+        case inHG: max_val = 31.0; increment = 0.01f; break;
+        case KgF: max_val = 105.0; increment = 0.1f; break;
+        case KPR: max_val = 105.0; increment = 0.1f; break;
+        case MMHG: max_val = 787.5; increment = 1.0f; break;
+        case MPR: max_val = 0.105; increment = 0.001f; break;
+        case PSI: max_val = 15.22; increment = 0.01f; break;
+    }
+    
+    base_increment = increment; // 保存基础增量
+    
+	// 记录首次按下时间
+	if (key_press_start_time == 0)
+	{
+		key_press_start_time = osal_GetSystemClock(); // OSAL获取系统时间(ms)
+	}
+	
+	// 计算按键持续时间
+	uint32_t press_duration = osal_GetSystemClock() - key_press_start_time;
+	
+	// 1秒后进入快速模式（10倍速）
+	if (press_duration >= 1000 && !fast_mode) { // 1000ms = 1秒
+		fast_mode = 1;
+		increment *= 10; // 加速10倍
+	}
+
+	// 5秒后进入超级快速模式（100倍速）
+	if (press_duration >= 5000 && !super_fast_mode && IsLastDecimalZero(*current_value, base_increment)) { // 5000ms = 5秒
+		super_fast_mode = 1;
+		increment = base_increment * 100; // 加速100倍
+	}
+	
+	
+	if (press_duration >= 4000) { // 1000ms = 2秒
+		osal_start_reload_timer(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT,50);
+	}
+	
+	if (press_duration >= 8000) { // 1000ms = 2秒
+		osal_start_reload_timer(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT,5);
+	}
+	
+	// 超级加速模式下处理
+	if (super_fast_mode) {
+		int steps = (int)(*current_value / base_increment);
+		
+		if (addordown == 1) { // 增加
+			steps += 10;
+			*current_value = steps * base_increment;
+			if (*current_value > max_val) {
+				*current_value = max_val;
+			}
+		} else { // 减少
+			steps -= 10;
+			*current_value = steps * base_increment;
+			if (*current_value < -max_val) {
+				*current_value = -max_val;
+			}
+		}
+		
+		// 检查关联参数限制
+		if (cfg->peer_value != NULL) {
+			float peer_val = *cfg->peer_value;
+			if (cfg->peer_check == 1 && *current_value < peer_val) {
+				*current_value = peer_val;
+			} else if (cfg->peer_check == 2 && *current_value > peer_val) {
+				*current_value = peer_val;
+			}
+		}
+		DIV_Disp_MultiplefloatNum(SecondScreen,*current_value,3);
+		
+		return; // 直接返回
+	}
+	
+	// 快速模式下处理
+	if(fast_mode) {
+		float temp = *current_value;
+		// 处理增减逻辑
+		if (addordown) {
+			if (temp < max_val) {
+				temp += increment;
+			} else {
+				temp = max_val;
+			}
+		} else {
+			if (temp > -max_val) {
+				temp -= increment;
+			} else {
+				temp = -max_val;
+			}
+		}
+		
+		// 处理 Hi/Lo 相互限制
+		if (cfg->peer_value != NULL) {
+			float peer_val = *cfg->peer_value;
+			if (cfg->peer_check == 1 && temp < peer_val) {
+				temp = peer_val;
+			} else if (cfg->peer_check == 2 && temp > peer_val) {
+				temp = peer_val;
+			}
+		}
+		
+		*current_value = temp;
+	}
+	DIV_Disp_MultiplefloatNum(SecondScreen,*current_value,3);	 
 }
 
 // 背光调整=====================================
@@ -261,15 +452,17 @@ void iot_backlight_levelset(uint8_t level)
 // 任务区=====================================
 uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milliseconds)
 {
+	static uint8 islongorshortpress = 0; // 长按或短按标志
+	
     uint8  k;
     uint8  key_mask = HAL_KEY_1;
     uint8  scan_flag = 1;
     uint8  press_keys = 0;      // 按下的按键
-    //uint8  hold_keys = 0;       // 按住的按键
+    uint8  hold_keys = 0;       // 按住的按键
 	uint8  release_keys = 0;    // 释放的按键
-	static uint8 islongorshortpress = 0; // 长按或短按标志
 	uint8_t longpress_morethan_3s_keys = 0; // 长按超过3秒的按键
 	uint8_t longpress_morethan_4s_keys = 0;
+	uint8_t longpresssetycvalue = 0;
 	
     // 只处理有效的按键
     cur_keys &= IOT_APP_KEY_MASK;
@@ -294,6 +487,11 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
             {
                islongorshortpress = 1;
             }
+			// 持续按下
+			if (hal_key_press_time_count[k] > 15)
+            {
+                hold_keys |= key_mask;
+            }
             // 超长按检测（>3s）
 			if (hal_key_press_time_count[k] == 30)
             {
@@ -305,6 +503,13 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 				islongorshortpress = 2;
                 longpress_morethan_4s_keys |= key_mask;
             }
+			// 长按应差
+			if (hal_key_press_time_count[k] == 15)
+            {
+                longpresssetycvalue |= key_mask;
+            }
+			
+			
         }
         // 按键释放处理
         else
@@ -324,6 +529,34 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
         }
     }
 	
+	// 长按设置应差==========================================
+	if((release_keys & HAL_KEY_LEFT_ADD)||(release_keys & HAL_KEY_RIGHT_SUB))// 按键释放
+	{
+		if(system_state == RUN_STATE)
+		{
+			osal_stop_timerEx(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT);
+			long_setclearstates();
+		}
+	}
+	
+	if((longpresssetycvalue & HAL_KEY_LEFT_ADD)&&!(longpresssetycvalue & HAL_KEY_RIGHT_SUB))
+	{
+		if(system_state == RUN_STATE)
+		{
+			osal_start_reload_timer(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT,100);
+			keypressaddorsub = PRESS_ADD; 
+		}
+	}
+	if(!(longpresssetycvalue & HAL_KEY_LEFT_ADD)&&(longpresssetycvalue & HAL_KEY_RIGHT_SUB))
+	{
+		if(system_state == RUN_STATE)
+		{
+			osal_start_reload_timer(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT,100);
+			keypressaddorsub = PRESS_DOWN; 
+		}
+	}
+	// 普通按键功能==========================================
+	
 	if(press_keys & HAL_KEY_MODE)
 	{
 		if(system_state == MENU_STATE)
@@ -338,6 +571,10 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 		{
 			Menu_Execute(MENU_CBK_ADD);
 		}
+		else if(system_state == RUN_STATE)
+		{
+			short_setycvalue(PRESS_ADD);
+		}
 	}
 	
 	if(press_keys & HAL_KEY_RIGHT_SUB)
@@ -346,8 +583,12 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 		{
 			Menu_Execute(MENU_CBK_SUB);
 		}
+		else if(system_state == RUN_STATE)
+		{
+			short_setycvalue(PRESS_DOWN);
+		}
 	}
-	
+
 	if(longpress_morethan_3s_keys & HAL_KEY_MODE)
 	{
 		if(system_state == RUN_STATE)
@@ -388,7 +629,7 @@ void iot_app_init(uint8 task_id)
 	DIV_Disp_Snprintf(MainScreen,"RL01");  //显示款型
 	DIV_Disp_Snprintf(SecondScreen," NPN");//显示npn款
 	
-	iot_allbacklight_set(BACKLIGHT_ON);
+	iot_allbacklight_set(BACKLIGHT_ON);		// 打开背光
 	
 	
 	MenuItem* root = CreateTestMenu(); // 动态创建菜单，所有菜单都在这个函数里编辑好
@@ -433,7 +674,12 @@ uint16 iot_app_process_event(uint8 task_id, uint16 events)
         return (events ^ SYS_EVENT_MSG);
     }
 	
-	
+	if(events & IOT_APP_LONGKEYSET_YCVALUE_EVT)
+	{
+		long_setycvalue(keypressaddorsub);
+		
+		return (events ^ IOT_APP_LONGKEYSET_YCVALUE_EVT);
+	}
 	
 	if(events & IOT_APP_TIMER_EVT)
 	{
