@@ -53,6 +53,150 @@ extern "C"
 // 局部变量定义区域
 uint8 iot_app_task_id;
 
+//数据处理==================================================
+#define set_no  0x00 //开机无设置
+#define set_P1 	0x01
+#define set_P2 	0x02
+#define set_Hi1 0x04
+#define set_Lo1 0x08
+#define set_Hi2 0x10
+#define set_Lo2 0x20
+
+uint8_t nowsetwhichyc = set_no;  //正在设置哪个
+uint8_t NOWCANSETWICH = set_no; //可以设置那些
+uint8_t NOWChoice[6]={0};  //可设置选项
+uint8_t NOWChoicelength=0;
+
+
+#define EPSILON 1e-6f   //误差容许
+#define MIN_DECIMAL_PRECISION 0.0001f   // 最小小数精度（根据实际需求调整）
+
+float Current_pressure_value=0.0f;	
+float unitchange_pressure_value =0.0f;
+
+float P1_Value 	= 0.0;
+float P2_Value 	= 0.0;
+float Hi1_Value = 0.0;
+float Lo1_Value = 0.0;		
+float Hi2_Value = 0.0;
+float Lo2_Value = 0.0; 
+
+typedef struct { // 参数配置结构体
+    float *value;        // 参数地址（如 &P1_Value）
+    float max_value;     // 最大值（按单位）默认1.05
+    float *peer_value;   // 关联参数（如 Hi1 对应 Lo1，NULL 表示无）
+    uint8_t peer_check;  // 限制规则：0=无限制, 1=必须小于关联参数, 2=必须大于关联参数
+} ParamConfig;
+
+// 参数配置表（顺序与 set_P1/set_Hi1 等宏定义一致）
+const ParamConfig param_table[] = {
+    {&P1_Value, 	1.05, NULL, 		0},       // set_P1: 无限制
+    {&P2_Value, 	1.05, NULL, 		0},       // set_P2: 无限制
+    {&Hi1_Value, 	1.05, &Lo1_Value, 	1}, // set_Hi1: 必须 > Lo1
+    {&Lo1_Value, 	1.05, &Hi1_Value, 	2}, // set_Lo1: 必须 < Hi1
+    {&Hi2_Value, 	1.05, &Lo2_Value, 	1}, // set_Hi2: 必须 > Lo2
+    {&Lo2_Value, 	1.05, &Hi2_Value, 	2}, // set_Lo2: 必须 < Hi2
+};
+// 短按设置应差参数
+void short_setycvalue(uint8_t addordown)  
+{
+	float max_val = 0; // 参数设置上限 
+	float increment = 0;// 增量
+	
+    // 获取当前参数配置
+    const ParamConfig *cfg = 0; // 假设 set_P1=0x01 对应索引 0
+    switch(nowsetwhichyc)       // 选择要设定的值
+	{
+		case set_P1:{
+			 cfg=&param_table[0];
+		}break;
+		case set_P2:{
+			 cfg=&param_table[1];
+		}break;
+		case set_Hi1:{
+			 cfg=&param_table[2];
+		}break;
+		case set_Lo1:{
+			 cfg=&param_table[3];
+		}break;
+		case set_Hi2:{
+			 cfg=&param_table[4];
+		}break;
+		case set_Lo2:{
+			 cfg=&param_table[5];
+		}break;
+	}
+	// 获取设置参数
+	float *current_value = cfg->value;	
+	
+	// 选择不同单位的上限和增量  
+	switch(unitconver_status)     
+	{
+		case bAr:{
+				max_val=1.05;
+				increment=0.001f;
+		}break;
+		case inHG:{
+				max_val=31.0;
+				increment=0.01f;
+		}break;
+		case KgF:{
+				max_val=105.0;
+				increment=0.1f;
+		}break;
+		case KPR:{
+				max_val=105.0;
+				increment=0.1f;
+		}break;
+		case MMHG:{
+				max_val=787.5;
+				increment=1.0f;
+		}break;
+		case MPR:{
+				max_val=0.105;
+				increment=0.001f;
+		}break;
+		case PSI:{
+				max_val=15.22;
+				increment=0.01f;
+		}break;
+	}
+	
+	// 暂存
+	float temp = *current_value;    
+				
+  // 处理增减逻辑
+	if (addordown) {  //如果增加
+		if (temp < max_val) {
+			temp += increment; // 增加
+		} else {
+			temp = max_val;//强制设为上限
+			// 显示上
+		}
+	} else {
+		if (temp > -max_val) {
+			temp -=	increment; // 减少
+		} else {
+			temp = -max_val; // 强制设为下限
+			// 显示下限	
+		}
+	}		
+						
+    // 处理 Hi/Lo 相互限制
+    if (cfg->peer_value != NULL) {
+        float peer_val = *cfg->peer_value;
+        if (cfg->peer_check == 1 && temp < peer_val) { // 必须大于关联参数
+            temp = peer_val;
+        } else if (cfg->peer_check == 2 && temp > peer_val) { // 必须小于关联参数
+            temp = peer_val;
+        }
+    }
+
+    // 更新参数值
+    *current_value = temp;
+}
+
+// 背光调整=====================================
 void iot_allbacklight_set(uint8 en)
 {
 	if(en)
@@ -114,6 +258,7 @@ void iot_backlight_levelset(uint8_t level)
 	HalLedBlink(HAL_LED_ALL,0,level,10);
 }
 
+// 任务区=====================================
 uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milliseconds)
 {
     uint8  k;

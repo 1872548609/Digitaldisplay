@@ -109,9 +109,90 @@ extern "C"
 
 extern uint8_t system_state;	// 系统运行状态全局变量
 
+// 菜单回调命令
 #define MENU_CBK_MODE 3
 #define MENU_CBK_ADD  4
 #define MENU_CBK_SUB  5
+
+// 菜单选项全局变量
+#define		compare1_EASY 		1
+#define		compare1_HSY 		2
+#define		compare1_WCMP 		3
+
+#define   	compare2_off	 	1 
+#define		compare2_EASY 		2
+#define		compare2_HSY 		3
+#define		compare2_WCMP 		4
+
+#define  	noncstatus_1o2o     0
+#define		noncstatus_1o2c     1
+#define		noncstatus_1c2o     2
+#define		noncstatus_1c2c     3
+#define 	out1nc  1
+#define     out1no  0
+#define 	out1   2
+#define 	out2   1
+
+#define  	R_ON 	     1
+#define		G_ON 	     2
+#define		AL_RED 	     3
+#define		AL_GREEN     4
+
+#define    bAr    	1
+#define    KgF    	2
+#define    KPR    	3
+#define    MPR    	4
+#define    PSI    	5
+#define    MMHG    	6
+#define    inHG    	7
+
+#define    Std    1
+#define    OFF    2
+#define    UnIt    3
+#define    No    4
+#define    CuSt    5
+
+#define    dispeed_250ms    1
+#define    dispeed_500ms    2
+#define    dispeed_1000ms    3
+
+#define    diflevel_level1   1
+#define    diflevel_level2   2
+#define    diflevel_level3   3
+#define    diflevel_level4   4
+#define    diflevel_level5   5
+#define    diflevel_level6   6
+#define    diflevel_level7   7
+#define    diflevel_level8   8
+
+#define    colorreaction_out1    1
+#define    colorreaction_out2    2
+
+#define    eco_off    1
+#define    eco_std    2
+#define    eco_FULL    3
+
+#define    copy_off    1
+#define    copy_on    2
+#define    copy_on_l    3
+#define    copy_redy    4
+
+#define    facrecoff    1
+#define    facrecon    2
+
+extern uint32_t out1compare_status;	
+extern uint32_t out2compare_status;	
+extern uint32_t outnonc_status;
+extern uint32_t maincolor_status;
+extern uint32_t unitconver_status; 
+extern uint32_t secscreen_status;
+extern uint32_t dispeed_status;
+extern uint32_t diflevel_status;
+extern uint32_t coloract_status;
+extern uint32_t eco_status;
+extern uint32_t copy_status;
+extern uint32_t facrecover_status;
+
 
 /*************************************************-*************************************************
 *                                             FUNCTION

@@ -395,7 +395,16 @@ __attribute__((weak)) void out1mode_click(MenuItem* item) {}
 __attribute__((weak)) void out2mode_click(MenuItem* item) {}		
 __attribute__((weak)) void noncmode_click(MenuItem* item) {}		
 __attribute__((weak)) void maincolormode_click(MenuItem* item) {}	
-		
+__attribute__((weak)) void unitconvermode_click(MenuItem* item) {}
+
+__attribute__((weak)) void secscreenmode_click(MenuItem* item) {}
+__attribute__((weak)) void dispeedmode_click(MenuItem* item) {}	
+__attribute__((weak)) void diflevelmode_click(MenuItem* item) {}	
+__attribute__((weak)) void coloractmode_click(MenuItem* item) {}
+__attribute__((weak)) void eocmode_click(MenuItem* item) {}
+__attribute__((weak)) void copymode_click(MenuItem* item) {}
+__attribute__((weak)) void facrecovermode_click(MenuItem* item) {}	
+	
 	
 // root 
 MenuItem* root;
@@ -410,6 +419,16 @@ MenuItem* out1mode_menu;
 MenuItem* out2mode_menu;
 MenuItem* NONCmode_menu;
 MenuItem* MAINColormode_menu;
+MenuItem* unitconvermode_menu;
+	
+MenuItem* secscreenmode_menu;
+MenuItem* dispeedmode_menu;
+MenuItem* diflevelmode_menu;
+MenuItem* coloractmode_menu;
+MenuItem* eocmode_menu;
+MenuItem* copymode_menu;
+MenuItem* facrecovermode_menu;
+	
 	
 	
 // 统一创建菜单树，返回树根 ，注册回调
@@ -474,15 +493,25 @@ MenuItem* CreateTestMenu() {
 			MAINColormode_menu->childCount = 0;
 			MAINColormode_menu->level = 2;
 			
+			//unitconver模式//
+			unitconvermode_menu = osal_mem_alloc(sizeof(MenuItem));
+			strcpy(unitconvermode_menu->text, "UNITCONVER");
+			unitconvermode_menu->func = unitconvermode_click;
+			unitconvermode_menu->enabled = true;
+			unitconvermode_menu->parent = normset_menu;  
+			unitconvermode_menu->children = NULL;
+			unitconvermode_menu->childCount = 0;
+			unitconvermode_menu->level = 2;
 			
 			
 			// 分配根项子菜单数组
-			normset_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 4);		
-			normset_menu->childCount = 4;
+			normset_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 5);		
+			normset_menu->childCount = 5;
 			normset_menu->children[0] = out1mode_menu;
 			normset_menu->children[1] = out2mode_menu;
 			normset_menu->children[2] = NONCmode_menu;
 			normset_menu->children[3] = MAINColormode_menu;
+			normset_menu->children[4] = unitconvermode_menu;
 		}	
 
 		// 2.PROSET
@@ -496,15 +525,79 @@ MenuItem* CreateTestMenu() {
 		proset_menu->level = 1;
 		{
 		
+			secscreenmode_menu = osal_mem_alloc(sizeof(MenuItem));
+			strcpy(secscreenmode_menu->text, "SECSCREEN");
+			secscreenmode_menu->func = secscreenmode_click;
+			secscreenmode_menu->enabled = true;
+			secscreenmode_menu->parent = proset_menu;  
+			secscreenmode_menu->children = NULL;
+			secscreenmode_menu->childCount = 0;
+			secscreenmode_menu->level = 1;
 			
+			dispeedmode_menu = osal_mem_alloc(sizeof(MenuItem));
+			strcpy(dispeedmode_menu->text, "DISPEED");
+			dispeedmode_menu->func = dispeedmode_click;
+			dispeedmode_menu->enabled = true;
+			dispeedmode_menu->parent = proset_menu;  
+			dispeedmode_menu->children = NULL;
+			dispeedmode_menu->childCount = 0;
+			dispeedmode_menu->level = 1;
+			
+			diflevelmode_menu = osal_mem_alloc(sizeof(MenuItem));
+			strcpy(diflevelmode_menu->text, "DIFLEVEL");
+			diflevelmode_menu->func = diflevelmode_click;
+			diflevelmode_menu->enabled = true;
+			diflevelmode_menu->parent = proset_menu;  
+			diflevelmode_menu->children = NULL;
+			diflevelmode_menu->childCount = 0;
+			diflevelmode_menu->level = 1;
+			
+			coloractmode_menu = osal_mem_alloc(sizeof(MenuItem));
+			strcpy(coloractmode_menu->text, "COLORACT");
+			coloractmode_menu->func = coloractmode_click;
+			coloractmode_menu->enabled = true;
+			coloractmode_menu->parent = proset_menu;  
+			coloractmode_menu->children = NULL;
+			coloractmode_menu->childCount = 0;
+			coloractmode_menu->level = 1;
+			
+			eocmode_menu = osal_mem_alloc(sizeof(MenuItem));
+			strcpy(eocmode_menu->text, "EOC");
+			eocmode_menu->func = eocmode_click;
+			eocmode_menu->enabled = true;
+			eocmode_menu->parent = proset_menu;  
+			eocmode_menu->children = NULL;
+			eocmode_menu->childCount = 0;
+			eocmode_menu->level = 1;
+			
+			copymode_menu = osal_mem_alloc(sizeof(MenuItem));
+			strcpy(copymode_menu->text, "COPY");
+			copymode_menu->func = copymode_click;
+			copymode_menu->enabled = true;
+			copymode_menu->parent = proset_menu;  
+			copymode_menu->children = NULL;
+			copymode_menu->childCount = 0;
+			copymode_menu->level = 1;
+			
+			facrecovermode_menu = osal_mem_alloc(sizeof(MenuItem));
+			strcpy(facrecovermode_menu->text, "FACRECOVER");
+			facrecovermode_menu->func = facrecovermode_click;
+			facrecovermode_menu->enabled = true;
+			facrecovermode_menu->parent = proset_menu;  
+			facrecovermode_menu->children = NULL;
+			facrecovermode_menu->childCount = 0;
+			facrecovermode_menu->level = 1;
 			
 			// 分配根项子菜单数组
-			proset_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 4);		
-			proset_menu->childCount = 4;
-			proset_menu->children[0] = 0;
-			proset_menu->children[1] = 0;
-			proset_menu->children[2] = 0;
-			proset_menu->children[3] = 0;
+			proset_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 7);		
+			proset_menu->childCount = 7;
+			proset_menu->children[0] = secscreenmode_menu;
+			proset_menu->children[1] = dispeedmode_menu;
+			proset_menu->children[2] = diflevelmode_menu;
+			proset_menu->children[3] = coloractmode_menu;
+			proset_menu->children[4] = eocmode_menu;
+			proset_menu->children[5] = copymode_menu;
+			proset_menu->children[6] = facrecovermode_menu;
 		}
 
 		// 分配根项子菜单数组
