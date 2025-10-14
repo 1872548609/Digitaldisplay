@@ -913,7 +913,7 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 		}
 		if(system_state == RUN_STATE)
 		{
-			modeset_choiceanddisplay();	// 按键选择应差设定
+			modeset_choiceanddisplay();	// 按键选择切换应差设定
 		}
 		
 	}
@@ -927,6 +927,7 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 		else if(system_state == RUN_STATE)
 		{
 			short_setycvalue(PRESS_ADD);
+			second_status &= ~SECONDSCREEN_DISPAFTERTIME;// 防止按下mode后恢复旧现场改变当前副屏的显示
 		}
 	}
 	
@@ -939,6 +940,7 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 		else if(system_state == RUN_STATE)
 		{
 			short_setycvalue(PRESS_DOWN);
+			second_status &= ~SECONDSCREEN_DISPAFTERTIME;// 防止按下mode后恢复旧现场改变当前副屏的显示
 		}
 	}
 
