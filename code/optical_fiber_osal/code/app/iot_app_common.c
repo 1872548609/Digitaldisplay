@@ -130,14 +130,16 @@ void out1mode_click(MenuItem* item)
 {
 	if(item->whichcallback == INCALLBACK)
 	{
-		
+		iot_mainbacklight_set(BACKLIGHT_RED);
 	}
 	else if (item->whichcallback == OUTCALLBACK)
 	{
-		
+		iot_mainbacklight_set(BACKLIGHT_GREEN);
 	}
 	else if (item->whichcallback == MENU_CBK_MODE)
 	{
+		 Menu_Execute(OUTCALLBACK);
+		
 		 Menu_Next();
 		
 		 Menu_Execute(INCALLBACK);

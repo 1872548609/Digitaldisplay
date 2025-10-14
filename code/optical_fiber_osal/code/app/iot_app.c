@@ -53,6 +53,67 @@ extern "C"
 // 局部变量定义区域
 uint8 iot_app_task_id;
 
+void iot_allbacklight_set(uint8 en)
+{
+	if(en)
+	{
+		HalLedSet(HAL_LED_ALL,HAL_LED_MODE_ON);
+	}
+	else
+	{
+		HalLedSet(HAL_LED_ALL,HAL_LED_MODE_OFF);
+	}
+}
+void iot_mainbacklight_set(uint8 color)
+{
+	HalLedSet(HAL_THREED_RED|HAL_DOUBLE_GREED,HAL_LED_MODE_OFF);
+	
+	switch(color)
+	{
+		case BACKLIGHT_OFF:{
+			HalLedSet(HAL_THREED_RED|HAL_DOUBLE_GREED,HAL_LED_MODE_OFF);
+		}break;
+		case BACKLIGHT_GREEN:{
+			HalLedSet(HAL_DOUBLE_GREED,HAL_LED_MODE_ON);
+		}break;
+		case BACKLIGHT_RED:{
+			HalLedSet(HAL_THREED_RED,HAL_LED_MODE_ON);
+		}break;
+		case BACKLIGHT_YELLOW:{
+			HalLedSet(HAL_THREED_RED|HAL_DOUBLE_GREED,HAL_LED_MODE_ON);
+		}break;
+	}
+}
+
+void iot_secondbacklight_set(uint8 en)
+{
+	if(en)
+	{
+		HalLedSet(HAL_ONE_GREED,HAL_LED_MODE_ON);
+	}
+	else
+	{
+		HalLedSet(HAL_ONE_GREED,HAL_LED_MODE_OFF);
+	}
+}
+
+void iot_outputbacklight_set(uint8 en)
+{
+	if(en)
+	{
+		HalLedSet(HAL_ONE_RED,HAL_LED_MODE_ON);
+	}
+	else
+	{
+		HalLedSet(HAL_ONE_RED,HAL_LED_MODE_OFF);
+	}
+}
+
+void iot_backlight_levelset(uint8_t level)
+{
+	HalLedBlink(HAL_LED_ALL,0,level,10);
+}
+
 uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milliseconds)
 {
     uint8  k;
@@ -182,9 +243,8 @@ void iot_app_init(uint8 task_id)
 	DIV_Disp_Snprintf(MainScreen,"RL01");  //显示款型
 	DIV_Disp_Snprintf(SecondScreen," NPN");//显示npn款
 	
-	HalLedSet(HAL_LED_ALL,HAL_LED_MODE_ON);// 打开背光
+	iot_allbacklight_set(BACKLIGHT_ON);
 	
-	//HalLedBlink(HAL_LED_ALL,0,10,10);
 	
 	MenuItem* root = CreateTestMenu(); // 动态创建菜单，所有菜单都在这个函数里编辑好
     MenuSystem_Init(root);	// 初始化系统菜单
