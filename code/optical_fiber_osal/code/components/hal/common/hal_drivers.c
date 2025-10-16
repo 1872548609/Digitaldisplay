@@ -61,7 +61,7 @@ void HalDriverInit(void)
 
     /* ADC初始化 */
     #if (defined HAL_ADC) && (HAL_ADC == TRUE)
-    HalAdcInit();
+    HAL_ADC_Init();
     #endif
 
     /* DMA初始化（可选） */

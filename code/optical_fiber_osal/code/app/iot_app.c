@@ -52,6 +52,348 @@ extern "C"
 **************************************************-*****************^******************************/
 // 局部变量定义区域
 uint8 iot_app_task_id;
+
+
+// 气压读取处理================================================
+#if 1
+
+#define WINDOW_SIZE 100
+uint16_t adc_buffer[WINDOW_SIZE] = {0};
+uint8_t ad_index = 0;
+uint32_t adc_sum = 0; 			// adc累加
+uint32_t adcData = 0;           // ad值
+uint32_t VOL_value = 0;         // 电压值，参考3.3v
+uint32_t adc_temp=0;
+
+float Current_pressure_value=0.0f;	
+float unitchange_pressure_value =0.0f;
+
+float k=0.0608, b=-113.08;  //默认值
+
+void ADC_Isr(void)
+{
+	if (ADC_ReadIntFlag(ADC_INT_FLAG_CS) == SET)
+    {
+        ADC_ClearIntFlag(ADC_INT_FLAG_CS);
+		
+		adc_temp =ADC_ReadConversionValue();
+		adc_sum -= adc_buffer[ad_index];          // 移除旧值
+		adc_buffer[ad_index] = adc_temp;    // 存入新值
+		adc_sum += adc_temp;                 // 累加新值
+		ad_index = (ad_index + 1) % WINDOW_SIZE; // 循环缓冲区
+		adcData=(uint16_t)(adc_sum / WINDOW_SIZE);
+
+        VOL_value=(adcData * 3300)/4095;
+    }
+}
+
+float pressure_read_once(void)
+{
+	char data1[30]={0};
+	
+	float tempvalue=0;
+	
+	tempvalue=(float)adcData*k+b;
+	
+	snprintf(data1,sizeof(data1),"%0.3f",tempvalue);
+		
+	tempvalue = atof(data1);	
+	
+	return tempvalue;
+}
+
+#endif
+// 主屏显示================================================
+#if 1
+#define MAINSCREEN_DISPAFTERTIME 0x0001
+#define MAINSCREEN_DISPPRESSURE  0x0002
+
+uint32_t main_status = 0; // 副屏显示状态
+
+char main_screen_now[8]={0}; // 副屏当前显示
+char main_screen_save[8]={0}; // 保存副屏显示历史状态
+
+uint8_t Disp_S1Point_now=0;	// 副屏小数点显示
+uint8_t Disp_S1Point_save=0;	// 副屏小数点显示存储
+
+// 发送主屏显示事件
+void main_screen_tranfromevt(uint32 evt)
+{
+	main_status |= evt;
+}
+
+// 停止主屏显示事件
+void main_screen_stopevt(uint32 evt)
+{
+	main_status &= ~evt;
+}
+	
+// 按单位显示气压
+void main_screen_disppressure(void)
+{
+	Current_pressure_value = pressure_read_once();
+	
+	unitchange_pressure_value = unitconversion(Current_pressure_value,unitconver_status);
+	
+	switch(unitconver_status)
+	{
+		case bAr:{
+							main_screen_dispfloat("%0.3f",unitchange_pressure_value);
+								
+		}break;
+		case inHG:{
+							main_screen_dispfloat("%0.1f",unitchange_pressure_value);
+							
+		}break;
+		case KgF:{
+							main_screen_dispfloat("%0.3f",unitchange_pressure_value);
+									
+		}break;
+		case KPR:{
+							main_screen_dispfloat("%0.1f",unitchange_pressure_value);
+			
+		}break;
+		case MMHG:{
+							main_screen_dispfloat("%0.f",unitchange_pressure_value);
+					
+		}break;
+		case MPR:{
+							main_screen_dispfloat("%0.3f",unitchange_pressure_value);
+						
+		}break;
+		case PSI:{
+							main_screen_dispfloat("%0.2f",unitchange_pressure_value);
+		}break;
+	}		
+	
+}
+// 保存显示
+void main_screen_savestatus(void)
+{
+	strcpy(main_screen_save,main_screen_now);
+	
+	Disp_S1Point_save = Disp_S1Point_now;
+}
+// 回退显示
+void main_screen_returnstatus(void)
+{
+	DIV_Disp_ByString(MainScreen,main_screen_save);
+	
+	DIV_Disp_SetPoint(MainScreen,Disp_S1Point_save);
+		
+	strcpy(main_screen_now,main_screen_save);
+	
+	Disp_S1Point_now = Disp_S1Point_save;
+}
+// 插入显示一段时间后回到上一个显示状态
+void main_screen_dispaftertime(uint16_t time,const char * data1,...)
+{
+	DIV_Disp_ClearAllPoint(MainScreen);
+	
+	main_screen_savestatus();
+	
+	char data[9]={0};
+	int size = sizeof(data);
+	va_list ps;
+	va_start(ps,data1);
+	vsnprintf(data,size,data1,ps);	
+	va_end(ps);   
+
+	DIV_Disp_ByString(MainScreen,data);
+	
+	main_status |= MAINSCREEN_DISPAFTERTIME;
+	osal_start_timerEx(iot_app_task_id,IOT_APP_MAINSCREEN_DISP_EVT,time);
+}
+
+// 主屏显示内容
+void main_screen_disp(const char * data1,...)
+{
+	char data[10]={0};
+	int size = sizeof(data);
+	va_list ps;
+	va_start(ps,data1);
+	vsnprintf(data,size,data1,ps);	
+	va_end(ps);   
+
+	DIV_Disp_ByString(MainScreen,data);
+	
+	strcpy(main_screen_now,data);
+}
+
+// 主屏显示浮点数最多三位小数
+void main_screen_dispfloat(const char * data1,...)
+{
+	// 获取字符串参数
+	char data[20]={0};
+	int size = sizeof(data);
+	va_list ps;
+	va_start(ps,data1);
+	vsnprintf(data,size,data1,ps);
+	va_end(ps);   
+	
+	char * string = data;
+	
+	// 判断是否是负数
+	uint8 isNegative = 0;
+	if (data[0] == '-') {
+		string++;
+		isNegative = 1;
+    } 
+	
+	// 获取长度
+	int len = strlen(data);
+	if (len >= 20) return; // 或报错处理
+	
+	// 获取小数点
+	int ader =0;	// 小数点位置
+	int i;			
+	for(i=0;i<len;i++)
+	{
+		if(string[i]=='.')
+		{
+			ader = i;
+		}
+	}
+	if(!ader){return;}// 没有小数就返回
+	
+	// 获取小数点前后的数字
+	char frontdate[10]={0};// 获取小数点前的字符串
+	char afterdate[10]={0};// 获取小数点后的字符串
+	
+	int numfront = 0;
+	int countfront = 0;
+	
+	int numafter = 0;
+	int countafter = 0;
+		
+	uint8_t head2=0;     //不要逗号初始化然后第一个不写初始值
+	uint8_t head3=0;
+	
+	if(ader<len)
+	{
+		for(i=0;i<ader;i++)
+		{
+			frontdate[i]=string[i];
+			head2++;
+		}  
+		frontdate[head2]='\0';
+
+		numfront = atoi(frontdate);
+		countfront = strlen(frontdate);
+		
+		for(i=ader+1;string[i]!='\0';i++)
+		{  
+			afterdate[head3]=string[i];
+			head3++;
+		}
+		afterdate[head3]='\0';
+		
+		numafter = atoi(afterdate);
+		countafter = strlen(afterdate);
+	}
+	
+	// 防止警告
+	if(numafter){}
+	if(countafter){}
+	
+	// 显示
+	char disp[20] = {0};
+	
+	char Disp_Point_save = 0;
+	
+	if(countafter==1){
+		if(countfront==1){
+			sprintf(disp,"  %s%s",frontdate,afterdate);
+		}
+		else if(countfront==2){
+			sprintf(disp," %s%s",frontdate,afterdate);
+		}
+		else if(countfront==3){
+			sprintf(disp,"%s%s",frontdate,afterdate);
+		}
+		if(isNegative)
+		{
+			if(countfront==1){
+				sprintf(disp,"- %s%s",frontdate,afterdate);
+			}
+			else if(countfront==2){
+				sprintf(disp,"-%s%s",frontdate,afterdate);
+			}
+			else if(countfront==3){
+				sprintf(disp,"%s%s",frontdate,afterdate);
+				disp[0]='*';
+			}
+		}
+		DIV_Disp_SetPoint(MainScreen,P3);
+		Disp_Point_save |= P3;
+	}
+	if(countafter==2){
+		if(countfront==1){
+			sprintf(disp," %s%s",frontdate,afterdate);
+		}
+		else if(countfront==2){
+			sprintf(disp,"%s%s",frontdate,afterdate);
+		}
+		if(isNegative)
+		{
+			if(countfront==1){
+				sprintf(disp,"-%s%s",frontdate,afterdate);
+			}
+			else if(countfront==2){
+				sprintf(disp,"%s%s",frontdate,afterdate);
+				disp[0]='*';
+			}
+		}
+		DIV_Disp_SetPoint(MainScreen,P2);
+		Disp_Point_save |= P2;
+	}
+	if(countafter==3){
+		if(countfront==1){
+			sprintf(disp,"%s%s",frontdate,afterdate);
+		}
+		if(isNegative)
+		{
+			if(countfront==1){
+				sprintf(disp,"%s%s",frontdate,afterdate);
+				disp[0]='-';
+				if(numfront>=1)
+				{
+					sprintf(disp,"%s%s",frontdate,afterdate);
+					disp[0]='*';
+				}
+			}
+		}
+		
+		DIV_Disp_SetPoint(MainScreen,P1);
+		Disp_Point_save |= P1;
+	}
+	
+	DIV_Disp_ByString(MainScreen,disp);
+	strcpy(main_screen_now,disp); 
+	Disp_S1Point_now = Disp_Point_save ;
+}
+
+// 事件更新主屏
+uint8 main_screen_dispupdate(void)
+{
+	if(main_status & MAINSCREEN_DISPAFTERTIME)
+	{
+		main_screen_returnstatus();
+		
+		return (main_status ^ MAINSCREEN_DISPAFTERTIME);
+	}
+	
+	if(main_status & MAINSCREEN_DISPPRESSURE)
+	{
+		main_screen_disppressure();
+		
+		return (main_status ^ MAINSCREEN_DISPPRESSURE);
+	}
+	
+	return 0;
+}
+
+#endif
 // 副屏显示================================================
 #if 1
 #define SECONDSCREEN_DISPAFTERTIME 0x0001
@@ -64,6 +406,40 @@ char second_screen_save[8]={0}; // 保存副屏显示历史状态
 uint8_t Disp_S2Point_now=0;	// 副屏小数点显示
 uint8_t Disp_S2Point_save=0;	// 副屏小数点显示存储
 
+// 副屏显示应差
+void second_screen_dispsetvalue(float value)
+{
+	switch(unitconver_status)
+	{
+		case bAr:{
+							second_screen_dispfloat("%0.3f",value);
+								
+		}break;
+		case inHG:{
+							second_screen_dispfloat("%0.1f",value);
+							
+		}break;
+		case KgF:{
+							second_screen_dispfloat("%0.3f",value);
+									
+		}break;
+		case KPR:{
+							second_screen_dispfloat("%0.1f",value);
+			
+		}break;
+		case MMHG:{
+							second_screen_dispfloat("%0.f",value);
+					
+		}break;
+		case MPR:{
+							second_screen_dispfloat("%0.3f",value);
+						
+		}break;
+		case PSI:{
+							second_screen_dispfloat("%0.2f",value);
+		}break;
+	}		
+}
 
 // 保存显示
 void second_screen_savestatus(void)
@@ -191,85 +567,78 @@ void second_screen_dispfloat(const char * data1,...)
 	}
 	
 	// 防止警告
+	if(numfront){}
 	if(numafter){}
-	if(countafter){}
 	
 	// 显示
 	char disp[20] = {0};
 	
 	char Disp_Point_save = 0;
-	
-	if(countfront==1){
-		if(numfront==0)
-		{
-			sprintf(disp," %s",afterdate);
+	if(countafter==1){
+		if(countfront==1){
+			sprintf(disp,"  %s%s",frontdate,afterdate);
 		}
-		else
-		{
+		else if(countfront==2){
+			sprintf(disp," %s%s",frontdate,afterdate);
+		}
+		else if(countfront==3){
 			sprintf(disp,"%s%s",frontdate,afterdate);
 		}
 		if(isNegative)
 		{
-			if(numfront>=1)
-			{
-				sprintf(disp,"*%s",afterdate);
+			if(countfront==1){
+				sprintf(disp,"- %s%s",frontdate,afterdate);
 			}
-			else
-			{
-				sprintf(disp,"-%s",afterdate);
+			else if(countfront==2){
+				sprintf(disp,"-%s%s",frontdate,afterdate);
+			}
+			else if(countfront==3){
+				sprintf(disp,"%s%s",frontdate,afterdate);
+				disp[0]='*';
 			}
 		}
-		DIV_Disp_SetPoint(SecondScreen,P1);
-		Disp_Point_save |= P1;
+		DIV_Disp_SetPoint(SecondScreen,P6);
+		Disp_Point_save |= P6;
 	}
-	if(countfront==2){
-		if(numfront==0)
-		{
-			sprintf(disp,"  %s",afterdate);
+	if(countafter==2){
+		if(countfront==1){
+			sprintf(disp," %s%s",frontdate,afterdate);
 		}
-		else
-		{
+		else if(countfront==2){
 			sprintf(disp,"%s%s",frontdate,afterdate);
-			
 		}
 		if(isNegative)
 		{
-			if(numfront>=10)
-			{
-				sprintf(disp,"* %s",afterdate);
+			if(countfront==1){
+				sprintf(disp,"-%s%s",frontdate,afterdate);
 			}
-			else
-			{
-				sprintf(disp,"- %s",afterdate);
+			else if(countfront==2){
+				sprintf(disp,"%s%s",frontdate,afterdate);
+				disp[0]='*';
 			}
 		}
-		DIV_Disp_SetPoint(SecondScreen,P2);
-		Disp_Point_save |= P2;
+		DIV_Disp_SetPoint(SecondScreen,P7);
+		Disp_Point_save |= P7;
 	}
-	if(countfront==3){
-		if(numfront==0)
-		{
-			sprintf(disp,"   %s",afterdate);
-		}
-		else
-		{
+	if(countafter==3){
+		if(countfront==1){
 			sprintf(disp,"%s%s",frontdate,afterdate);
-			
 		}
 		if(isNegative)
 		{
-			if(numfront>=100)
-			{
-				sprintf(disp,"*  %s",afterdate);
-			}
-			else
-			{
-				sprintf(disp,"-  %s",afterdate);
+			if(countfront==1){
+				sprintf(disp,"%s%s",frontdate,afterdate);
+				disp[0]='-';
+				if(numfront>=1)
+				{
+					sprintf(disp,"%s%s",frontdate,afterdate);
+					disp[0]='*';
+				}
 			}
 		}
 		
-		DIV_Disp_SetPoint(SecondScreen,P3);
-		Disp_Point_save |= P3;
+		DIV_Disp_SetPoint(SecondScreen,P8);
+		Disp_Point_save |= P8;
 	}
 	DIV_Disp_ByString(SecondScreen,disp);
 	strcpy(second_screen_now,disp); 
@@ -292,7 +661,7 @@ uint8 second_screen_dispupdate(void)
 
 
 #endif
-// 数据处理==================================================
+// 应差数据处理==================================================
 #if 1
 #define OUT1_MODE_COUNT 3
 #define OUT2_MODE_COUNT 4
@@ -418,9 +787,6 @@ void modeset_choiceanddisplay(void)
 
 #define EPSILON 1e-6f   //误差容许
 #define MIN_DECIMAL_PRECISION 0.0001f   // 最小小数精度（根据实际需求调整）
-
-float Current_pressure_value=0.0f;	
-float unitchange_pressure_value =0.0f;
 
 float P1_Value 	= 0.0;
 float P2_Value 	= 0.0;
@@ -587,8 +953,15 @@ void short_setycvalue(uint8_t addordown)
     }
 
     // 更新参数值
-    *current_value = temp;
-	second_screen_dispfloat("%0.3f",*current_value); 
+	char data1[30]={0};
+	
+	snprintf(data1,sizeof(data1),"%0.3f",temp);
+		
+	temp = atof(data1);	
+
+    *current_value = temp; 
+	
+	second_screen_dispsetvalue( *current_value);
 }
 
 
@@ -695,7 +1068,15 @@ void long_setycvalue(uint8_t addordown)
 				*current_value = peer_val;
 			}
 		}
-		second_screen_dispfloat("%0.3f",*current_value);
+		
+		char data1[30]={0};
+	
+		snprintf(data1,sizeof(data1),"%0.3f",*current_value);
+			
+		*current_value = atof(data1);	
+		
+		second_screen_dispsetvalue( *current_value);
+		
 		return; // 直接返回
 	}
 	
@@ -727,14 +1108,204 @@ void long_setycvalue(uint8_t addordown)
 			}
 		}
 		
-		*current_value = temp;
-	}
-	second_screen_dispfloat("%0.3f",*current_value);
+		char data1[30]={0};
 	
+		snprintf(data1,sizeof(data1),"%0.3f",temp);
+			
+		temp = atof(data1);	
+		
+		*current_value = temp;
+		
+		second_screen_dispsetvalue( *current_value);
+	}
 }
 
 
 #endif
+// 单位转换=================================================
+#if 1
+static uint8_t unit_save = 0;
+static uint8_t unit_now =0;
+
+// 数值单位换算
+float unitconversion(float value, uint8_t unit)
+{
+	char data1[30]={0};
+	
+	switch(unitconver_status)
+	{
+		case bAr:{
+							value*=0.01f;
+							snprintf(data1,sizeof(data1),"%0.3f",value);	
+		}break;
+		case inHG:{
+							value*=0.2953;
+							snprintf(data1,sizeof(data1),"%0.1f",value);
+		}break;
+		case KgF:{
+							value*=0.02089;
+							snprintf(data1,sizeof(data1),"%0.3f",value);		
+		}break;
+		case KPR:{
+							snprintf(data1,sizeof(data1),"%0.1f",value);
+		}break;
+		case MMHG:{
+							value*=7.5;
+							snprintf(data1,sizeof(data1),"%0.0f",value);
+		}break;
+		case MPR:{
+							value*=0.001;
+							snprintf(data1,sizeof(data1),"%0.3f",value);
+		}break;
+		case PSI:{
+							value*=0.145;
+							snprintf(data1,sizeof(data1),"%0.2f",value);
+		}break;
+	}		
+		
+	value = atof(data1);	
+	
+	return value;
+}
+
+// 单位切换后修改数值保留3位小数
+void systemunit_change(void)
+{
+	static float testvalue=0;
+	
+	char data1[30]={0};
+	
+	if(unit_save!=unit_now)
+	{
+		switch(nowsetwhichyc)       
+		{
+			case set_P1:{
+								testvalue=P1_Value;
+										
+			}break;
+			case set_P2:{	
+								testvalue=P2_Value;
+			}break;
+			case set_Hi1:{
+								testvalue=Hi1_Value;
+
+			}break;
+			case set_Lo1:{
+								testvalue=Lo1_Value;
+
+			}break;
+			case set_Hi2:{
+								testvalue=Hi2_Value;
+
+			}break;
+			case set_Lo2:{
+								testvalue=Lo1_Value;
+
+			}break;
+		}
+		snprintf(data1,sizeof(data1),"%0.3f",testvalue);
+			
+		testvalue = atof(data1);	
+
+							
+		switch(unit_save)
+		{
+			case bAr:{
+							testvalue/=0.01f;
+								
+			}break;
+			case inHG:{
+							testvalue/=0.2953;
+							
+			}break;
+			case KgF:{
+							testvalue/=0.02089;
+									
+			}break;
+			case KPR:{
+					
+			}break;
+			case MMHG:{
+							testvalue/=7.5;
+						
+			}break;
+			case MPR:{
+							testvalue/=0.001;
+						
+			}break;
+			case PSI:{
+							testvalue/=0.145;
+			}break;
+		}
+		
+		snprintf(data1,sizeof(data1),"%0.3f",testvalue);
+			
+		testvalue = atof(data1);						
+			
+		switch(unit_now)
+		{
+			case bAr:{
+							testvalue*=0.01f;
+							
+			}break;
+			case inHG:{
+							testvalue*=0.2953;
+						
+			}break;
+			case KgF:{
+							testvalue*=0.02089;
+								
+			}break;
+			case KPR:{
+					
+			}break;
+			case MMHG:{
+							testvalue*=7.5;
+						
+			}break;
+			case MPR:{
+							testvalue*=0.001;
+						
+			}break;
+			case PSI:{
+							testvalue*=0.145;
+			}break;
+		}
+		snprintf(data1,sizeof(data1),"%0.3f",testvalue);
+			
+		testvalue = atof(data1);					
+						
+		switch(nowsetwhichyc)       //选择要设定的值
+		{
+			case set_P1:{
+								P1_Value	=	testvalue;
+														   
+			}break;                                        
+			case set_P2:{	                               
+								P2_Value	=	testvalue;
+			}break;                                        
+			case set_Hi1:{                                 
+								Hi1_Value	=	testvalue;
+														   
+			}break;                                        
+			case set_Lo1:{                                 
+								Lo1_Value	=	testvalue;
+														   
+			}break;                                        
+			case set_Hi2:{                                 
+								Hi2_Value	=	testvalue;
+														   
+			}break;                                        
+			case set_Lo2:{                                 
+								Lo1_Value	=	testvalue;
+
+			}break;
+		}				
+	}							
+	unit_save=unit_now;					
+}
+	
+#endif 
 // 背光调整=====================================
 #if 1
 void iot_allbacklight_set(uint8 en)
@@ -986,6 +1557,8 @@ void iot_app_init(uint8 task_id)
 	
 	iot_allbacklight_set(BACKLIGHT_ON);		// 打开背光
 	
+	main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
+	osal_start_reload_timer(iot_app_task_id,IOT_APP_MAINSCREEN_DISP_EVT,2);// 2ms 刷新显示主屏
 	
 	MenuItem* root = CreateTestMenu(); // 动态创建菜单，所有菜单都在这个函数里编辑好
     MenuSystem_Init(root);	// 初始化系统菜单
@@ -1041,6 +1614,13 @@ uint16 iot_app_process_event(uint8 task_id, uint16 events)
 		second_screen_dispupdate();
 		return (events ^ IOT_APP_SECONDSCREEN_DISP_EVT);
 	}
+	
+	if(events & IOT_APP_MAINSCREEN_DISP_EVT)
+	{
+		main_screen_dispupdate();
+		return (events ^ IOT_APP_MAINSCREEN_DISP_EVT);
+	}
+	
 	
 	
 	// 丢弃未知事件

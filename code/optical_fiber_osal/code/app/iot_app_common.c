@@ -50,7 +50,7 @@ uint32_t outnonc_status = noncstatus_1o2o;
 
 uint32_t maincolor_status = R_ON;
 
-uint32_t unitconver_status = bAr;
+uint32_t unitconver_status = KPR;
 
 uint32_t secscreen_status = Std;
 
