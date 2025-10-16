@@ -29,7 +29,17 @@ extern "C"
 /*************************************************-*************************************************
 *                                             FUNCTION
 **************************************************-*****************^******************************/
+#define set_no  0x00 //开机无设置
+#define set_P1 	0x01
+#define set_P2 	0x02
+#define set_Hi1 0x04
+#define set_Lo1 0x08
+#define set_Hi2 0x10
+#define set_Lo2 0x20
 
+extern uint8_t nowsetwhichyc;  //正在设置哪个
+
+// 单位转换
 float unitconversion(float value, uint8_t unit);
 
 // 主屏显示

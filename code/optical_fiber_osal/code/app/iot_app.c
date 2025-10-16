@@ -65,11 +65,9 @@ uint32_t adcData = 0;           // ad值
 uint32_t VOL_value = 0;         // 电压值，参考3.3v
 uint32_t adc_temp=0;
 
-float Current_pressure_value=0.0f;	
-float unitchange_pressure_value =0.0f;
-
 float k=0.0608, b=-113.08;  //默认值
 
+// 气压传感器adc读取中断
 void ADC_Isr(void)
 {
 	if (ADC_ReadIntFlag(ADC_INT_FLAG_CS) == SET)
@@ -87,6 +85,7 @@ void ADC_Isr(void)
     }
 }
 
+// 返回当前气压值 kpa
 float pressure_read_once(void)
 {
 	char data1[30]={0};
@@ -126,6 +125,11 @@ void main_screen_tranfromevt(uint32 evt)
 void main_screen_stopevt(uint32 evt)
 {
 	main_status &= ~evt;
+	
+	if(evt == MAINSCREEN_DISPPRESSURE)
+	{
+		DIV_Disp_ClearAllPoint(MainScreen);
+	}
 }
 	
 // 按单位显示气压
@@ -397,6 +401,7 @@ uint8 main_screen_dispupdate(void)
 // 副屏显示================================================
 #if 1
 #define SECONDSCREEN_DISPAFTERTIME 0x0001
+#define SECONDSCREEN_DISPSETVALUE  0x0002
 
 uint32_t second_status = 0; // 副屏显示状态
 
@@ -406,7 +411,9 @@ char second_screen_save[8]={0}; // 保存副屏显示历史状态
 uint8_t Disp_S2Point_now=0;	// 副屏小数点显示
 uint8_t Disp_S2Point_save=0;	// 副屏小数点显示存储
 
-// 副屏显示应差
+uint8_t dispset_returntime = 0;
+
+// 根据当前单位显示设定值
 void second_screen_dispsetvalue(float value)
 {
 	switch(unitconver_status)
@@ -440,7 +447,88 @@ void second_screen_dispsetvalue(float value)
 		}break;
 	}		
 }
+// 刷新显示当前选中设定值
+void second_screen_dispnowsetvalue(void)
+{
+	float testvalue =0;
+	
+	switch(nowsetwhichyc)       
+	{
+		case set_P1:{
+							testvalue=P1_Value;
+									
+		}break;
+		case set_P2:{	
+							testvalue=P2_Value;
+		}break;
+		case set_Hi1:{
+							testvalue=Hi1_Value;
 
+		}break;
+		case set_Lo1:{
+							testvalue=Lo1_Value;
+
+		}break;
+		case set_Hi2:{
+							testvalue=Hi2_Value;
+
+		}break;
+		case set_Lo2:{
+							testvalue=Lo1_Value;
+
+		}break;
+	}
+	
+	switch(unitconver_status)
+	{
+		case bAr:{
+							second_screen_dispfloat("%0.3f",testvalue);
+								
+		}break;
+		case inHG:{
+							second_screen_dispfloat("%0.1f",testvalue);
+							
+		}break;
+		case KgF:{
+							second_screen_dispfloat("%0.3f",testvalue);
+									
+		}break;
+		case KPR:{
+							second_screen_dispfloat("%0.1f",testvalue);
+			
+		}break;
+		case MMHG:{
+							second_screen_dispfloat("%0.f",testvalue);
+					
+		}break;
+		case MPR:{
+							second_screen_dispfloat("%0.3f",testvalue);
+						
+		}break;
+		case PSI:{
+							second_screen_dispfloat("%0.2f",testvalue);
+		}break;
+	}		
+}
+
+
+
+// 发送屏显示事件
+void second_screen_tranfromevt(uint32 evt)
+{
+	second_status |= evt;
+}
+
+// 停止屏显示事件
+void second_screen_stopevt(uint32 evt)
+{
+	second_status &= ~evt;
+	
+	if(evt == SECONDSCREEN_DISPSETVALUE)
+	{
+		DIV_Disp_ClearAllPoint(SecondScreen);
+	}
+}
 // 保存显示
 void second_screen_savestatus(void)
 {
@@ -476,7 +564,8 @@ void second_screen_dispaftertime(uint16_t time,const char * data1,...)
 	DIV_Disp_ByString(SecondScreen,data);
 	
 	second_status |= SECONDSCREEN_DISPAFTERTIME;
-	osal_start_timerEx(iot_app_task_id,IOT_APP_SECONDSCREEN_DISP_EVT,time);
+	
+	dispset_returntime = time;
 }
 
 // 副屏显示内容
@@ -650,18 +739,30 @@ uint8 second_screen_dispupdate(void)
 {
 	if(second_status & SECONDSCREEN_DISPAFTERTIME)
 	{
+		
+		if(dispset_returntime)
+		{
+			dispset_returntime--;
+			return 0;
+		}
+		
 		second_screen_returnstatus();
 		
 		return (second_status ^ SECONDSCREEN_DISPAFTERTIME);
 	}
-	
+	if(second_status & SECONDSCREEN_DISPSETVALUE)
+	{
+		second_screen_dispnowsetvalue();
+		
+		return (second_status ^ SECONDSCREEN_DISPSETVALUE);
+	}
 	
 	return 0;
 }
 
 
 #endif
-// 应差数据处理==================================================
+// 设定值数据处理==================================================
 #if 1
 #define OUT1_MODE_COUNT 3
 #define OUT2_MODE_COUNT 4
@@ -715,13 +816,7 @@ bool param_editable[OUT1_MODE_COUNT][OUT2_MODE_COUNT][6] = {
 };
 
 
-#define set_no  0x00 //开机无设置
-#define set_P1 	0x01
-#define set_P2 	0x02
-#define set_Hi1 0x04
-#define set_Lo1 0x08
-#define set_Hi2 0x10
-#define set_Lo2 0x20
+
 
 #define PRESS_ADD 1
 #define PRESS_DOWN 0
@@ -731,7 +826,7 @@ uint8_t nowcansetwhich = set_no; //可以设置那些
 uint8_t NOWChoice[6]={0};  //可设置选项
 uint8_t NOWChoicelength=0;
 
-#define DISPDELAYOFF  1000 // 按下mode显示后关闭的延时
+#define DISPDELAYOFF  100 // 按下mode显示后关闭的延时
 
 // 循环选择副屏的可修改值
 void get_nowycset(void) 					
@@ -787,13 +882,6 @@ void modeset_choiceanddisplay(void)
 
 #define EPSILON 1e-6f   //误差容许
 #define MIN_DECIMAL_PRECISION 0.0001f   // 最小小数精度（根据实际需求调整）
-
-float P1_Value 	= 0.0;
-float P2_Value 	= 0.0;
-float Hi1_Value = 0.0;
-float Lo1_Value = 0.0;		
-float Hi2_Value = 0.0;
-float Lo2_Value = 0.0; 
 
 typedef struct { // 参数配置结构体
     float *value;        // 参数地址（如 &P1_Value）
@@ -1522,12 +1610,20 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 			MenuSystem_Start();		// 启动菜单
 			Menu_Enter(); // 进入根下第一个菜单
 			Menu_Execute(INCALLBACK);
+			
+			main_screen_stopevt(MAINSCREEN_DISPPRESSURE);// 关闭主屏刷新气压
+			second_screen_stopevt(SECONDSCREEN_DISPSETVALUE);// 关闭副屏刷新设定值
+			
 			system_state = MENU_STATE; 
 		}
 		else if(system_state == MENU_STATE)
 		{
 			MenuSystem_Stop();		// 关闭菜单
 			Menu_Execute(OUTCALLBACK);
+			
+			main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
+			second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
+			
 			system_state = RUN_STATE; 
 		}
 		
@@ -1558,7 +1654,9 @@ void iot_app_init(uint8 task_id)
 	iot_allbacklight_set(BACKLIGHT_ON);		// 打开背光
 	
 	main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
-	osal_start_reload_timer(iot_app_task_id,IOT_APP_MAINSCREEN_DISP_EVT,2);// 2ms 刷新显示主屏
+	second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
+	osal_start_reload_timer(iot_app_task_id,IOT_APP_MAINSCREEN_DISP_EVT,1);// 2ms 刷新显示主屏
+
 	
 	MenuItem* root = CreateTestMenu(); // 动态创建菜单，所有菜单都在这个函数里编辑好
     MenuSystem_Init(root);	// 初始化系统菜单
@@ -1609,19 +1707,13 @@ uint16 iot_app_process_event(uint8 task_id, uint16 events)
 		return (events ^ IOT_APP_LONGKEYSET_YCVALUE_EVT);
 	}
 	
-	if(events & IOT_APP_SECONDSCREEN_DISP_EVT)
-	{
-		second_screen_dispupdate();
-		return (events ^ IOT_APP_SECONDSCREEN_DISP_EVT);
-	}
-	
 	if(events & IOT_APP_MAINSCREEN_DISP_EVT)
 	{
 		main_screen_dispupdate();
+		second_screen_dispupdate();
+		
 		return (events ^ IOT_APP_MAINSCREEN_DISP_EVT);
 	}
-	
-	
 	
 	// 丢弃未知事件
     return 0;

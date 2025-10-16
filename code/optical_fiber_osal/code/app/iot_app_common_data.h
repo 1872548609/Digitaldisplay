@@ -109,6 +109,16 @@ extern "C"
 
 extern uint8_t system_state;	// 系统运行状态全局变量
 
+extern float Current_pressure_value;	// 当前气压值 kpa
+extern float unitchange_pressure_value;	// 单位后的气压值
+
+extern float P1_Value ;
+extern float P2_Value ;
+extern float Hi1_Value; 
+extern float Lo1_Value;		
+extern float Hi2_Value;
+extern float Lo2_Value; 
+
 // 菜单回调命令
 #define MENU_CBK_MODE 3
 #define MENU_CBK_ADD  4

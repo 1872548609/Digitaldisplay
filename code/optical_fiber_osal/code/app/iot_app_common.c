@@ -38,6 +38,16 @@ extern "C"
 // 全局变量定义区域
 uint8_t system_state = RUN_STATE;
 
+float Current_pressure_value=0.0f;	
+float unitchange_pressure_value =0.0f;
+
+float P1_Value 	= 0.0;
+float P2_Value 	= 0.0;
+float Hi1_Value = 0.0;
+float Lo1_Value = 0.0;		
+float Hi2_Value = 0.0;
+float Lo2_Value = 0.0; 
+
 /*************************************************-*************************************************
 *                                          LOCAL VARIABLES
 **************************************************-*****************^******************************/
