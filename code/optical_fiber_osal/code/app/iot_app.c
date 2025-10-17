@@ -1419,7 +1419,7 @@ uint8 second_screen_dispupdate(void)
 	if(second_status & SECONDSCREEN_DISPAFTERTIME)
 	{
 		
-		if(dispset_returntime)
+		if(dispset_returntime>=5)
 		{
 			dispset_returntime-=5;
 			return 0;
@@ -1427,13 +1427,17 @@ uint8 second_screen_dispupdate(void)
 		
 		second_screen_returnstatus();
 		
-		return (second_status ^ SECONDSCREEN_DISPAFTERTIME);
+		second_status ^= SECONDSCREEN_DISPAFTERTIME;
+		
+		return 0;
 	}
 	if(second_status & SECONDSCREEN_DISPSETVALUE)
 	{
 		second_screen_dispnowsetvalue();
 		
-		return (second_status ^ SECONDSCREEN_DISPSETVALUE);
+		
+		second_status ^= SECONDSCREEN_DISPSETVALUE;
+		return 0;
 	}
 	
 	return 0;
@@ -2304,6 +2308,8 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 			second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
 			
 			iot_mainbacklight_set(BACKLIGHT_YELLOW);
+			
+			main_screen_disppressure();// 退出后立即刷新一次
 			
 			system_state = RUN_STATE; 
 		}
