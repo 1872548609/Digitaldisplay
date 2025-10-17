@@ -136,7 +136,7 @@ void hu_app_init(uint8 task_id)
     hu_app_task_id = task_id; // 保存任务ID
 			
 		// 注册事件
-		osal_start_reload_timer(hu_app_task_id,HU_APP_TIMER_EVT,HU_APP_TIMER_INTERVAL);
+		//osal_start_reload_timer(hu_app_task_id,HU_APP_TIMER_EVT,HU_APP_TIMER_INTERVAL);
 	
     // 注册按键回调函数
     HalKeyCallbackRegister(hu_app_key_callback);

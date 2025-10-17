@@ -22,10 +22,12 @@ extern "C"
 #define IOT_APP_TIMER_EVT                                           0x0001 // 定义测试事件
 #define IOT_APP_TIMER_INTERVAL                                      1 // 定时器间隔
 
-#define IOT_APP_LONGKEYSET_YCVALUE_EVT 								0x0002 // 长按设置应差事件	
+#define IOTAPP_DISPSECOND_EVT										0x0002
+	
+#define IOT_APP_LONGKEYSET_YCVALUE_EVT 								0x0004 // 长按设置应差事件	
 
-#define IOT_APP_DELAYOUT1_EVT    									0x0004
-#define IOT_APP_DELAYOUT2_EVT										0x0008	
+#define IOT_APP_DELAYOUT1_EVT    									0x0008
+#define IOT_APP_DELAYOUT2_EVT										0x0010	
 	
 /*************************************************-*************************************************
 *                                             FUNCTION

@@ -2885,7 +2885,7 @@ int main(void)
 			mainTask();  					//主任务执行 
 		}
 			Data_Processing(DataProcess_CmdTran);//数据处理
-		 Yingcha_Comp1();
+			Yingcha_Comp1();
 			Yingcha_Comp2();
 			ColorCtr(ColorCtr_CmdTran);//颜色设置命令
 			MiniScreenOutset(MiniScreen_TranCmd);//小屏输出显示

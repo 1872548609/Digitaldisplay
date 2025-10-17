@@ -69,7 +69,7 @@ void iot_app_Poll(void)
 // 气压读取处理================================================
 #if 1
 
-#define WINDOW_SIZE 200
+#define WINDOW_SIZE 100
 uint16_t adc_buffer[WINDOW_SIZE] = {0};
 uint8_t ad_index = 0;
 uint32_t adc_sum = 0; 			// adc累加
@@ -597,6 +597,19 @@ char main_screen_save[8]={0}; // 保存副屏显示历史状态
 uint8_t Disp_S1Point_now=0;	// 副屏小数点显示
 uint8_t Disp_S1Point_save=0;	// 副屏小数点显示存储
 
+uint16_t dispspeed_set=250;//默认250ms
+
+// 选择显示气压延迟
+void main_screen_choicedispeed(void)
+{	
+	switch(dispeed_status) //选择延迟
+	{
+		case dispeed_500ms:{dispspeed_set=500;}break;
+		case dispeed_1000ms:{dispspeed_set=1000;}break;
+		case dispeed_250ms:{dispspeed_set=250;}break;
+		default:{}break;
+	}
+}
 // 发送主屏显示事件
 void main_screen_tranfromevt(uint32 evt)
 {
@@ -866,7 +879,20 @@ uint8 main_screen_dispupdate(void)
 	
 	if(main_status & MAINSCREEN_DISPPRESSURE)
 	{
-		main_screen_disppressure();
+		static uint16 count =0;
+		
+		main_screen_choicedispeed();
+		
+		if(count < (dispspeed_set/3))
+		{
+			count++;
+		}
+		else
+		{
+			count=0;
+			main_screen_disppressure();
+		}
+		
 		
 		return (main_status ^ MAINSCREEN_DISPPRESSURE);
 	}
@@ -1219,7 +1245,7 @@ uint8 second_screen_dispupdate(void)
 		
 		if(dispset_returntime)
 		{
-			dispset_returntime--;
+			dispset_returntime-=2;
 			return 0;
 		}
 		
@@ -2132,6 +2158,7 @@ void iot_app_init(uint8 task_id)
 	
 	main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
 	second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
+	osal_start_reload_timer(iot_app_task_id,IOTAPP_DISPSECOND_EVT,50);
 	osal_start_reload_timer(iot_app_task_id,IOT_APP_TIMER_EVT,1);
 	
 	MenuItem* root = CreateTestMenu(); // 动态创建菜单，所有菜单都在这个函数里编辑好
@@ -2174,7 +2201,7 @@ uint16 iot_app_process_event(uint8 task_id, uint16 events)
         return (events ^ SYS_EVENT_MSG);
     }
 	
-	
+
 	if(events & IOT_APP_DELAYOUT1_EVT)
 	{
 		if(OUT1_CMD == OUT1ON)
@@ -2249,12 +2276,21 @@ uint16 iot_app_process_event(uint8 task_id, uint16 events)
 		return (events ^ IOT_APP_LONGKEYSET_YCVALUE_EVT);
 	}
 	
-	if(events & IOT_APP_TIMER_EVT)
+
+	if(events & IOTAPP_DISPSECOND_EVT)
 	{
-		main_screen_dispupdate();
+
 		second_screen_dispupdate();
 		
-		return (events ^ IOT_APP_TIMER_EVT);
+		events &= ~IOTAPP_DISPSECOND_EVT;
+	}
+	
+	if(events & IOT_APP_TIMER_EVT)
+	{
+		
+		main_screen_dispupdate();
+		
+		return (events ^IOT_APP_TIMER_EVT);
 	}
 	
 	// 丢弃未知事件
