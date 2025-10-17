@@ -53,11 +53,21 @@ extern "C"
 // 局部变量定义区域
 uint8 iot_app_task_id;
 
-
+// 轮询任务
+void iot_app_Poll(void)
+{
+	output_screen_disupdate();
+	
+	DIV_disp_out12andpoint();
+	
+	Yingcha_Comp();
+	
+	output_ctr_update();
+}
 // 气压读取处理================================================
 #if 1
 
-#define WINDOW_SIZE 150
+#define WINDOW_SIZE 200
 uint16_t adc_buffer[WINDOW_SIZE] = {0};
 uint8_t ad_index = 0;
 uint32_t adc_sum = 0; 			// adc累加
@@ -101,6 +111,468 @@ float pressure_read_once(void)
 	return tempvalue;
 }
 
+#endif
+// 输出控制=================================================
+#if 1
+
+#define WCMP1 0
+#define HSY1 1
+#define EASY1 2
+
+#define WCMP2 3
+#define HSY2 4
+#define EASY2 5
+#define OFF2 6	
+
+float diflevel_value=0.0f;		// 应差值
+
+uint16_t reactiontimeset=2;		//默认2ms    
+
+uint8_t out1_state = 1;      //当前输出状态
+uint8_t out2_state = 1;
+
+
+uint8_t OUT1_state = 1;		//真实输出状态
+uint8_t OUT2_state = 1;
+
+
+#define OUT1_on()   HAL_OutPut_Set(OUT1,1)
+																		
+#define OUT1_off()  HAL_OutPut_Set(OUT1,0)
+
+#define OUT2_on()   HAL_OutPut_Set(OUT2,1)
+																		
+#define OUT2_off()  HAL_OutPut_Set(OUT2,0)
+
+
+#define OUT1ON 1
+#define OUT1OFF 0
+
+#define OUT2ON 2
+#define OUT2OFF 3
+
+uint16 OUT1_CMD = 0;
+uint16 OUT2_CMD = 0;
+
+void output_delay_set(uint8 cmd,uint32 time)
+{
+	if(cmd>1)
+	{
+		if(osal_msg_find(iot_app_task_id,IOT_APP_DELAYOUT2_EVT)==NULL)
+		{
+			OUT2_CMD |= cmd;
+			
+			osal_start_timerEx(iot_app_task_id,IOT_APP_DELAYOUT2_EVT,time);
+		}	
+	}
+	else
+	{
+		if(osal_msg_find(iot_app_task_id,IOT_APP_DELAYOUT1_EVT)==NULL)
+		{
+			OUT1_CMD |= cmd;
+			
+			osal_start_timerEx(iot_app_task_id,IOT_APP_DELAYOUT1_EVT,time);
+		}
+	}
+}
+
+void reactiontime_choice(void)
+{
+	switch(reactime_status)
+	{
+		case reaction_100ms		:{reactiontimeset=100;	}break;
+		case reaction_10ms		:{reactiontimeset=10;	}break;
+		case reaction_2000ms	:{reactiontimeset=2000;	}break;
+		case reaction_250ms		:{reactiontimeset=250;	}break;
+		case reaction_2ms		:{reactiontimeset=2;	}break;
+		case reaction_500ms		:{reactiontimeset=500;	}break;
+		case reaction_50ms		:{reactiontimeset=50;	}break;
+	}
+}
+void diflevel_choice(void)
+{
+	 switch(diflevel_status)     //应差选择
+	{
+		case diflevel_level1:{
+				switch(unitconver_status)
+				{
+					case bAr	:{diflevel_value=0.001;}break;
+					case inHG	:{diflevel_value=0.1;}break;
+					case KgF	:{diflevel_value=0.001;}break;
+					case KPR	:{diflevel_value=0.1;}break;
+					case MMHG	:{diflevel_value=1.0;}break;
+					case MPR	:{diflevel_value=0.001;}break;
+					case PSI	:{diflevel_value=0.01;}break;
+				}    
+		}break;
+		case diflevel_level2:{
+				switch(unitconver_status)
+				{
+					case bAr	:{diflevel_value=0.002;}break;
+					case inHG	:{diflevel_value=0.2;}break;
+					case KgF	:{diflevel_value=0.002;}break;
+					case KPR	:{diflevel_value=0.2;}break;
+					case MMHG	:{diflevel_value=2.0;}break;
+					case MPR	:{diflevel_value=0.002;}break;
+					case PSI	:{diflevel_value=0.02;}break;
+				}
+			
+			 
+		
+		}break;
+		case diflevel_level3:{
+			 switch(unitconver_status)
+			{
+				case bAr	:{diflevel_value=0.003;}break;
+				case inHG	:{diflevel_value=0.3;}break;
+				case KgF	:{diflevel_value=0.003;}break;
+				case KPR	:{diflevel_value=0.3;}break;
+				case MMHG	:{diflevel_value=3.0;}break;
+				case MPR	:{diflevel_value=0.003;}break;
+				case PSI	:{diflevel_value=0.03;}break;
+			}
+		
+		
+		}break;
+		case diflevel_level4:{
+			 switch(unitconver_status)
+			{
+				case bAr	:{diflevel_value=0.004;}break;
+				case inHG	:{diflevel_value=0.4;}break;
+				case KgF	:{diflevel_value=0.004;}break;
+				case KPR	:{diflevel_value=0.4;}break;
+				case MMHG	:{diflevel_value=4.0;}break;
+				case MPR	:{diflevel_value=0.004;}break;
+				case PSI	:{diflevel_value=0.04;}break;
+			}
+		
+		}break;
+		case diflevel_level5:{
+			switch(unitconver_status)
+			{
+				case bAr	:{diflevel_value=0.005;}break;
+				case inHG	:{diflevel_value=0.5;}break;
+				case KgF	:{diflevel_value=0.005;}break;
+				case KPR	:{diflevel_value=0.5;}break;
+				case MMHG	:{diflevel_value=5.0;}break;
+				case MPR	:{diflevel_value=0.005;}break;
+				case PSI	:{diflevel_value=0.05;}break;
+			}
+		
+		}break;
+		case diflevel_level6:{
+			switch(unitconver_status)
+			{
+				case bAr	:{diflevel_value=0.006;}break;
+				case inHG	:{diflevel_value=0.6;}break;
+				case KgF	:{diflevel_value=0.006;}break;
+				case KPR	:{diflevel_value=0.6;}break;
+				case MMHG	:{diflevel_value=6.0;}break;
+				case MPR	:{diflevel_value=0.006;}break;
+				case PSI	:{diflevel_value=0.06;}break;
+			}
+		
+		
+		}break;
+		case diflevel_level7:{
+			switch(unitconver_status)
+			{
+				case bAr	:{diflevel_value=0.007;}break;
+				case inHG	:{diflevel_value=0.7;}break;
+				case KgF	:{diflevel_value=0.007;}break;
+				case KPR	:{diflevel_value=0.7;}break;
+				case MMHG	:{diflevel_value=7.0;}break;
+				case MPR	:{diflevel_value=0.007;}break;
+				case PSI	:{diflevel_value=0.07;}break;
+			}
+		
+		}break;
+		case diflevel_level8:{
+			switch(unitconver_status)
+			{
+				case bAr	:{diflevel_value=0.008;}break;
+				case inHG	:{diflevel_value=0.8;}break;
+				case KgF	:{diflevel_value=0.008;}break;
+				case KPR	:{diflevel_value=0.8;}break;
+				case MMHG	:{diflevel_value=8.0;}break;
+				case MPR	:{diflevel_value=0.008;}break;
+				case PSI	:{diflevel_value=0.08;}break;
+			}
+		
+		}break;
+	}
+}
+
+void Yingcha_Comp(void)   				//应差比较
+{
+	uint8_t ifout1=0;
+	uint8_t ifout2=0;
+	
+	diflevel_choice();				// 应差值选中
+	
+	reactiontime_choice();			// 延迟时间选中
+
+	switch(out1compare_status)   //选择应差的模式
+	{
+		case compare1_EASY:{
+								ifout1=EASY1;
+		}break;
+		case compare1_HSY:{
+								ifout1=HSY1;
+		}break;
+		case compare1_WCMP:{
+								ifout1=WCMP1;
+		}break;
+	}
+	
+	switch(out2compare_status)   //选择应差的模式
+	{
+		case compare2_EASY:{
+				ifout2=EASY2;
+		}break;
+		case compare2_HSY:{
+				ifout2=HSY2;
+		}break;
+		case compare2_WCMP:{
+				ifout2=WCMP2;
+		}break;
+		case compare2_off:{
+				out2_state=0;
+		}break;
+	}
+	
+	
+	switch(ifout1)
+	{
+		case EASY1:{
+			switch(out1_state)
+			{
+				case 0:{
+					 if(unitchange_pressure_value>(P1_Value+diflevel_value))//大于应差才输出
+					{
+						if(!out1_state)
+						{
+							out1_state=1;	
+							
+							output_delay_set(OUT1ON,reactiontimeset);
+						}
+					}
+				}break;
+				case 1:{   
+					if(unitchange_pressure_value<(P1_Value))
+					{
+						if(out1_state)
+						{
+							out1_state=0;	
+							output_delay_set(OUT1OFF,reactiontimeset);			
+						}
+					}
+				}break;
+			}
+		}break;
+		case HSY1:{
+			switch(out1_state)
+			{
+				case 0:{
+					if(unitchange_pressure_value>(Hi1_Value))
+					{
+							if(!out1_state)
+							{
+								out1_state=1;	
+								
+								output_delay_set(OUT1ON,reactiontimeset);
+							}
+					}
+				}break;
+				case 1:{
+					if(unitchange_pressure_value<(Lo1_Value))
+					{
+							if(out1_state)
+							{
+								out1_state=0;	
+								output_delay_set(OUT1OFF,reactiontimeset);			
+							}
+					}
+				}break;
+			} 
+		}break;
+		case WCMP1:{
+			 switch(out1_state)
+			{
+				case 0:{
+				   if(unitchange_pressure_value<(Hi1_Value+diflevel_value)&&unitchange_pressure_value>(Lo1_Value+diflevel_value))
+					{
+							if(!out1_state)
+							{
+								out1_state=1;	
+								
+								output_delay_set(OUT1ON,reactiontimeset);
+							}
+					}
+						
+				}break;
+				case 1:{
+					 if(unitchange_pressure_value>(Hi1_Value+diflevel_value))
+					{
+							if(out1_state)
+							{
+								out1_state=0;	
+								output_delay_set(OUT1OFF,reactiontimeset);			
+							}
+					}
+					else if(unitchange_pressure_value<(Lo1_Value))
+					{
+							if(out1_state)
+							{
+								out1_state=0;	
+								output_delay_set(OUT1OFF,reactiontimeset);			
+							}
+					}
+				}break;
+			}
+		}break;
+	}
+	
+	switch(ifout2)
+	{
+		case EASY2:{
+			 switch(out2_state)
+			{
+				case 0:{
+						if(unitchange_pressure_value>(P2_Value+diflevel_value))//大于应差才输出
+						{
+									if(!out2_state)
+									{
+										out2_state=1;	
+										
+										output_delay_set(OUT2ON,reactiontimeset);
+									}
+						}
+				}break;
+				case 1:{   
+						if(unitchange_pressure_value<(P2_Value))
+						{
+									if(out2_state)
+									{
+										out2_state=0;	
+										output_delay_set(OUT2OFF,reactiontimeset);			
+									}
+						}
+				}break;
+			}
+		}break;
+		case HSY2:{
+			 switch(out2_state)
+				{
+					case 0:{
+						if(unitchange_pressure_value>(Hi2_Value))
+							{
+									if(!out2_state)
+									{
+										out2_state=1;	
+										
+										output_delay_set(OUT2ON,reactiontimeset);
+									}
+							}
+					}break;
+					case 1:{
+						if(unitchange_pressure_value<(Lo2_Value))
+						{
+									if(out2_state)
+									{
+										out2_state=0;	
+										output_delay_set(OUT2OFF,reactiontimeset);			
+									}
+						}
+					}break;
+				}  
+		}break;
+		case WCMP2:{
+			 switch(out2_state)
+			{
+				case 0:{
+					if(unitchange_pressure_value<(Hi2_Value+diflevel_value)&&unitchange_pressure_value>(Lo2_Value+diflevel_value))
+					{
+								if(!out2_state)
+								{
+									out2_state=1;	
+									
+									output_delay_set(OUT2ON,reactiontimeset);
+								}
+					}
+						
+				}break;
+				case 1:{
+					 if(unitchange_pressure_value>(Hi2_Value+diflevel_value))
+					{
+								if(out2_state)
+								{
+									out2_state=0;	
+									output_delay_set(OUT2OFF,reactiontimeset);			
+								}
+					}
+					else if(unitchange_pressure_value<(Lo2_Value))
+					{
+								if(out2_state)
+								{
+									out2_state=0;	
+									output_delay_set(OUT2OFF,reactiontimeset);			
+								}
+					}
+				}break;
+			}
+		}break;
+		case OFF2:{
+		
+		}break;
+	}
+	
+}
+
+void output_ctr_update(void)
+{
+	if(OUT1_state)
+	{
+		OUT1_on();	
+	}
+	else
+	{
+		OUT1_off();	
+	}
+	if(OUT2_state)
+	{
+		OUT2_on();
+	}
+	else
+	{
+		OUT2_off();
+	}		
+}
+
+#endif
+// 输出屏显示============================================
+#if 1
+void output_screen_disupdate(void)
+{
+	if(OUT1_state)
+	{
+		DIV_Disp_SetPoint(Out1Screen,S1);
+			
+	}
+	else
+	{
+		DIV_Disp_UnSetPoint(Out1Screen,S1);
+			
+	}
+	if(OUT2_state)
+	{
+		DIV_Disp_SetPoint(Out2Screen,S2);
+	}
+	else
+	{
+		DIV_Disp_UnSetPoint(Out2Screen,S2);
+	}
+}
 #endif
 // 主屏显示================================================
 #if 1
@@ -206,7 +678,6 @@ void main_screen_dispaftertime(uint16_t time,const char * data1,...)
 	DIV_Disp_ByString(MainScreen,data);
 	
 	main_status |= MAINSCREEN_DISPAFTERTIME;
-	osal_start_timerEx(iot_app_task_id,IOT_APP_MAINSCREEN_DISP_EVT,time);
 }
 
 // 主屏显示内容
@@ -1655,14 +2126,11 @@ void iot_app_init(uint8 task_id)
 	
 	main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
 	second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
-	osal_start_reload_timer(iot_app_task_id,IOT_APP_MAINSCREEN_DISP_EVT,1);// 2ms 刷新显示主屏
-
+	osal_start_reload_timer(iot_app_task_id,IOT_APP_TIMER_EVT,1);
 	
 	MenuItem* root = CreateTestMenu(); // 动态创建菜单，所有菜单都在这个函数里编辑好
     MenuSystem_Init(root);	// 初始化系统菜单
 
-	osal_start_reload_timer(iot_app_task_id,IOT_APP_TIMER_EVT,IOT_APP_TIMER_INTERVAL);
-	
     // 注册按键回调函数
     HalKeyCallbackRegister(iot_app_key_callback);
 }
@@ -1700,6 +2168,74 @@ uint16 iot_app_process_event(uint8 task_id, uint16 events)
         return (events ^ SYS_EVENT_MSG);
     }
 	
+	
+	if(events & IOT_APP_DELAYOUT1_EVT)
+	{
+		if(OUT1_CMD == OUT1ON)
+		{
+			uint32_t temp = outnonc_status & out1;
+			if(temp)
+			{
+				OUT1_state=1;
+			}
+			else
+			{
+				OUT1_state=0;
+			}
+			
+		}
+		if(OUT1_CMD == OUT1OFF)
+		{
+			uint32_t temp = outnonc_status & out1;
+			if(temp)
+			{
+				OUT1_state=0;
+			}
+			else
+			{
+				OUT1_state=1;
+			}
+		}
+		
+		OUT1_CMD =0;
+		
+		return (events ^ IOT_APP_DELAYOUT1_EVT);
+	}
+	
+	if(events & IOT_APP_DELAYOUT2_EVT)
+	{
+			
+		if(OUT2_CMD == OUT2ON)
+		{
+			uint32_t temp = outnonc_status & out2;
+			if(temp)
+			{
+				OUT2_state=1;
+			}
+			else
+			{
+				OUT2_state=0;
+			}
+			
+		}
+		if(OUT2_CMD == OUT2OFF)
+		{
+			uint32_t temp = outnonc_status & out2;
+			if(temp)
+			{
+				OUT2_state=0;
+			}
+			else
+			{
+				OUT2_state=1;
+			}
+		}
+		
+		OUT2_CMD =0;
+		
+		return (events ^ IOT_APP_DELAYOUT2_EVT);
+	}
+
 	if(events & IOT_APP_LONGKEYSET_YCVALUE_EVT)
 	{
 		long_setycvalue(keypressaddorsub);
@@ -1707,12 +2243,12 @@ uint16 iot_app_process_event(uint8 task_id, uint16 events)
 		return (events ^ IOT_APP_LONGKEYSET_YCVALUE_EVT);
 	}
 	
-	if(events & IOT_APP_MAINSCREEN_DISP_EVT)
+	if(events & IOT_APP_TIMER_EVT)
 	{
 		main_screen_dispupdate();
 		second_screen_dispupdate();
 		
-		return (events ^ IOT_APP_MAINSCREEN_DISP_EVT);
+		return (events ^ IOT_APP_TIMER_EVT);
 	}
 	
 	// 丢弃未知事件

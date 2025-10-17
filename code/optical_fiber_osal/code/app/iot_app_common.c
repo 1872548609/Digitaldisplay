@@ -58,6 +58,8 @@ uint32_t out2compare_status = compare2_off;
 
 uint32_t outnonc_status = noncstatus_1o2o;
 
+uint32_t reactime_status = reaction_2ms;
+
 uint32_t maincolor_status = R_ON;
 
 uint32_t unitconver_status = KPR;
@@ -349,7 +351,79 @@ void noncmode_click(MenuItem* item)
 	}
 }
 
+void reactiontimemode_click(MenuItem* item)
+{
+	if(item->whichcallback == INCALLBACK)
+	{
+		
+	}
+	else if (item->whichcallback == OUTCALLBACK)
+	{
+		
+	}
+	else if (item->whichcallback == MENU_CBK_MODE)
+	{
+		 Menu_Next();
+		
+		Menu_Execute(INCALLBACK);
+		
+		return;
+	}
+	else if (item->whichcallback == MENU_CBK_ADD)
+	{
+		if(reactime_status>reaction_2ms)
+		{
+			reactime_status--;
+		}
+		else
+		{
+			reactime_status=reaction_2000ms;
+		}	
+	}
+	else if (item->whichcallback == MENU_CBK_SUB)
+	{
+		if(reactime_status<reaction_2000ms)
+		{
+			reactime_status++;
+		}
+		else
+		{
+			reactime_status=reaction_2ms;
+		}	
+	}
 	
+	switch(reactime_status)
+	{
+		case reaction_2ms:{
+			DIV_Disp_ByString(MainScreen,"   2");         
+			DIV_Disp_ByString(SecondScreen," RES");
+		}break;
+		case reaction_10ms:{
+			DIV_Disp_ByString(MainScreen,"  10");         
+			DIV_Disp_ByString(SecondScreen," RES");
+		}break;
+		case reaction_50ms:{
+			DIV_Disp_ByString(MainScreen,"  50");         
+			DIV_Disp_ByString(SecondScreen," RES");
+		}break;
+		case reaction_100ms:{
+			DIV_Disp_ByString(MainScreen," 100");         
+			DIV_Disp_ByString(SecondScreen," RES");
+		}break;	
+		case reaction_250ms:{
+			DIV_Disp_ByString(MainScreen," 250");         
+			DIV_Disp_ByString(SecondScreen," RES");
+		}break;	
+		case reaction_500ms:{
+			DIV_Disp_ByString(MainScreen," 500");         
+			DIV_Disp_ByString(SecondScreen," RES");
+		}break;	
+		case reaction_2000ms:{
+			DIV_Disp_ByString(MainScreen,"2000");         
+			DIV_Disp_ByString(SecondScreen," RES");
+		}break;	
+	}
+}	
 
 
 void maincolormode_click(MenuItem* item)

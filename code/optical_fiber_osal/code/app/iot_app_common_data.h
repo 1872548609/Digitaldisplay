@@ -143,6 +143,14 @@ extern float Lo2_Value;
 #define 	out1   2
 #define 	out2   1
 
+#define 	reaction_2ms 	1
+#define 	reaction_10ms 	2
+#define 	reaction_50ms 	3
+#define 	reaction_100ms 	4
+#define 	reaction_250ms 	5
+#define 	reaction_500ms 	6
+#define 	reaction_2000ms	7
+
 #define  	R_ON 	     1
 #define		G_ON 	     2
 #define		AL_RED 	     3
@@ -195,6 +203,7 @@ extern uint32_t out2compare_status;
 extern uint32_t outnonc_status;
 extern uint32_t maincolor_status;
 extern uint32_t unitconver_status; 
+extern uint32_t reactime_status;
 extern uint32_t secscreen_status;
 extern uint32_t dispeed_status;
 extern uint32_t diflevel_status;

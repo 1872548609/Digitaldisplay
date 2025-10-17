@@ -98,6 +98,12 @@ void HalDriverInit(void)
 	#if (defined HAL_DIV) && (HAL_DIV == TRUE)
 	DIV_Disp_Init();
 	#endif
+	
+	/*输出初始化*/
+	#if (defined HAL_OUT) && (HAL_OUT == TRUE)
+	Hal_Out_Init();
+	#endif
+	
 		
     /* SPI初始化（可选） */
     #if (defined HAL_SPI) && (HAL_SPI == TRUE)

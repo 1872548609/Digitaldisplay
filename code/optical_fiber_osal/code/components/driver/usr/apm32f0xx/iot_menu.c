@@ -393,7 +393,8 @@ __attribute__((weak)) void proset_click(MenuItem* item) {}
 // callback 2	
 __attribute__((weak)) void out1mode_click(MenuItem* item) {}	
 __attribute__((weak)) void out2mode_click(MenuItem* item) {}		
-__attribute__((weak)) void noncmode_click(MenuItem* item) {}		
+__attribute__((weak)) void noncmode_click(MenuItem* item) {}
+__attribute__((weak)) void reactiontimemode_click(MenuItem* item) {}	
 __attribute__((weak)) void maincolormode_click(MenuItem* item) {}	
 __attribute__((weak)) void unitconvermode_click(MenuItem* item) {}
 
@@ -418,6 +419,7 @@ MenuItem* proset_menu;
 MenuItem* out1mode_menu;	
 MenuItem* out2mode_menu;
 MenuItem* NONCmode_menu;
+MenuItem* reactimemode_memu;
 MenuItem* MAINColormode_menu;
 MenuItem* unitconvermode_menu;
 	
@@ -483,6 +485,16 @@ MenuItem* CreateTestMenu() {
 			NONCmode_menu->childCount = 0;
 			NONCmode_menu->level = 2;
 			
+			// reactime模式
+			reactimemode_memu = osal_mem_alloc(sizeof(MenuItem));
+			strcpy(reactimemode_memu->text, "REACTIMEMODE");
+			reactimemode_memu->func = reactiontimemode_click;
+			reactimemode_memu->enabled = true;
+			reactimemode_memu->parent = normset_menu;  
+			reactimemode_memu->children = NULL;
+			reactimemode_memu->childCount = 0;
+			reactimemode_memu->level = 2;
+			
 			// maincolor模式
 			MAINColormode_menu = osal_mem_alloc(sizeof(MenuItem));
 			strcpy(MAINColormode_menu->text, "MAINCOLORMODE");
@@ -505,13 +517,14 @@ MenuItem* CreateTestMenu() {
 			
 			
 			// 分配根项子菜单数组
-			normset_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 5);		
-			normset_menu->childCount = 5;
+			normset_menu->children = osal_mem_alloc(sizeof(MenuItem*) * 6);		
+			normset_menu->childCount = 6;
 			normset_menu->children[0] = out1mode_menu;
 			normset_menu->children[1] = out2mode_menu;
 			normset_menu->children[2] = NONCmode_menu;
-			normset_menu->children[3] = MAINColormode_menu;
-			normset_menu->children[4] = unitconvermode_menu;
+			normset_menu->children[3] = reactimemode_memu;
+			normset_menu->children[4] = MAINColormode_menu;
+			normset_menu->children[5] = unitconvermode_menu;
 		}	
 
 		// 2.PROSET

@@ -20,12 +20,13 @@ extern "C"
 *                                             CONSTANTS
 **************************************************-*****************^******************************/
 #define IOT_APP_TIMER_EVT                                           0x0001 // 定义测试事件
-#define IOT_APP_TIMER_INTERVAL                                      5 // 定时器间隔
+#define IOT_APP_TIMER_INTERVAL                                      1 // 定时器间隔
 
 #define IOT_APP_LONGKEYSET_YCVALUE_EVT 								0x0002 // 长按设置应差事件	
-#define IOT_APP_SECONDSCREEN_DISP_EVT								0x0004 // 副屏显示事件	
-#define IOT_APP_MAINSCREEN_DISP_EVT									0x0008	// 主屏显示
 
+#define IOT_APP_DELAYOUT1_EVT    									0x0004
+#define IOT_APP_DELAYOUT2_EVT										0x0008	
+	
 /*************************************************-*************************************************
 *                                             FUNCTION
 **************************************************-*****************^******************************/
@@ -39,8 +40,18 @@ extern "C"
 
 extern uint8_t nowsetwhichyc;  //正在设置哪个
 
+void iot_app_Poll(void);
+
 // 单位转换
 float unitconversion(float value, uint8_t unit);
+
+// 输出控制
+void output_ctr_update(void);
+void Yingcha_Comp(void);
+
+
+// 输出显示
+void output_screen_disupdate(void);
 
 // 主屏显示
 void main_screen_dispaftertime(uint16_t time,const char * data1,...);

@@ -77,7 +77,7 @@ uint16 *tasksEvents;
  *********************************************************************/
 void osalPoll(void)
 {
-	DIV_disp_out12andpoint();
+	iot_app_Poll();
 	
 }
 

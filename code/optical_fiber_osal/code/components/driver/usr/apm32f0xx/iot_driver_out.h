@@ -1,0 +1,35 @@
+#ifndef __IOT_DRIVER_OUT_H
+#define __IOT_DRIVER_OUT_H
+
+#include "main.h"
+
+#ifndef HAL_OUT
+#define HAL_OUT TRUE
+#endif
+
+
+#define OUT1_PORT  GPIOA
+#define OUT1_PIN   GPIO_PIN_7
+
+
+#define OUT2_PORT  GPIOB
+#define OUT2_PIN   GPIO_PIN_1
+
+#define OUT1_PERIPH_PORT     RCM_AHB_PERIPH_GPIOA
+#define OUT2_PERIPH_PORT     RCM_AHB_PERIPH_GPIOB
+
+
+#define OUT1 1
+#define OUT2 0
+
+#define onset  1
+#define offset 0
+
+
+
+void Hal_Out_Init(void);
+
+void HAL_OutPut_Set(uint8_t out,uint8_t level);
+
+#endif
+
