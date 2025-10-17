@@ -42,6 +42,9 @@ extern uint8_t nowsetwhichyc;  //正在设置哪个
 
 void iot_app_Poll(void);
 
+// 气压读取
+void pressure_readalways(void);
+
 // 单位转换
 float unitconversion(float value, uint8_t unit);
 

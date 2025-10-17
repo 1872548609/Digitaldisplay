@@ -56,6 +56,8 @@ uint8 iot_app_task_id;
 // 轮询任务
 void iot_app_Poll(void)
 {
+	pressure_readalways();
+	
 	output_screen_disupdate();
 	
 	DIV_disp_out12andpoint();
@@ -109,6 +111,14 @@ float pressure_read_once(void)
 	tempvalue = atof(data1);	
 	
 	return tempvalue;
+}
+
+
+void pressure_readalways(void)
+{
+	Current_pressure_value = pressure_read_once();
+	
+	unitchange_pressure_value = unitconversion(Current_pressure_value,unitconver_status);
 }
 
 #endif
@@ -607,10 +617,6 @@ void main_screen_stopevt(uint32 evt)
 // 按单位显示气压
 void main_screen_disppressure(void)
 {
-	Current_pressure_value = pressure_read_once();
-	
-	unitchange_pressure_value = unitconversion(Current_pressure_value,unitconver_status);
-	
 	switch(unitconver_status)
 	{
 		case bAr:{
