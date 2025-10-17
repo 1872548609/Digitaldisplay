@@ -57,7 +57,7 @@ uint8 iot_app_task_id;
 // 气压读取处理================================================
 #if 1
 
-#define WINDOW_SIZE 100
+#define WINDOW_SIZE 150
 uint16_t adc_buffer[WINDOW_SIZE] = {0};
 uint8_t ad_index = 0;
 uint32_t adc_sum = 0; 			// adc累加
