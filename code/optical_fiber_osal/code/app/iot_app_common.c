@@ -96,6 +96,8 @@ void normset_click(MenuItem* item)
 	{
 		DIV_Disp_ByString(MainScreen,"NoRM");         
 		DIV_Disp_ByString(SecondScreen,"Mode");	
+		
+		iot_mainbacklight_set(BACKLIGHT_YELLOW);
 	}
 	else if (item->whichcallback == MENU_CBK_MODE)
 	{

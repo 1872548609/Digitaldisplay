@@ -2334,6 +2334,15 @@ void iot_app_init(uint8 task_id)
 	
 	iot_allbacklight_set(BACKLIGHT_ON);		// 打开背光
 	
+	int i =0,j=0;
+	for(i=0;i<5000;i++)
+	{
+		for(j=0;j<1000;j++)
+		{
+			__nop();
+		}
+	}
+	
 	main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
 	second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
 	osal_start_reload_timer(iot_app_task_id,IOTAPP_DISPSECOND_EVT,50);
