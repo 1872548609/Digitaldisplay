@@ -2343,6 +2343,8 @@ void iot_app_init(uint8 task_id)
 		}
 	}
 	
+	main_screen_disppressure();// 动画后立即刷新一次
+	
 	main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
 	second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
 	osal_start_reload_timer(iot_app_task_id,IOTAPP_DISPSECOND_EVT,50);
