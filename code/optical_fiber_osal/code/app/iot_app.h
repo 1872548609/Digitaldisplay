@@ -32,6 +32,22 @@ extern "C"
 /*************************************************-*************************************************
 *                                             FUNCTION
 **************************************************-*****************^******************************/
+
+#define BACKLIGHT_OFF       	0		// 关闭
+#define BACKLIGHT_ON        	1		// 开启
+#define BACKLIGHT_RED 			2		// 红色
+#define BACKLIGHT_YELLOW		3		// 黄色
+#define BACKLIGHT_GREEN			4		// 绿色
+
+#define BACKLIGHT_LEVEL_HALF		10	// 半亮
+#define BACKLIGHT_LEVEL_MAX			100	// 全亮
+
+extern void iot_mainbacklight_set(uint8 color);		// 主屏背光设置
+extern void iot_secondbacklight_set(uint8 en);		// 副屏背光设置
+extern void iot_outputbacklight_set(uint8 en);		// 输出屏背光设置
+extern void iot_backlight_levelset(uint8_t level);	// 背光亮度设置
+
+
 #define set_no  0x00 //开机无设置
 #define set_P1 	0x01
 #define set_P2 	0x02
@@ -57,6 +73,9 @@ void Yingcha_Comp(void);
 
 // 输出显示
 void output_screen_disupdate(void);
+
+// 显示颜色联动
+void ColorLinkTrun(void);
 
 // 主屏显示
 void main_screen_dispaftertime(uint16_t time,const char * data1,...);

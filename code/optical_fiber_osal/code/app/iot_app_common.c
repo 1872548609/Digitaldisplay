@@ -70,7 +70,7 @@ uint32_t dispeed_status = dispeed_250ms;
 
 uint32_t diflevel_status = diflevel_level1;
 
-uint32_t coloract_status = out1;
+uint32_t coloract_status = colorreaction_out1;
 
 uint32_t eco_status = eco_off;
 

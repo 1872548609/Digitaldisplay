@@ -56,16 +56,22 @@ uint8 iot_app_task_id;
 // 轮询任务
 void iot_app_Poll(void)
 {
+	if(system_state==RUN_STATE)
+	{
+		ColorLinkTrun();
+	}
 	pressure_readalways();
 	
 	output_screen_disupdate();
-	
+
 	DIV_disp_out12andpoint();
 	
 	Yingcha_Comp();
 	
 	output_ctr_update();
 }
+
+
 // 气压读取处理================================================
 #if 1
 
@@ -138,8 +144,8 @@ float diflevel_value=0.0f;		// 应差值
 
 uint16_t reactiontimeset=2;		//默认2ms    
 
-uint8_t out1_state = 1;      //当前输出状态
-uint8_t out2_state = 1;
+uint8_t out1_state = 2;      //当前输出状态
+uint8_t out2_state = 2;
 
 
 uint8_t OUT1_state = 1;		//真实输出状态
@@ -378,6 +384,19 @@ void Yingcha_Comp(void)   				//应差比较
 						}
 					}
 				}break;
+				case 2:{
+					 if(unitchange_pressure_value>(P1_Value+diflevel_value))//大于应差才输出
+					 {
+							out1_state=1;	
+							output_delay_set(OUT1ON,reactiontimeset);
+					}
+					 if(unitchange_pressure_value<(P1_Value))
+					{
+
+							out1_state=0;	
+							output_delay_set(OUT1OFF,reactiontimeset);			
+					}
+				}break;
 			}
 		}break;
 		case HSY1:{
@@ -402,6 +421,19 @@ void Yingcha_Comp(void)   				//应差比较
 								out1_state=0;	
 								output_delay_set(OUT1OFF,reactiontimeset);			
 							}
+					}
+				}break;
+				case 2:{
+					if(unitchange_pressure_value>(Hi1_Value))
+					 {
+							out1_state=1;	
+							output_delay_set(OUT1ON,reactiontimeset);
+					}
+					if(unitchange_pressure_value<(Lo1_Value))
+					{
+
+							out1_state=0;	
+							output_delay_set(OUT1OFF,reactiontimeset);			
 					}
 				}break;
 			} 
@@ -439,6 +471,25 @@ void Yingcha_Comp(void)   				//应差比较
 							}
 					}
 				}break;
+				case 2:{
+				   if(unitchange_pressure_value<(Hi1_Value+diflevel_value)&&unitchange_pressure_value>(Lo1_Value+diflevel_value))
+					 {
+							out1_state=1;	
+							output_delay_set(OUT1ON,reactiontimeset);
+					}
+					if(unitchange_pressure_value>(Hi1_Value+diflevel_value))
+					{
+
+							out1_state=0;	
+							output_delay_set(OUT1OFF,reactiontimeset);			
+					}
+					else if(unitchange_pressure_value<(Lo1_Value))
+					{
+
+							out1_state=0;	
+							output_delay_set(OUT1OFF,reactiontimeset);			
+					}
+				}break;
 			}
 		}break;
 	}
@@ -469,6 +520,20 @@ void Yingcha_Comp(void)   				//应差比较
 									}
 						}
 				}break;
+				case 2:{
+					if(unitchange_pressure_value>(P2_Value+diflevel_value))//大于应差才输出
+					 {
+							out2_state=1;	
+							output_delay_set(OUT2ON,reactiontimeset);
+					}
+					if(unitchange_pressure_value<(P2_Value))
+					{
+
+							out2_state=0;	
+							output_delay_set(OUT2OFF,reactiontimeset);					
+					}
+				}break;
+				
 			}
 		}break;
 		case HSY2:{
@@ -493,6 +558,19 @@ void Yingcha_Comp(void)   				//应差比较
 										out2_state=0;	
 										output_delay_set(OUT2OFF,reactiontimeset);			
 									}
+						}
+					}break;
+					case 2:{
+						if(unitchange_pressure_value>(Hi2_Value))
+						 {
+								out2_state=1;	
+								output_delay_set(OUT2ON,reactiontimeset);
+						}
+						if(unitchange_pressure_value<(Lo2_Value))
+						{
+
+								out2_state=0;	
+								output_delay_set(OUT2OFF,reactiontimeset);					
 						}
 					}break;
 				}  
@@ -530,6 +608,25 @@ void Yingcha_Comp(void)   				//应差比较
 								}
 					}
 				}break;
+				case 2:{
+						if(unitchange_pressure_value<(Hi2_Value+diflevel_value)&&unitchange_pressure_value>(Lo2_Value+diflevel_value))
+						 {
+								out2_state=1;	
+								output_delay_set(OUT2ON,reactiontimeset);
+						}
+						 if(unitchange_pressure_value>(Hi2_Value+diflevel_value))
+						{
+
+								out2_state=0;	
+								output_delay_set(OUT2OFF,reactiontimeset);					
+						}
+						else if(unitchange_pressure_value<(Lo2_Value))
+						{
+
+								out2_state=0;	
+								output_delay_set(OUT2OFF,reactiontimeset);					
+						}
+					}break;
 			}
 		}break;
 		case OFF2:{
@@ -583,6 +680,85 @@ void output_screen_disupdate(void)
 		DIV_Disp_UnSetPoint(Out2Screen,S2);
 	}
 }
+#endif
+// 显示颜色联动转换===============================================
+#if 1
+
+#define linkout1 1
+#define linkout2 0
+uint8_t Display_linked_conversion = 0; 
+
+uint8_t maincolor =0;
+
+void ColorLinkTrun(void)
+{
+    // 显示颜色联动转换
+    switch(coloract_status)     
+    {
+        case colorreaction_out1:
+            Display_linked_conversion = linkout1;
+            break;
+        case colorreaction_out2:
+            Display_linked_conversion = linkout2;
+            break; 
+    }
+	
+	// 主屏主颜色选择
+	switch(maincolor_status) 
+    {
+        case R_ON:
+			maincolor=BACKLIGHT_GREEN;
+            break;
+        case G_ON:
+            maincolor=BACKLIGHT_RED;
+            break;
+        case AL_RED:
+            maincolor=BACKLIGHT_RED;
+		
+		 iot_mainbacklight_set(maincolor);
+		
+			return;
+        case AL_GREEN:
+           maincolor=BACKLIGHT_GREEN;
+		
+			iot_mainbacklight_set(maincolor);
+		
+			return;
+    }
+	
+	// 主屏颜色输出控制
+    bool isOut1 = (Display_linked_conversion == linkout1);
+    bool activeState = (isOut1 && OUT1_state) || (!isOut1 && OUT2_state);
+	
+	if(activeState)
+	{
+		if(isOut1)
+		{
+			if(maincolor==BACKLIGHT_RED)
+			{
+				maincolor=BACKLIGHT_GREEN;
+			}
+			else if(maincolor==BACKLIGHT_GREEN)
+			{
+				maincolor=BACKLIGHT_RED;
+			}
+		}
+		else
+		{
+			if(maincolor==BACKLIGHT_GREEN)
+			{
+				maincolor=BACKLIGHT_RED;
+			}
+			else if(maincolor==BACKLIGHT_RED)
+			{
+				maincolor=BACKLIGHT_GREEN;
+			}
+		}
+	}
+	
+	iot_mainbacklight_set(maincolor);
+}
+
 #endif
 // 主屏显示================================================
 #if 1
@@ -1245,7 +1421,7 @@ uint8 second_screen_dispupdate(void)
 		
 		if(dispset_returntime)
 		{
-			dispset_returntime-=2;
+			dispset_returntime-=5;
 			return 0;
 		}
 		
@@ -2127,6 +2303,8 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 			main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
 			second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
 			
+			iot_mainbacklight_set(BACKLIGHT_YELLOW);
+			
 			system_state = RUN_STATE; 
 		}
 		
@@ -2160,6 +2338,9 @@ void iot_app_init(uint8 task_id)
 	second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
 	osal_start_reload_timer(iot_app_task_id,IOTAPP_DISPSECOND_EVT,50);
 	osal_start_reload_timer(iot_app_task_id,IOT_APP_TIMER_EVT,1);
+	
+	get_nowycset();
+	nowsetwhichyc=NOWChoice[0];
 	
 	MenuItem* root = CreateTestMenu(); // 动态创建菜单，所有菜单都在这个函数里编辑好
     MenuSystem_Init(root);	// 初始化系统菜单
