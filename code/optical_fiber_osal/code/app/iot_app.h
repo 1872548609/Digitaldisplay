@@ -90,6 +90,9 @@ void second_screen_dispaftertime(uint16_t time,const char * data1,...);
 void second_screen_disp(const char * data1,...);
 void second_screen_dispfloat(const char * data1,...);
 	
+// 长按mode退出
+void systemreturnrun(void);	
+	
 extern void   iot_app_init(uint8 task_id);
 extern uint16 iot_app_process_event(uint8 task_id, uint16 events);
 

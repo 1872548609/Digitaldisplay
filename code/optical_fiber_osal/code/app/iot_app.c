@@ -2354,6 +2354,26 @@ void iot_backlight_levelset(uint8_t level)
 }
 
 #endif
+// 长按mode退出
+void systemreturnrun(void)
+{
+	if(system_state == MENU_STATE)
+	{
+		MenuSystem_Stop();		// 关闭菜单
+		Menu_Execute(OUTCALLBACK);
+		
+		main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
+		second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
+		
+		iot_mainbacklight_set(BACKLIGHT_YELLOW);
+		
+		main_screen_disppressure();// 退出后立即刷新一次
+		DIV_Disp_ClearAllPoint(MainScreen);
+		
+		system_state = RUN_STATE; 
+	}
+}
+
 // 任务区=====================================
 uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milliseconds)
 {
@@ -2467,15 +2487,14 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 	
 	if(press_keys & HAL_KEY_MODE)
 	{
-		if(system_state == MENU_STATE)
-		{
-			Menu_Execute(MENU_CBK_MODE);
-		}
 		if(system_state == RUN_STATE)
 		{
 			modeset_choiceanddisplay();	// 按键选择切换应差设定
 		}
-		
+		if(system_state == MENU_STATE)
+		{
+			Menu_Execute(MENU_CBK_MODE);
+		}	
 	}
 	
 	if(press_keys & HAL_KEY_LEFT_ADD)
