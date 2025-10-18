@@ -881,7 +881,7 @@ void DIV_Disp_Snprintf(int screen,const char * data1,...)
 	DIV_Disp_ByString(screen,data);
 	va_end(ps);   
 }
-// 显示浮点数最多3位小数
+// 显示浮点数最多3位小数（旧版无效，在iot里重做了）
 void DIV_Disp_floatNumByString(int screen,const char * data1,...)
 {
 	// 获取字符串参数

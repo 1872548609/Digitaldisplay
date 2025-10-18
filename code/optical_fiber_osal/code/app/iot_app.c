@@ -1039,7 +1039,7 @@ void main_screen_disppressure(void)
 			
 		}break;
 		case MMHG:{
-							main_screen_dispfloat("%0.f",unitchange_pressure_value);
+							main_screen_dispfloat("%0.0f",unitchange_pressure_value);
 					
 		}break;
 		case MPR:{
@@ -1138,7 +1138,43 @@ void main_screen_dispfloat(const char * data1,...)
 			ader = i;
 		}
 	}
-	if(!ader){return;}// 没有小数就返回
+	if(!ader){
+	
+		char disp[20] = {0};
+
+		int num = atoi(string);
+		
+		if(num>=0 && num<10)
+		{
+			sprintf(disp,"   %s",string);
+		}
+		else if(num>=10 && num<100)
+		{
+			sprintf(disp,"  %s",string);
+		}
+		else if(num>=100 && num<1000)
+		{
+			sprintf(disp," %s",string);
+		}
+		if(isNegative)
+		{
+			disp[0]='-';
+		}
+		
+		if(num>=1000)
+		{
+			sprintf(disp,"%s",string);
+			if(isNegative)
+			{
+				disp[0]='*';
+			}
+		}
+				
+		DIV_Disp_ByString(MainScreen,disp);
+		strcpy(main_screen_now,disp); 
+	
+		return;
+	}// 没有小数
 	
 	// 获取小数点前后的数字
 	char frontdate[10]={0};// 获取小数点前的字符串
@@ -1510,7 +1546,42 @@ void second_screen_dispfloat(const char * data1,...)
 			ader = i;
 		}
 	}
-	if(!ader){return;}// 没有小数就返回
+	if(!ader){
+	
+		char disp[20] = {0};
+
+		int num = atoi(string);
+		
+		if(num>=0 && num<10)
+		{
+			sprintf(disp,"   %s",string);
+		}
+		else if(num>=10 && num<100)
+		{
+			sprintf(disp,"  %s",string);
+		}
+		else if(num>=100 && num<1000)
+		{
+			sprintf(disp," %s",string);
+		}
+		if(isNegative)
+		{
+			disp[0]='-';
+		}
+		
+		if(num>=1000)
+		{
+			sprintf(disp,"%s",string);
+			if(isNegative)
+			{
+				disp[0]='*';
+			}
+		}
+				
+		DIV_Disp_ByString(SecondScreen,disp);
+		strcpy(second_screen_now,disp); 
+	
+	return;}// 没有小数
 	
 	// 获取小数点前后的数字
 	char frontdate[10]={0};// 获取小数点前的字符串
