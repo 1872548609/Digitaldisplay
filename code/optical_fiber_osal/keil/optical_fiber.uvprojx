@@ -494,16 +494,16 @@
               <FileType>1</FileType>
               <FilePath>..\code\components\osal\common\OSAL_PwrMgr.c</FilePath>
             </File>
-            <File>
-              <FileName>OSAL_PwrMgr.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\code\components\osal\include\OSAL_PwrMgr.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>driver/lib</GroupName>
           <Files>
+            <File>
+              <FileName>OSAL_PwrMgr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\code\components\osal\include\OSAL_PwrMgr.h</FilePath>
+            </File>
             <File>
               <FileName>apm32f0xx_adc.c</FileName>
               <FileType>1</FileType>
@@ -680,11 +680,6 @@
               <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_font.h</FilePath>
             </File>
             <File>
-              <FileName>iot_driver_menu.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_menu.h</FilePath>
-            </File>
-            <File>
               <FileName>iot_menu.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\code\components\driver\usr\apm32f0xx\iot_menu.c</FilePath>
@@ -713,6 +708,16 @@
               <FileName>iot_driver_readadc.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_readadc.h</FilePath>
+            </File>
+            <File>
+              <FileName>iot_driver_out.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_out.c</FilePath>
+            </File>
+            <File>
+              <FileName>iot_driver_out.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_out.h</FilePath>
             </File>
           </Files>
         </Group>

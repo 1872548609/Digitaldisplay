@@ -80,11 +80,76 @@ void iot_app_Poll(void)
 
 #define datalenght 10
 
+#define MASK_out1compare 0x3 		//0~1
+#define MASK_out2compare 0x1c		//2~4
+#define MASK_noncstatus	0x60 		//5~6
+#define MASK_reaction 0x380			//7~9
+#define MASK_maincolor 0x1c00 		//10~12
+#define MASK_unitconver 0xe00 		//13~15
+#define MASK_secscreen 0x70000 		//16~18
+#define MASK_disspeed 0x180000 		//19~20
+#define MASK_diflevel 0x1E00000 	//21~24
+#define MASK_colorract 0x6000000 	//25~26
+#define MASK_eco 0x18000000			//27~28
+#define MASK_copy 0xE0000000 		//29~31
+#define MASK_facrecover 0x3 		//0~1
+
+uint32 menuset_flashsave1 = 0;
+uint32 menuset_flashsave2 = 0;
+
+// 将菜单设置打包到 menuset_flashsave1 和 menuset_flashsave2
+void PackMenuSettings(void)
+{
+    // 清零保存变量
+    menuset_flashsave1 = 0;
+    menuset_flashsave2 = 0;
+    
+    // 打包第一个32位变量 (menuset_flashsave1)
+    menuset_flashsave1 |= (out1compare_status & 0x3);               // 位0-1
+    menuset_flashsave1 |= (out2compare_status & 0x7) << 2;          // 位2-4
+    menuset_flashsave1 |= (outnonc_status & 0x3) << 5;              // 位5-6
+    menuset_flashsave1 |= (reactime_status & 0x7) << 7;             // 位7-9
+    menuset_flashsave1 |= (maincolor_status & 0x7) << 10;           // 位10-12
+    menuset_flashsave1 |= (unitconver_status & 0x7) << 13;          // 位13-15
+    menuset_flashsave1 |= (secscreen_status & 0x7) << 16;           // 位16-18
+    menuset_flashsave1 |= (dispeed_status & 0x3) << 19;             // 位19-20
+    menuset_flashsave1 |= (diflevel_status & 0xF) << 21;            // 位21-24
+    menuset_flashsave1 |= (coloract_status & 0x3) << 25;            // 位25-26
+    menuset_flashsave1 |= (eco_status & 0x3) << 27;                 // 位27-28
+    menuset_flashsave1 |= (copy_status & 0x7) << 29;                // 位29-31
+    
+    // 打包第二个32位变量 (menuset_flashsave2)
+    menuset_flashsave2 |= (facrecover_status & 0x3);                // 位0-1
+}
+ 
+// 从 menuset_flashsave1 和 menuset_flashsave2 解包菜单设置
+void UnpackMenuSettings(void)
+{
+    // 解包第一个32位变量
+    out1compare_status = menuset_flashsave1 & MASK_out1compare;
+    out2compare_status = (menuset_flashsave1 >> 2) & 0x7;          // 0x1c掩码对应3位
+    outnonc_status = (menuset_flashsave1 >> 5) & 0x3;
+    reactime_status = (menuset_flashsave1 >> 7) & 0x7;
+    maincolor_status = (menuset_flashsave1 >> 10) & 0x7;
+    unitconver_status = (menuset_flashsave1 >> 13) & 0x7;
+    secscreen_status = (menuset_flashsave1 >> 16) & 0x7;
+    dispeed_status = (menuset_flashsave1 >> 19) & 0x3;
+    diflevel_status = (menuset_flashsave1 >> 21) & 0xF;
+    coloract_status = (menuset_flashsave1 >> 25) & 0x3;
+    eco_status = (menuset_flashsave1 >> 27) & 0x3;
+    copy_status = (menuset_flashsave1 >> 29) & 0x7;
+    
+    // 解包第二个32位变量
+    facrecover_status = menuset_flashsave2 & 0x3;
+}
+
 // 判断是否改变了数值，把设定值写入flash                                                                	
 void Flash_Write_SetValue(void)
 {	   		
 	uint8 ifchange =0;
 	
+	uint32_t current_settings[2]; 
+    
 	// 读取示例
 	uint32_t read_buf[datalenght];
 	
@@ -94,6 +159,7 @@ void Flash_Write_SetValue(void)
 	{
 		return ;
 	}
+	
 	
 	if(fabsf(*(volatile float*)(&read_buf[0])-P1_Value)>EPSILON){ifchange =1;}
 
@@ -107,6 +173,16 @@ void Flash_Write_SetValue(void)
 	
 	if(fabsf(*(volatile float*)(&read_buf[5])-Lo2_Value)>EPSILON){ifchange =1;}
 	
+		    // 设置用于比较
+    PackMenuSettings();
+    current_settings[0] = menuset_flashsave1;
+    current_settings[1] = menuset_flashsave2;
+	
+	if(read_buf[6] != current_settings[0] || read_buf[7] != current_settings[1])
+	{
+		ifchange = 1;
+	}
+	
 	if(ifchange)
 	{
 		uint32_t my_data[datalenght] = {
@@ -116,8 +192,8 @@ void Flash_Write_SetValue(void)
 		*(uint32_t*)(&Lo1_Value),
 		*(uint32_t*)(&Hi2_Value),
 		*(uint32_t*)(&Lo2_Value),
-		7,
-		8,
+		menuset_flashsave1,  
+        menuset_flashsave2,  
 		9,
 		0xEEEEEEEE};
 		
@@ -133,10 +209,20 @@ void Flash_Read_SetValue(void)
 	
 	int read_len = flash_read_latest_in_page(TARGET_SECTOR_NUM, read_buf, datalenght,0xEEEEEEEE);    
 	
-	float defaultvalue = 0.0f;
-
 	if(!read_len)
 	{
+		float defaultvalue = 0.0f;
+	
+		uint32_t default_menu1 = 0;  // 菜单设定的默认值
+		uint32_t default_menu2 = 0;  
+		
+		// 打包默认值
+		PackMenuSettings();
+		
+		// 设置默认值到直接变量（用于首次运行）
+		default_menu1 = menuset_flashsave1;
+		default_menu2 = menuset_flashsave2;
+		
 		uint32_t my_data[datalenght] = {
 		*(uint32_t*)(&defaultvalue),
 		*(uint32_t*)(&defaultvalue),
@@ -144,8 +230,8 @@ void Flash_Read_SetValue(void)
 		*(uint32_t*)(&defaultvalue),
 		*(uint32_t*)(&defaultvalue),
 		*(uint32_t*)(&defaultvalue),
-		7,         
-		8,
+		default_menu1,                  
+        default_menu2,              
 		9,
 		0xEEEEEEEE};
 		
@@ -170,6 +256,10 @@ void Flash_Read_SetValue(void)
 	Hi2_Value = *(volatile float*)(&read_buf[4]);
                                   
 	Lo2_Value = *(volatile float*)(&read_buf[5]);
+	
+	menuset_flashsave1 = read_buf[6];  // 读取菜单设定1
+	menuset_flashsave2 = read_buf[7];  // 读取菜单设定2
+	UnpackMenuSettings();
 }
 
 #endif
