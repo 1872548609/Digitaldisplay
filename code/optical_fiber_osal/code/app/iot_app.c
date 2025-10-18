@@ -2528,6 +2528,7 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 			iot_mainbacklight_set(BACKLIGHT_YELLOW);
 			
 			main_screen_disppressure();// 退出后立即刷新一次
+			DIV_Disp_ClearAllPoint(MainScreen);
 			
 			system_state = RUN_STATE; 
 		}

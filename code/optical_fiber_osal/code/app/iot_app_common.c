@@ -586,6 +586,8 @@ void secscreenmode_click(MenuItem* item)
 	}
 	else if (item->whichcallback == MENU_CBK_MODE)
 	{
+		DIV_Disp_ClearAllPoint(MainScreen);
+		
 		Menu_Next();
 		
 		Menu_Execute(INCALLBACK);
@@ -631,8 +633,8 @@ void secscreenmode_click(MenuItem* item)
 			DIV_Disp_ByString(SecondScreen," Sub");				
 		}break;
 		case No:{
-			DIV_Disp_Snprintf(MainScreen,"No  ");
-      DIV_Disp_Symbol(NIXIE3,Symbol_x);
+			DIV_Disp_Snprintf(MainScreen,"No  ");		
+			DIV_Disp_Symbol(NIXIE3,Symbol_x);
 			DIV_Disp_Symbol(NIXIE4,Symbol_x);			
 			DIV_Disp_Snprintf(SecondScreen," Sub");
 			DIV_Disp_SetPoint(MainScreen,P2);
