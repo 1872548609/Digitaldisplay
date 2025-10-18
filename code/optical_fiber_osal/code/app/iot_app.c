@@ -72,6 +72,107 @@ void iot_app_Poll(void)
 }
 
 
+// flash读写==============================================
+#if 1
+// 目标扇区（SECTOR_62，地址 0x0800f800 ~ 0x0800Fc00）写入地址必须1kb对齐
+#define TARGET_SECTOR_ADDR  0x0800f800
+#define TARGET_SECTOR_NUM   ((TARGET_SECTOR_ADDR - STM32_FLASH_BASE) / STM32_SECTOR_SIZE)	
+
+#define datalenght 10
+
+// 判断是否改变了数值，把设定值写入flash                                                                	
+void Flash_Write_SetValue(void)
+{	   		
+	uint8 ifchange =0;
+	
+	// 读取示例
+	uint32_t read_buf[datalenght];
+	
+	int read_len = flash_read_latest_in_page(TARGET_SECTOR_NUM, read_buf, datalenght, 0xEEEEEEEE); 
+	 
+	if(!read_len)
+	{
+		return ;
+	}
+	
+	if(fabsf(*(volatile float*)(&read_buf[0])-P1_Value)>EPSILON){ifchange =1;}
+
+	if(fabsf(*(volatile float*)(&read_buf[1])-P2_Value)>EPSILON){ifchange =1;}
+
+	if(fabsf(*(volatile float*)(&read_buf[2])-Hi1_Value)>EPSILON){ifchange =1;}
+
+	if(fabsf(*(volatile float*)(&read_buf[3])-Lo1_Value)>EPSILON){ifchange =1;}
+	
+	if(fabsf(*(volatile float*)(&read_buf[4])-Hi2_Value)>EPSILON){ifchange =1;}
+	
+	if(fabsf(*(volatile float*)(&read_buf[5])-Lo2_Value)>EPSILON){ifchange =1;}
+	
+	if(ifchange)
+	{
+		uint32_t my_data[datalenght] = {
+		*(uint32_t*)(&P1_Value),
+		*(uint32_t*)(&P2_Value),
+		*(uint32_t*)(&Hi1_Value),
+		*(uint32_t*)(&Lo1_Value),
+		*(uint32_t*)(&Hi2_Value),
+		*(uint32_t*)(&Lo2_Value),
+		7,
+		8,
+		9,
+		0xEEEEEEEE};
+		
+		flash_write_page(TARGET_SECTOR_NUM, my_data, datalenght); // 写入
+	}
+} 
+
+// 把设定值读出来                                                               	
+void Flash_Read_SetValue(void)
+{
+	// 读取示例
+	uint32_t read_buf[datalenght];
+	
+	int read_len = flash_read_latest_in_page(TARGET_SECTOR_NUM, read_buf, datalenght,0xEEEEEEEE);    
+	
+	float defaultvalue = 0.0f;
+
+	if(!read_len)
+	{
+		uint32_t my_data[datalenght] = {
+		*(uint32_t*)(&defaultvalue),
+		*(uint32_t*)(&defaultvalue),
+		*(uint32_t*)(&defaultvalue),
+		*(uint32_t*)(&defaultvalue),
+		*(uint32_t*)(&defaultvalue),
+		*(uint32_t*)(&defaultvalue),
+		7,         
+		8,
+		9,
+		0xEEEEEEEE};
+		
+		flash_write_page(TARGET_SECTOR_NUM, my_data, datalenght); // 写入第0页
+		
+		read_len = flash_read_latest_in_page(TARGET_SECTOR_NUM, read_buf, datalenght,0xEEEEEEEE);  
+		
+		if(!read_len)
+		{
+			return;
+		}
+	}
+
+	P1_Value = 	*(volatile float*)(&read_buf[0]);
+	
+	P2_Value =  *(volatile float*)(&read_buf[1]);																					
+	                                                                                                        	
+	Hi1_Value = *(volatile float*)(&read_buf[2]);                                                                                  	
+	                                                                                                       	
+	Lo1_Value = *(volatile float*)(&read_buf[3]);                                                                	
+                                  
+	Hi2_Value = *(volatile float*)(&read_buf[4]);
+                                  
+	Lo2_Value = *(volatile float*)(&read_buf[5]);
+}
+
+#endif
 // 气压读取处理================================================
 #if 1
 
@@ -83,7 +184,7 @@ uint32_t adcData = 0;           // ad值
 uint32_t VOL_value = 0;         // 电压值，参考3.3v
 uint32_t adc_temp=0;
 
-float k=0.0608, b=-113.08;  //默认值
+float k=0.0608, b=-114.08;  //默认值
 
 // 气压传感器adc读取中断
 void ADC_Isr(void)
@@ -103,7 +204,7 @@ void ADC_Isr(void)
     }
 }
 
-// 返回当前气压值 kpa
+// 返回当前气压值 kpa 根据单位保留小数
 float pressure_read_once(void)
 {
 	char data1[30]={0};
@@ -112,7 +213,30 @@ float pressure_read_once(void)
 	
 	tempvalue=(float)adcData*k+b;
 	
-	snprintf(data1,sizeof(data1),"%0.3f",tempvalue);
+	switch(unitconver_status)
+	{
+		case bAr:{
+							snprintf(data1,sizeof(data1),"%0.3f",tempvalue);	
+		}break;
+		case inHG:{
+							snprintf(data1,sizeof(data1),"%0.1f",tempvalue);
+		}break;
+		case KgF:{
+							snprintf(data1,sizeof(data1),"%0.3f",tempvalue);		
+		}break;
+		case KPR:{
+							snprintf(data1,sizeof(data1),"%0.1f",tempvalue);
+		}break;
+		case MMHG:{
+							snprintf(data1,sizeof(data1),"%0.0f",tempvalue);
+		}break;
+		case MPR:{
+							snprintf(data1,sizeof(data1),"%0.3f",tempvalue);
+		}break;
+		case PSI:{
+							snprintf(data1,sizeof(data1),"%0.2f",tempvalue);
+		}break;
+	}	
 		
 	tempvalue = atof(data1);	
 	
@@ -1563,8 +1687,7 @@ void modeset_choiceanddisplay(void)
 	}  
 }
 
-#define EPSILON 1e-6f   //误差容许
-#define MIN_DECIMAL_PRECISION 0.0001f   // 最小小数精度（根据实际需求调整）
+
 
 typedef struct { // 参数配置结构体
     float *value;        // 参数地址（如 &P1_Value）
@@ -2216,6 +2339,11 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 				
 				release_keys |= key_mask;
 			}
+			
+			if (hal_key_release_time_count[k]==50)
+			{
+				 Flash_Write_SetValue();
+			}
         }
     }
 	
@@ -2339,6 +2467,9 @@ void iot_app_init(uint8 task_id)
 	second_screen_disp(" NPN");//显示npn款
 	
 	iot_allbacklight_set(BACKLIGHT_ON);		// 打开背光
+	
+	// 初始化存储内容
+	Flash_Read_SetValue();
 	
 	int i =0,j=0;
 	for(i=0;i<5000;i++)

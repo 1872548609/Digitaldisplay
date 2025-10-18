@@ -32,6 +32,8 @@ extern "C"
 /*************************************************-*************************************************
 *                                             FUNCTION
 **************************************************-*****************^******************************/
+#define EPSILON 1e-6f   //误差容许
+#define MIN_DECIMAL_PRECISION 0.0001f   // 最小小数精度（根据实际需求调整）
 
 #define BACKLIGHT_OFF       	0		// 关闭
 #define BACKLIGHT_ON        	1		// 开启
@@ -62,6 +64,7 @@ void iot_app_Poll(void);
 
 // 气压读取
 void pressure_readalways(void);
+
 
 // 单位转换
 float unitconversion(float value, uint8_t unit);
