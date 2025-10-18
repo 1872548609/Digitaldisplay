@@ -847,14 +847,14 @@ void DIV_Disp_SetPoint(uint8_t screen ,uint8_t p)
 {
 	if(screen==MainScreen)
 	{
-	 		disp_management.Disp_S1Point&=~(0x0e-p);
+	 	disp_management.Disp_S1Point&=(0x0e-p);
 		disp_management.Disp_S1Point|=p;
 	
 	}
 
 	 if(screen==SecondScreen)
 		{
-				disp_management.Disp_S2Point&=~(0x0e-p);
+		disp_management.Disp_S2Point&=(0x0e-p);
 		disp_management.Disp_S2Point|=p;
 		}
 		

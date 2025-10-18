@@ -264,6 +264,8 @@ void noncmode_click(MenuItem* item)
 	}
 	else if (item->whichcallback == MENU_CBK_MODE)
 	{
+		DIV_Disp_ClearAllPoint(MainScreen);
+		
 		Menu_Next();
 		
 		Menu_Execute(INCALLBACK);
@@ -319,26 +321,22 @@ void noncmode_click(MenuItem* item)
 		{
 			case noncstatus_1o2o:{
 				DIV_Disp_Snprintf(MainScreen,"1o2o");
-        DIV_Disp_SetPoint(MainScreen,P1);
-        //DIV_Disp_SetPoint(MainScreen,P3);				
+				DIV_Disp_SetPoint(MainScreen,P1|P3);				
 				DIV_Disp_ByString(SecondScreen,"NONC");
 			}break;
 			case noncstatus_1o2c:{
 				DIV_Disp_Snprintf(MainScreen,"1o2c");
-        DIV_Disp_SetPoint(MainScreen,P1);
-        //DIV_Disp_SetPoint(MainScreen,P3);					
+				DIV_Disp_SetPoint(MainScreen,P1|P3);					
 				DIV_Disp_ByString(SecondScreen,"NONC");	
 			}break;
 			case noncstatus_1c2c:{
 				DIV_Disp_Snprintf(MainScreen,"1c2c");
-        DIV_Disp_SetPoint(MainScreen,P1);
-        //DIV_Disp_SetPoint(MainScreen,P3);					
+				DIV_Disp_SetPoint(MainScreen,P1|P3);				
 				DIV_Disp_ByString(SecondScreen,"NONC");	
 			}break;
 			case noncstatus_1c2o:{
 				DIV_Disp_Snprintf(MainScreen,"1c2o");
-        DIV_Disp_SetPoint(MainScreen,P1);
-        //DIV_Disp_SetPoint(MainScreen,P3);					
+				DIV_Disp_SetPoint(MainScreen,P1|P3);				
 				DIV_Disp_ByString(SecondScreen,"NONC");
 			}break;	
 		}
