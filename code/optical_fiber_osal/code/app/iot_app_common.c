@@ -179,7 +179,7 @@ void out1mode_click(MenuItem* item)
 			DIV_Disp_ByString(SecondScreen,"Out1");	
 		}break;
 		case compare1_HSY:{
-			DIV_Disp_ByString(MainScreen," HSY");         
+			DIV_Disp_ByString(MainScreen," HYS");         
 			DIV_Disp_ByString(SecondScreen,"Out1");	
 		}break;
 		case compare1_WCMP:{
@@ -241,7 +241,7 @@ void out2mode_click(MenuItem* item)
 			DIV_Disp_ByString(SecondScreen,"Out2");	
 		}break;
 		case compare2_HSY:{
-			DIV_Disp_ByString(MainScreen," HSY");         
+			DIV_Disp_ByString(MainScreen," HYS");         
 			DIV_Disp_ByString(SecondScreen,"Out2");	
 		}break;
 		case compare2_WCMP:{
@@ -318,19 +318,27 @@ void noncmode_click(MenuItem* item)
 		switch(outnonc_status)
 		{
 			case noncstatus_1o2o:{
-				DIV_Disp_ByString(MainScreen,"1o2o");         
+				DIV_Disp_Snprintf(MainScreen,"1o2o");
+        DIV_Disp_SetPoint(MainScreen,P1);
+        //DIV_Disp_SetPoint(MainScreen,P3);				
 				DIV_Disp_ByString(SecondScreen,"NONC");
 			}break;
 			case noncstatus_1o2c:{
-				DIV_Disp_ByString(MainScreen,"1o2c");         
+				DIV_Disp_Snprintf(MainScreen,"1o2c");
+        DIV_Disp_SetPoint(MainScreen,P1);
+        //DIV_Disp_SetPoint(MainScreen,P3);					
 				DIV_Disp_ByString(SecondScreen,"NONC");	
 			}break;
 			case noncstatus_1c2c:{
-				DIV_Disp_ByString(MainScreen,"1c2c");         
+				DIV_Disp_Snprintf(MainScreen,"1c2c");
+        DIV_Disp_SetPoint(MainScreen,P1);
+        //DIV_Disp_SetPoint(MainScreen,P3);					
 				DIV_Disp_ByString(SecondScreen,"NONC");	
 			}break;
 			case noncstatus_1c2o:{
-				DIV_Disp_ByString(MainScreen,"1c2o");         
+				DIV_Disp_Snprintf(MainScreen,"1c2o");
+        DIV_Disp_SetPoint(MainScreen,P1);
+        //DIV_Disp_SetPoint(MainScreen,P3);					
 				DIV_Disp_ByString(SecondScreen,"NONC");
 			}break;	
 		}
@@ -342,12 +350,14 @@ void noncmode_click(MenuItem* item)
 		switch(temp)
 		{
 			case out1no:{
-				DIV_Disp_ByString(MainScreen," 1NO");         
+				DIV_Disp_Snprintf(MainScreen,"  NO");               
 				DIV_Disp_ByString(SecondScreen,"NONC");
+				DIV_Disp_SetPoint(MainScreen,P3);
 			}break;
 			case out1nc:{
-				DIV_Disp_ByString(MainScreen," 1NC");         
-				DIV_Disp_ByString(SecondScreen,"NONC");
+				DIV_Disp_SetPoint(MainScreen,P3);
+				DIV_Disp_Snprintf(MainScreen,"  NC");               
+				DIV_Disp_ByString(SecondScreen,"NONC");								
 			}break;
 		}
 	}
@@ -397,6 +407,7 @@ void reactiontimemode_click(MenuItem* item)
 	switch(reactime_status)
 	{
 		case reaction_2ms:{
+			DIV_Disp_UnSetPoint(MainScreen,P3);
 			DIV_Disp_ByString(MainScreen,"   2");         
 			DIV_Disp_ByString(SecondScreen," RES");
 		}break;
@@ -534,11 +545,11 @@ void unitconvermode_click(MenuItem* item)
 	switch(unitconver_status)
 	{
 		case bAr:{
-			DIV_Disp_ByString(MainScreen,"bAr");         
+			DIV_Disp_ByString(MainScreen," bAr");         
 			DIV_Disp_ByString(SecondScreen,"Unit");
 		}break;
 		case KgF:{
-			DIV_Disp_ByString(MainScreen,"KgF");         
+			DIV_Disp_ByString(MainScreen," KgF");         
 			DIV_Disp_ByString(SecondScreen,"Unit");	
 		}break;
 		case KPR:{
@@ -613,20 +624,22 @@ void secscreenmode_click(MenuItem* item)
 		}break;
 		case UnIt:{
 			DIV_Disp_ByString(MainScreen,"UnIt");         
-			DIV_Disp_ByString(SecondScreen," Sub");	
+			DIV_Disp_ByString(SecondScreen," Sub");
+      DIV_Disp_ClearAllPoint(MainScreen);			
 		}break;
 		case CuSt:{
+			DIV_Disp_ClearAllPoint(MainScreen);
 			DIV_Disp_ByString(MainScreen,"CuSt");         
-			DIV_Disp_ByString(SecondScreen," Sub");	
+			DIV_Disp_ByString(SecondScreen," Sub");				
 		}break;
 		case No:{
-			DIV_Disp_ByString(MainScreen,"No  ");
+			DIV_Disp_Snprintf(MainScreen,"No  ");
       DIV_Disp_Symbol(NIXIE3,Symbol_x);
 			DIV_Disp_Symbol(NIXIE4,Symbol_x);			
-			DIV_Disp_ByString(SecondScreen," Sub");
-			DIV_Disp_Symbol(NIXIE2,Symbol_point);
+			DIV_Disp_Snprintf(SecondScreen," Sub");
+			DIV_Disp_SetPoint(MainScreen,P2);
 		}break;
-    case Std:{
+    case Std:{			
 			DIV_Disp_ByString(MainScreen," Std");         
 			DIV_Disp_ByString(SecondScreen," Sub");
 		}break;
@@ -862,7 +875,7 @@ void eocmode_click(MenuItem* item)
 			DIV_Disp_ByString(SecondScreen," ECO");
 		}break;
 		case eco_std:{
-			DIV_Disp_ByString(MainScreen," StD");         
+			DIV_Disp_ByString(MainScreen," Std");         
 			DIV_Disp_ByString(SecondScreen," ECO");	
 		}break;
 		case eco_FULL:{

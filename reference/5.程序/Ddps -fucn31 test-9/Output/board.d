@@ -5,7 +5,7 @@
 ..\output\board.o: ..\Boards\Board.h
 ..\output\board.o: ..\User\Main\apm32f0xx.h
 ..\output\board.o: ..\CMSIS\core_cm0plus.h
-..\output\board.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\board.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\board.o: ..\CMSIS\core_cmInstr.h
 ..\output\board.o: ..\CMSIS\core_cmFunc.h
 ..\output\board.o: ..\User\Main\system_apm32f0xx.h
@@ -20,4 +20,4 @@
 ..\output\board.o: ..\Boards\Board_APM32F051_EVAL\inc\bsp_delay.h
 ..\output\board.o: ..\User\Main\main.h
 ..\output\board.o: ..\Boards\Board_APM32F051_EVAL/src/board_apm32f051_eval.c
-..\output\board.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdio.h
+..\output\board.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
