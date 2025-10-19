@@ -6,7 +6,7 @@
 ..\output\main.o: ..\Boards\Board.h
 ..\output\main.o: ..\User\Main\apm32f0xx.h
 ..\output\main.o: ..\CMSIS\core_cm0plus.h
-..\output\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\main.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\main.o: ..\CMSIS\core_cmInstr.h
 ..\output\main.o: ..\CMSIS\core_cmFunc.h
 ..\output\main.o: ..\User\Main\system_apm32f0xx.h
@@ -24,11 +24,11 @@
 ..\output\main.o: ..\FWLib\inc\apm32f0xx_fmc.h
 ..\output\main.o: ..\FWLib\inc\apm32f0xx_iwdt.h
 ..\output\main.o: ..\FWLib\inc\apm32f0xx_dbg.h
-..\output\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-..\output\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-..\output\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-..\output\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
-..\output\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\output\main.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdio.h
+..\output\main.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\output\main.o: D:\keil5\ARM\ARMCC\Bin\..\include\string.h
+..\output\main.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdarg.h
+..\output\main.o: D:\keil5\ARM\ARMCC\Bin\..\include\math.h
 ..\output\main.o: ..\User\Hardware\USER_DRIVER\menu.h
 ..\output\main.o: ..\User\Main\superhead.h
 ..\output\main.o: ..\User\Hardware\USER_HAL\user_led_hal.h

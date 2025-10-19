@@ -2,7 +2,7 @@
 ..\output\apm32f0xx_rtc.o: ..\FWLib\inc\apm32f0xx_rtc.h
 ..\output\apm32f0xx_rtc.o: ..\User\Main\apm32f0xx.h
 ..\output\apm32f0xx_rtc.o: ..\CMSIS\core_cm0plus.h
-..\output\apm32f0xx_rtc.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\apm32f0xx_rtc.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\apm32f0xx_rtc.o: ..\CMSIS\core_cmInstr.h
 ..\output\apm32f0xx_rtc.o: ..\CMSIS\core_cmFunc.h
 ..\output\apm32f0xx_rtc.o: ..\User\Main\system_apm32f0xx.h

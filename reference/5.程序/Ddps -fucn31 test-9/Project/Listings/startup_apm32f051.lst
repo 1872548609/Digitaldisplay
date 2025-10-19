@@ -367,13 +367,11 @@ ARM Macro Assembler    Page 6
               00000400 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M0+ --apcs=inter
-work --depend=..\output\startup_apm32f051.d -o..\output\startup_apm32f051.o -I"
-C:\Users\16373\Desktop\Digitaldisplay\reference\5.³ÌÐò\Ddps -fucn31 test-9\Proj
-ect\RTE" -ID:\Keil_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include -ID:\Keil_v5\ARM\P
-ACK\Geehy\APM32F0xx_DFP\1.0.9\Device\Device\Geehy\APM32F0xx\Include --predefine
-="__UVISION_VERSION SETA 514" --predefine="_RTE_ SETA 1" --predefine="APM32F051
-X8 SETA 1" --list=.\listings\startup_apm32f051.lst ..\CMSIS\arm\startup_apm32f0
-51.s
+work --depend=..\output\startup_apm32f051.d -o..\output\startup_apm32f051.o -I.
+\RTE\_Target_1 -ID:\keil5\C51\ARM\CMSIS\5.0.1\CMSIS\Include -ID:\keil5\C51\Geeh
+y\APM32F0xx_DFP\1.0.9\Device\Device\Geehy\APM32F0xx\Include --predefine="__UVIS
+ION_VERSION SETA 523" --predefine="_RTE_ SETA 1" --predefine="APM32F051X8 SETA 
+1" --list=.\listings\startup_apm32f051.lst ..\CMSIS\arm\startup_apm32f051.s
 
 
 
