@@ -2792,7 +2792,7 @@ uint16 iot_app_process_event(uint8 task_id, uint16 events)
 
 		second_screen_dispupdate();
 		
-		events &= ~IOTAPP_DISPSECOND_EVT;
+		return (events ^IOTAPP_DISPSECOND_EVT);
 	}
 	
 	if(events & IOT_APP_TIMER_EVT)
