@@ -1315,7 +1315,7 @@ uint8 main_screen_dispupdate(void)
 		}
 		else
 		{
-			count=0;
+			count=0;			
 			main_screen_disppressure();
 		}
 		

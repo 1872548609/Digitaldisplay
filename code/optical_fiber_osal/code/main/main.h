@@ -78,6 +78,7 @@ extern "C"
 #include "iot_app_common_data.h"
 #include "iot_app.h"
 #include "hu_app.h"
+#include "liu_app.h"
 
 /***************************************************************************************************
 *                                            MACRO DEFINED

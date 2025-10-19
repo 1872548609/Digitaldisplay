@@ -10,7 +10,8 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
+      <pCCUsed>5060528::V5.06 update 5 (build 528)::ARMCC</pCCUsed>
+      <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>APM32F051K8</Device>
@@ -403,6 +404,11 @@
               <FileName>iot_app_common_data.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\code\app\iot_app_common_data.h</FilePath>
+            </File>
+            <File>
+              <FileName>liu_app.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\app\liu_app.c</FilePath>
             </File>
           </Files>
         </Group>
