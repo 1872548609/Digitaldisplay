@@ -110,8 +110,9 @@ void osalInitTasks( void )
     // 注意：taskID在每次调用后会自动递增
     Hal_Init( taskID++ );       // 硬件抽象层初始化
 	liu_app_init( taskID++ );		//  小刘的任务初始化
-    iot_app_init( taskID++ );
-	//hu_app_init ( taskID++ ); // 	嘉诚的任务初始化
+  iot_app_init( taskID++ );
+	hu_app_init ( taskID++ ); // 	嘉诚的任务初始化
+	lu_app_init ( taskID++ );
 	
 }
 

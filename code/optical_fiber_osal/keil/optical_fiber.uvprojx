@@ -410,6 +410,11 @@
               <FileType>1</FileType>
               <FilePath>..\code\app\liu_app.c</FilePath>
             </File>
+            <File>
+              <FileName>lu_app.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\app\lu_app.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
