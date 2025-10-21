@@ -73,8 +73,6 @@ float unitconversion(float value, uint8_t unit);
 void output_ctr_update(void);
 void Yingcha_Comp(void);
 
-// 按单位显示气压
-void main_screen_disppressure(void);
 
 // 输出显示
 void output_screen_disupdate(void);
