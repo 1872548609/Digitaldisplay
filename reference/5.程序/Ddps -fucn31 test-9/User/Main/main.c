@@ -2686,8 +2686,8 @@ void Poweron_initialization(void)
 								0x00298022,   //proset
 								0.0608,       //k
 								-113.08,      //b
-								0,  //校准完成标志
-								0}; 
+								1,  //校准完成标志
+								1}; 
 								rank_write_data(&temp);
 								
 				}
