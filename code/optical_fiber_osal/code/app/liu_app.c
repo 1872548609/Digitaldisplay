@@ -86,6 +86,7 @@ void Zero_Calibration_Init(Zero_Calibration_typedef *pHandle)
 {
 	pHandle->Zero_Calibration_500msTimeSwitch = 0;
 	pHandle->Zero_Calibration_bit = 0;
+	pHandle->Zero_calibration_pressure = 0;
 }
 
 
@@ -102,10 +103,13 @@ void Zero_Calibration_Task(Zero_Calibration_typedef *pHandle)
 {
 	if( pHandle->Zero_Calibration_bit == 1 )
 	{
-		if( pHandle->Zero_Calibration_500msTimeSwitch < 100 )
+		if( pHandle->Zero_Calibration_500msTimeSwitch == 0 )
 		{
-			pHandle->Zero_Calibration_500msTimeSwitch ++;
-			
+			pHandle->Zero_calibration_pressure = Current_pressure_value;		
+		}
+
+		if( pHandle->Zero_Calibration_500msTimeSwitch < 100 )
+		{	
 			DIV_Disp_ClearAllPoint(MainScreen);
 			main_screen_disp("%0.4d",0);
 		}
@@ -114,6 +118,15 @@ void Zero_Calibration_Task(Zero_Calibration_typedef *pHandle)
 			DIV_Disp_SetPoint(MainScreen, 0x08);	//从左往右数：0x02:第3个数码管的小数点，0x04:第2个数码管的小数点，0x08:第1个数码管的小数点
 			DIV_Disp_Snprintf(MainScreen, " 000");
 		}
+		
+		if( ++pHandle->Zero_Calibration_500msTimeSwitch >= 200 )
+		{
+			pHandle->Zero_Calibration_500msTimeSwitch = 0;	
+			
+			DIV_Disp_ClearAllPoint(MainScreen);	
+			
+			pHandle->Zero_Calibration_bit = 0;
+		}	
 	}	
 }
 

@@ -117,7 +117,8 @@ void lu_backlight_levelset(uint8_t level)
 **************************************************-*****************^******************************/
 // 局部变量定义区域
 uint8 lu_app_task_id;
-
+uint8 lu_app_state = 0;
+uint8 lu_app_bit = 1;
 //延时
 void lu_Disp_DelayUs_temp(uint32_t us)
 {
@@ -145,7 +146,7 @@ void lu_Disp_DelayMs_temp(uint32_t ms)
 **************************************************-*****************^******************************/
 
 void lu_display_Screen(char * Mainstring, char * Secondstring){
-	
+	DIV_Disp_ClearPoint();
 	DIV_Disp_Snprintf(MainScreen,Mainstring);  //显示款型
 	second_screen_disp(Secondstring);//显示npn款
 	
@@ -211,7 +212,6 @@ static void Maintain_function()
     }
     
     display_state = !display_state;
-    lu_Disp_DelayMs_temp(500);
 }
 
 
@@ -228,10 +228,22 @@ uint8 lu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milli
     // 添加K2长按检测变量
     static uint8_t k1_k2_combo_press_time = 0; // K1和K2同时按下的时间计数
     static uint8_t last_k1_k2_state = 0;       // 上一次K1和K2同时按下的状态
+    static uint8_t k1_released = 0;            // K1释放检测标志
 
     // 只处理有效的按键
     cur_keys &= HU_APP_KEY_MASK;
     pre_keys &= HU_APP_KEY_MASK;
+
+    // 检测K1是否松开
+    if ((pre_keys & HAL_KEY_MODE) && !(cur_keys & HAL_KEY_MODE)) {
+        // K1从按下变为松开
+        k1_released = 1;
+        // 可以在这里添加K1松开后的处理逻辑
+        // 例如：lu_app_bit = 1; // 允许下一次状态切换
+    } else if (cur_keys & HAL_KEY_MODE) {
+        // K1被按下，重置释放标志
+        k1_released = 0;
+    }
 
     // 检测K1和K2同时按下
     uint8_t current_k1_k2_combo = ((cur_keys & HAL_KEY_MODE) && (cur_keys & HAL_KEY_2)) ? 1 : 0;
@@ -305,14 +317,27 @@ uint8 lu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milli
     // 修改为检测K1和K2同时长按超过2秒
     if((longpress_morethan_3s_keys & (HAL_KEY_MODE | HAL_KEY_2)) == (HAL_KEY_MODE | HAL_KEY_2))
     {
-        if(system_state == RUN_STATE)
+        if(system_state == RUN_STATE && lu_app_bit)
         {
-            while(1){
-                // 传入当前测试值
-                Maintain_function();
-            }
+          lu_app_state++;
+          lu_app_state%=2;
+          //DIV_Disp_Uint16Num(MainScreen,lu_app_state);
+          lu_app_bit = 0;
+          
+          // 重置组合按键状态，防止重复触发
+          k1_k2_combo_press_time = 0;
+          last_k1_k2_state = 0;
         }
     }
+    
+    // 根据K1释放状态来重置lu_app_bit（示例）
+    if (k1_released) {
+        // K1松开后，可以重新允许状态切换
+        lu_app_bit = 1;
+        k1_released = 0; // 重置释放标志
+    }
+    
+    if(lu_app_state){Maintain_function(); lu_Disp_DelayMs_temp(500);}
         
     return scan_flag;
 }

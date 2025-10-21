@@ -36,7 +36,7 @@ extern "C"
 *                                          CONSTANT DEFINED
 **************************************************-*****************^******************************/
 // 常量定义区域
-
+float After_zero_calibration_val;
 /*************************************************-*************************************************
 *                                           STRUCT DEFINED
 **************************************************-*****************^******************************/
@@ -334,11 +334,16 @@ float pressure_read_once(void)
 }
 
 
+//刘锦煌修改后
 void pressure_readalways(void)
 {
 	Current_pressure_value = pressure_read_once();
+		
+	//将实际气压值 减去 基准气压值 得到 校零后得气压值
+	After_zero_calibration_val = Current_pressure_value - Zero_Calibration_struct.Zero_calibration_pressure;		
 	
-	unitchange_pressure_value = unitconversion(Current_pressure_value,unitconver_status);
+	//将校零后得气压值进行单位转换
+	unitchange_pressure_value = unitconversion(After_zero_calibration_val,unitconver_status);	
 }
 
 #endif
@@ -1315,11 +1320,13 @@ uint8 main_screen_dispupdate(void)
 		}
 		else
 		{
-			count=0;			
-			main_screen_disppressure();
+			count=0;
+			if( Zero_Calibration_struct.Zero_Calibration_bit == 0 )		//进入校零显示，暂停主屏刷新，1秒后自动恢复
+		   {			
+			 main_screen_disppressure();
+		   }
 		}
-		
-		
+			
 		return (main_status ^ MAINSCREEN_DISPPRESSURE);
 	}
 	
