@@ -53,24 +53,6 @@ float After_zero_calibration_val;
 // 局部变量定义区域
 uint8 iot_app_task_id;
 
-// 轮询任务
-void iot_app_Poll(void)
-{
-	if(system_state==RUN_STATE)
-	{
-		ColorLinkTrun();
-	}
-	pressure_readalways();
-	
-	output_screen_disupdate();
-
-	DIV_disp_out12andpoint();
-	
-	Yingcha_Comp();
-	
-	output_ctr_update();
-}
-
 
 // flash读写==============================================
 #if 1
@@ -1314,17 +1296,15 @@ uint8 main_screen_dispupdate(void)
 		
 		main_screen_choicedispeed();
 		
-		if(count < (dispspeed_set/3))
+		if(count < (dispspeed_set/5))
 		{
 			count++;
 		}
 		else
 		{
 			count=0;
-			if( Zero_Calibration_struct.Zero_Calibration_bit == 0 )		//进入校零显示，暂停主屏刷新，1秒后自动恢复
-		   {			
+			
 			 main_screen_disppressure();
-		   }
 		}
 			
 		return (main_status ^ MAINSCREEN_DISPPRESSURE);
@@ -2433,8 +2413,7 @@ void iot_backlight_levelset(uint8_t level)
 
 #endif
 // 长按mode退出
-void systemreturnrun(void)
-{
+void systemreturnrun(void){
 	if(system_state == MENU_STATE)
 	{
 		MenuSystem_Stop();		// 关闭菜单
@@ -2450,6 +2429,33 @@ void systemreturnrun(void)
 		
 		system_state = RUN_STATE; 
 	}
+}
+
+// 轮询任务
+void iot_app_Poll(void)
+{
+	if(system_state==RUN_STATE)
+	{
+		ColorLinkTrun();
+		
+		if( Zero_Calibration_struct.Zero_Calibration_bit == 1 )		//进入校零显示，暂停主屏刷新，1秒后自动恢复
+	   {			
+		 main_screen_stopevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
+	   }
+	   else
+	   {			
+		 main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
+	   }
+	}
+	pressure_readalways();
+	
+	output_screen_disupdate();
+
+	DIV_disp_out12andpoint();
+	
+	Yingcha_Comp();
+	
+	output_ctr_update();
 }
 
 // 任务区=====================================
