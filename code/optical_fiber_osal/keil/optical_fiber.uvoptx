@@ -168,6 +168,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>disp_management</ItemText>
         </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Current_pressure_value</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>

@@ -27,11 +27,16 @@ extern "C"
 **************************************************-*****************^******************************/
 // 头文件包含区域（实际使用时需要包含必要的头文件）
 #include "iot_app.h"
+#include "OSAL_Timers.h"
+	
 /*************************************************-*************************************************
 *                                               MACRO
 **************************************************-*****************^******************************/
 // 宏定义区域
 	
+#define LU_MAINTAIN_TIMER_EVT                                      0x0002 
+
+
 	// 背光调整=====================================
 #if 1
 void lu_allbacklight_set(uint8 en)
@@ -146,9 +151,12 @@ void lu_Disp_DelayMs_temp(uint32_t ms)
 **************************************************-*****************^******************************/
 
 void lu_display_Screen(char * Mainstring, char * Secondstring){
-	DIV_Disp_ClearPoint();
-	DIV_Disp_Snprintf(MainScreen,Mainstring);  //显示款型
-	second_screen_disp(Secondstring);//显示npn款
+	
+		DIV_Disp_ClearAllPoint(1);
+		DIV_Disp_ClearAllPoint(0);
+
+		DIV_Disp_Snprintf(MainScreen,Mainstring);  //显示款型
+		second_screen_disp(Secondstring);//显示npn款
 	
 }
 
@@ -158,25 +166,31 @@ void lu_display_Screen(char * Mainstring, char * Secondstring){
  * @param current_value 当前传感器数值
  * @note 此函数在定时器事件中被调用，自动处理峰值谷值的记录和显示
  */
-static void Maintain_function()
+/**
+ * @brief 非阻塞的峰值-谷值保持功能函数
+ */
+static void Maintain_function_nonblocking(void)
 {
-    static uint32_t max_value = 0;
-    static uint32_t min_value = 0;
+    static float max_value = 0;
+    static float min_value = 0;
     static uint8_t first_run = 1;
     static uint8_t display_state = 0;
     
     if (first_run) {
-        max_value = unitchange_pressure_value;
-        min_value = unitchange_pressure_value;
+        max_value = Current_pressure_value;
+        min_value = Current_pressure_value;
         first_run = 0;
+			  
     }
     
-    if (unitchange_pressure_value > max_value) max_value = unitchange_pressure_value;
-    if (unitchange_pressure_value < min_value) min_value = unitchange_pressure_value;
+    if (unitchange_pressure_value > max_value) max_value = Current_pressure_value;
+    if (unitchange_pressure_value < min_value) min_value = Current_pressure_value;
     
     if (display_state == 0) {
+
         lu_display_Screen("PERK", "botm");
     } else {
+			   
         // 根据单位显示对应的最大最小值格式
         switch(unitconver_status)
         {
@@ -209,9 +223,19 @@ static void Maintain_function()
                 second_screen_dispfloat("%0.2f", min_value);
             }break;
         }
+				
     }
     
     display_state = !display_state;
+}
+
+/**
+ * @brief 重置峰值谷值功能状态
+ */
+static void Reset_Maintain_function(void)
+{
+    // 这里可以添加重置峰值谷值状态的代码
+    // 例如重置最大值最小值等
 }
 
 
@@ -238,8 +262,6 @@ uint8 lu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milli
     if ((pre_keys & HAL_KEY_MODE) && !(cur_keys & HAL_KEY_MODE)) {
         // K1从按下变为松开
         k1_released = 1;
-        // 可以在这里添加K1松开后的处理逻辑
-        // 例如：lu_app_bit = 1; // 允许下一次状态切换
     } else if (cur_keys & HAL_KEY_MODE) {
         // K1被按下，重置释放标志
         k1_released = 0;
@@ -319,28 +341,40 @@ uint8 lu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milli
     {
         if(system_state == RUN_STATE && lu_app_bit)
         {
-          lu_app_state++;
-          lu_app_state%=2;
-          //DIV_Disp_Uint16Num(MainScreen,lu_app_state);
-          lu_app_bit = 0;
-          
-          // 重置组合按键状态，防止重复触发
-          k1_k2_combo_press_time = 0;
-          last_k1_k2_state = 0;
+            lu_app_state = !lu_app_state;  // 切换状态
+            
+            if (lu_app_state) {
+                // 进入峰值模式 - 启动500ms定时器
+                lu_mainbacklight_set(BACKLIGHT_RED);
+                Reset_Maintain_function(); // 重置峰值模式状态
+                osal_start_reload_timer(lu_app_task_id, LU_MAINTAIN_TIMER_EVT, 500); // 500ms重载定时器
+            } else {
+                // 退出峰值模式 - 停止定时器
+                lu_mainbacklight_set(BACKLIGHT_GREEN);
+                osal_stop_timerEx(lu_app_task_id, LU_MAINTAIN_TIMER_EVT);
+            }
+            
+            lu_app_bit = 0;
+            
+            // 重置组合按键状态，防止重复触发
+            k1_k2_combo_press_time = 0;
+            last_k1_k2_state = 0;
         }
     }
     
-    // 根据K1释放状态来重置lu_app_bit（示例）
+    // 根据K1释放状态来重置lu_app_bit
     if (k1_released) {
         // K1松开后，可以重新允许状态切换
         lu_app_bit = 1;
         k1_released = 0; // 重置释放标志
     }
     
-    if(lu_app_state){Maintain_function(); lu_Disp_DelayMs_temp(500);}
+    // 移除阻塞的延时调用
+    // if(lu_app_state){Maintain_function(); lu_Disp_DelayMs_temp(500);}
         
     return scan_flag;
 }
+
 
 void lu_app_init(uint8 task_id)
 {
@@ -388,10 +422,14 @@ uint16 lu_app_process_event(uint8 task_id, uint16 events)
         // 返回未处理的事件（清除已处理的SYS_EVENT_MSG）
         return (events ^ SYS_EVENT_MSG);
     }
-	
-	
-	
-
+    
+    // 处理峰值模式定时器事件 - 每500ms自动切换显示
+    if(events & LU_MAINTAIN_TIMER_EVT) {
+        if(lu_app_state) {
+            Maintain_function_nonblocking(); // 非阻塞的显示切换
+        }
+        return (events ^ LU_MAINTAIN_TIMER_EVT);
+    }
 	
 	//判断他是否成功调度起来了，添加成功就会进你的事件管理
 	if(events & HU_APP_TIMER_EVT)
