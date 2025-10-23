@@ -94,7 +94,7 @@ void Zero_Calibration_Init(Zero_Calibration_typedef *pHandle)
 
 /******************************************************************************
 函 数 名： void Zero_Calibration_Task(Zero_Calibration_typedef *pHandle)
-函数功能： 校零功能(压力孔处于大气压下时，压力值被强制显示为“0”)
+函数功能： 校零(压力孔处于大气压下时，压力值被强制显示为“0”)
 入口参数：  
 Zero_Calibration_typedef *pHandle ： 校零结构体指针
 返    回： 无 
@@ -105,30 +105,26 @@ void Zero_Calibration_Task(Zero_Calibration_typedef *pHandle)
 	{
 		if( pHandle->Zero_Calibration_500msTimeSwitch == 0 )
 		{
+			//将当前气压更新为基准气压
 			pHandle->Zero_calibration_pressure = Current_pressure_value;		
 		}
-
-		if( pHandle->Zero_Calibration_500msTimeSwitch < 100 )
-		{	
+		
+		if( ++pHandle->Zero_Calibration_500msTimeSwitch < 100 )
+		{
 			DIV_Disp_ClearAllPoint(MainScreen);
 			main_screen_disp("%0.4d",0);
 		}
 		else
 		{
-			DIV_Disp_SetPoint(MainScreen, 0x08);	//从左往右数：0x02:第3个数码管的小数点，0x04:第2个数码管的小数点，0x08:第1个数码管的小数点
-			DIV_Disp_Snprintf(MainScreen, " 000");
-		}
-		
-		if( ++pHandle->Zero_Calibration_500msTimeSwitch >= 200 )
-		{
-			pHandle->Zero_Calibration_500msTimeSwitch = 0;	
-			
-			DIV_Disp_ClearAllPoint(MainScreen);	
-			
-			pHandle->Zero_Calibration_bit = 0;
+			pHandle->Zero_Calibration_500msTimeSwitch = 0;				
+			pHandle->Zero_Calibration_bit = 0;	
+
 		}	
-	}	
+	}
 }
+
+
+
 
 
 
@@ -207,6 +203,8 @@ uint16 liu_app_process_event(uint8 task_id, uint16 events)
 		Zero_Calibration_Task(&Zero_Calibration_struct);	
 		
 		
+		
+		
 		// 事件到了就执行
 		//osal_stop_timerEx(liu_app_task_id,LIU_APP_TIMER_EVT);
 		
@@ -223,7 +221,7 @@ uint16 liu_app_process_event(uint8 task_id, uint16 events)
 /*==============================按键处理==============================*/
 void ShortPress_MODE_Key(void)	
 {
-
+	
 }
 
 void ShortPress_ADD_Key(void)	
@@ -238,7 +236,7 @@ void ShortPress_SUB_Key(void)
 
 void LongPress_MODE_Key_3s(void)	
 {
-
+	
 }
 
 void LongPress_MODE_Key_4s(void)	
@@ -251,6 +249,7 @@ void LongPress_ADD_SUB_Key_2s(void)
 	if(system_state == RUN_STATE)	
 	{
 		Zero_Calibration_struct.Zero_Calibration_bit = 1;
+		Zero_Calibration_struct.Zero_Calibration_500msTimeSwitch = 0;	
 	}
 }
 
@@ -277,10 +276,10 @@ uint8 liu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 	static uint8 islongorshortpress = 0; // 长按或短按标志
 	uint8_t longpress_morethan_3s_keys = 0; // 长按超过3秒的按键
 	uint8_t longpress_morethan_4s_keys = 0; // 长按超过4秒的按键
-	uint8_t ADD_SUB_longpress_morethan_2s_keys = 0;	//同时按住上下键并保持2秒
+	static uint8_t ADD_SUB_longpress_morethan_2s_keys = 0;	//同时按住上下键并保持2秒
 	
     // 只处理有效的按键
-    cur_keys &= LIU_APP_KEY_MASK;
+    cur_keys &= LIU_APP_KEY_MASK;	//（0000 0111）
     pre_keys &= LIU_APP_KEY_MASK;
 
     // 遍历所有按键
@@ -324,6 +323,12 @@ uint8 liu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
         {// 按键释放处理
 			if((pre_keys & key_mask) && !(cur_keys & key_mask))
 			{
+				
+//				if( (key_mask == 0x02) || (key_mask == 0x04) )
+//				{
+//					ADD_SUB_longpress_morethan_2s_keys = 0;
+//				}
+				
 				// 短按处理
 				if(islongorshortpress == 1)
 				{
@@ -353,25 +358,39 @@ uint8 liu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 		ShortPress_SUB_Key();
 	}
 	
+	
 	//长按
-	if(longpress_morethan_3s_keys & HAL_KEY_MODE)
+	if( (longpress_morethan_3s_keys & HAL_KEY_MODE)      
+		&& (!(longpress_morethan_3s_keys & HAL_KEY_LEFT_ADD))  
+		&& (!(longpress_morethan_3s_keys & HAL_KEY_RIGHT_SUB)) )
 	{
 		LongPress_MODE_Key_3s();
 	}
 	
-	if(longpress_morethan_4s_keys & HAL_KEY_MODE)
+	
+	
+	if( (longpress_morethan_4s_keys & HAL_KEY_MODE)      
+		&& (!(longpress_morethan_4s_keys & HAL_KEY_LEFT_ADD))  
+		&& (!(longpress_morethan_4s_keys & HAL_KEY_RIGHT_SUB)) )
 	{
 		LongPress_MODE_Key_4s();
 	}
 	
+	
+	
 	//多键同时长按
-	if((ADD_SUB_longpress_morethan_2s_keys & HAL_KEY_LEFT_ADD) && (ADD_SUB_longpress_morethan_2s_keys & HAL_KEY_RIGHT_SUB))
+	if( (ADD_SUB_longpress_morethan_2s_keys & HAL_KEY_LEFT_ADD) 
+		&& (ADD_SUB_longpress_morethan_2s_keys & HAL_KEY_RIGHT_SUB)
+		&& (!(ADD_SUB_longpress_morethan_2s_keys & HAL_KEY_MODE)) )
 	{
+		ADD_SUB_longpress_morethan_2s_keys = 0;
+		
 		LongPress_ADD_SUB_Key_2s();
 	}
 	
 	return scan_flag;
 }
+
 
 
 

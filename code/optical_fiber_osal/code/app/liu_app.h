@@ -51,9 +51,11 @@ typedef struct
 extern Zero_Calibration_typedef Zero_Calibration_struct;
 
 
+
 void   liu_app_init(uint8 task_id);
 uint16 liu_app_process_event(uint8 task_id, uint16 events);
 void Zero_Calibration_Task(Zero_Calibration_typedef *pHandle);
+	
 /*************************************************-*************************************************
 *                                             GLOBEL VARIBLE
 **************************************************-*****************^******************************/
