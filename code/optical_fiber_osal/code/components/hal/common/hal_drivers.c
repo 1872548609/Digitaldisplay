@@ -39,6 +39,8 @@ void Hal_Init(uint8 task_id)
 {
     /* 注册任务ID */
     Hal_TaskID = task_id;
+	
+	osal_start_reload_timer(Hal_TaskID,HAL_APP_TIMER_EVT,10);	
 
     #ifdef CC2591_COMPRESSION_WORKAROUND  
     /* 启动周期性RSSI重置定时器（特定场景） */
@@ -174,7 +176,14 @@ uint16 Hal_ProcessEvent(uint8 task_id, uint16 events)
     }
     #endif
   
-    /* 未处理的事件，直接丢弃 */
+    /* 刷新屏幕 */
+	if (events & HAL_APP_TIMER_EVT)
+	{
+		iot_app_ifflashdisp=1;
+		
+		return(events ^HAL_APP_TIMER_EVT);
+	}
+	/* 未处理的事件，直接丢弃 */
     return 0;
 }
 

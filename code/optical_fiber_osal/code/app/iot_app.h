@@ -32,6 +32,8 @@ extern "C"
 /*************************************************-*************************************************
 *                                             FUNCTION
 **************************************************-*****************^******************************/
+extern uint8 iot_app_ifflashdisp ;
+
 #define EPSILON 1e-6f   //误差容许
 #define MIN_DECIMAL_PRECISION 0.0001f   // 最小小数精度（根据实际需求调整）
 
@@ -47,7 +49,7 @@ extern "C"
 extern void iot_mainbacklight_set(uint8 color);		// 主屏背光设置
 extern void iot_secondbacklight_set(uint8 en);		// 副屏背光设置
 extern void iot_outputbacklight_set(uint8 en);		// 输出屏背光设置
-extern void iot_backlight_levelset(uint8_t level);	// 背光亮度设置
+extern void iot_backlight_levelset(uint8_t led ,uint8_t level);	// 背光亮度设置
 
 
 #define set_no  0x00 //开机无设置
@@ -86,12 +88,19 @@ void ColorLinkTrun(void);
 void main_screen_dispaftertime(uint16_t time,const char * data1,...);
 void main_screen_disp(const char * data1,...);
 void main_screen_dispfloat(const char * data1,...);
+uint8 main_screen_dispupdate(void);
 
 // 副屏显示
 void second_screen_dispaftertime(uint16_t time,const char * data1,...);
 void second_screen_disp(const char * data1,...);
 void second_screen_dispfloat(const char * data1,...);
-	
+uint8 second_screen_dispupdate(void);
+
+// pwm
+
+void SoftwarePWM_Update(void);
+
+
 // 长按mode退出
 void systemreturnrun(void);	
 	

@@ -80,7 +80,7 @@ typedef struct
  *                                           GLOBAL VARIABLES
  ***************************************************************************************************/
 // 全局变量
-static uint8 HalLedState;              // 最后一次设置/清除/闪烁更新时的LED状态
+uint8 HalLedState;              // 最后一次设置/清除/闪烁更新时的LED状态
 
 #if HAL_LED == TRUE
 static uint8 HalSleepLedState;         // 睡眠模式下的LED状态

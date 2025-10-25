@@ -84,6 +84,7 @@ extern "C"
 /*********************************************************************
  * GLOBAL VARIABLES
  */
+extern uint8 HalLedState;              // 最后一次设置/清除/闪烁更新时的LED状态
 
 /*
  * Initialize LED Service.

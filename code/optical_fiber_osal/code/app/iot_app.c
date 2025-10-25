@@ -52,8 +52,9 @@ float After_zero_calibration_val;
 **************************************************-*****************^******************************/
 // 局部变量定义区域
 uint8 iot_app_task_id;
-
-
+uint8 iot_app_ifflashdisp = 0;
+uint8 ifeco = 0;
+uint8 ifeco_status =0 ;
 // flash读写==============================================
 #if 1
 // 目标扇区（SECTOR_62，地址 0x0800f800 ~ 0x0800Fc00）写入地址必须1kb对齐
@@ -316,7 +317,7 @@ float pressure_read_once(void)
 }
 
 
-//刘锦煌修改后
+//气压读取
 void pressure_readalways(void)
 {
 	Current_pressure_value = pressure_read_once();
@@ -2406,12 +2407,89 @@ void iot_outputbacklight_set(uint8 en)
 	}
 }
 
-void iot_backlight_levelset(uint8_t level)
+void iot_backlight_levelset(uint8_t led ,uint8_t level)
 {
-	HalLedBlink(HAL_LED_ALL,0,level,10);
+	
+}
+
+// PWM
+#define PWM_PIN_SET()   HAL_TURN_ON_LED2() // 打开LED1 // 设置PWM引脚为高电平
+#define PWM_PIN_RESET()  HAL_TURN_OFF_LED2()// 设置PWM引脚为低电平
+
+
+uint16_t period_ms;    // PWM周期(ms)
+uint8_t duty_cycle;    // 占空比(0-100%)
+uint16_t counter;      // 内部计数器
+bool output_state;     // 当前输出状态
+
+
+// 初始化PWM
+void SoftwarePWM_Init(uint16_t period, uint8_t duty) {
+   period_ms = period;
+   duty_cycle = (duty > 100) ? 100 : duty;
+   counter = 0;
+   output_state = false;
+    
+    // 初始设置GPIO状态
+    if (duty_cycle > 0) {
+        PWM_PIN_SET();
+        output_state = true;
+    } else {
+        PWM_PIN_RESET();
+        output_state = false;
+    }
+}
+
+// 在1ms定时器中断中调用的处理函数
+void SoftwarePWM_Update() {
+	counter ++;
+    
+    // 检查是否到达周期结束
+    if (counter >= period_ms) {
+        counter = 0;
+        
+        // 重新开始新周期
+        if (duty_cycle > 0) {
+            PWM_PIN_SET();
+            output_state = true;
+        } else {
+            PWM_PIN_RESET();
+            output_state = false;
+        }
+        return;
+    }
+    
+    // 检查是否需要切换输出状态
+    uint16_t switch_point =0;
+	switch_point= (period_ms * duty_cycle) / 100;
+    
+    if (output_state && counter > switch_point) {
+        PWM_PIN_RESET();
+        output_state = false;
+    } else if (!output_state && counter == 0 && duty_cycle == 100) {
+        // 特殊情况：100%占空比
+        PWM_PIN_SET();
+        output_state = true;
+    }
+}
+
+// 设置新的占空比
+void SoftwarePWM_SetDutyCycle(uint8_t duty) {
+    duty_cycle = (duty > 100) ? 100 : duty;
+    
+    // 立即更新输出状态（可选）
+    if (duty_cycle == 0) {
+        PWM_PIN_RESET();
+        output_state = false;
+    } else if (duty_cycle == 100) {
+        PWM_PIN_SET();
+        output_state = true;
+    }
+    // 其他情况会在下一个周期更新
 }
 
 #endif
+
 // 长按mode退出
 void systemreturnrun(void){
 	if(system_state == MENU_STATE)
@@ -2436,16 +2514,25 @@ void iot_app_Poll(void)
 {
 	if(system_state==RUN_STATE)
 	{
-		ColorLinkTrun();
-		
 		if( Zero_Calibration_struct.Zero_Calibration_bit == 1 )		//进入校零显示，暂停主屏刷新，1秒后自动恢复
-	   {			
+		{			
 		 main_screen_stopevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
-	   }
-	   else
-	   {			
+		}
+		else
+		{			
 		 main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
-	   }
+		}
+
+		if(iot_app_ifflashdisp)
+		{
+			main_screen_dispupdate();
+			second_screen_dispupdate();
+			iot_app_ifflashdisp=0;
+		}
+		
+		SoftwarePWM_Update();
+		
+		ColorLinkTrun();
 	}
 	pressure_readalways();
 	
@@ -2536,7 +2623,7 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 			
 			if (hal_key_release_time_count[k]==50)
 			{
-				 Flash_Write_SetValue();
+				Flash_Write_SetValue();
 			}
         }
     }
@@ -2678,8 +2765,8 @@ void iot_app_init(uint8 task_id)
 	
 	main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
 	second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
-	osal_start_reload_timer(iot_app_task_id,IOTAPP_DISPSECOND_EVT,50);
-	osal_start_reload_timer(iot_app_task_id,IOT_APP_TIMER_EVT,1);
+	
+	 SoftwarePWM_Init( 10, 100);
 	
 	get_nowycset();
 	nowsetwhichyc=NOWChoice[0];
@@ -2798,24 +2885,7 @@ uint16 iot_app_process_event(uint8 task_id, uint16 events)
 		
 		return (events ^ IOT_APP_LONGKEYSET_YCVALUE_EVT);
 	}
-	
 
-	if(events & IOTAPP_DISPSECOND_EVT)
-	{
-
-		second_screen_dispupdate();
-		
-		return (events ^IOTAPP_DISPSECOND_EVT);
-	}
-	
-	if(events & IOT_APP_TIMER_EVT)
-	{
-		
-		main_screen_dispupdate();
-		
-		return (events ^IOT_APP_TIMER_EVT);
-	}
-	
 	// 丢弃未知事件
     return 0;
 }
