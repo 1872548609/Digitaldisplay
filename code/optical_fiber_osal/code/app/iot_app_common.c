@@ -961,7 +961,7 @@ void facrecovermode_click(MenuItem* item)
 	else if (item->whichcallback == MENU_CBK_MODE)
 	{
 		systemreturnrun();// 最后一个菜单项按下mode退出菜单
-		
+				
 		Menu_Next();
 		
 		Menu_Execute(INCALLBACK);

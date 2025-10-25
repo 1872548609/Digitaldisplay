@@ -102,7 +102,7 @@ void PackMenuSettings(void)
     menuset_flashsave1 |= (copy_status & 0x7) << 29;                // 位29-31
     
     // 打包第二个32位变量 (menuset_flashsave2)
-    menuset_flashsave2 |= (facrecover_status & 0x3);                // 位0-1
+    //menuset_flashsave2 |= (facrecover_status & 0x3);                // 位0-1
 }
  
 // 从 menuset_flashsave1 和 menuset_flashsave2 解包菜单设置
@@ -123,7 +123,7 @@ void UnpackMenuSettings(void)
     copy_status = (menuset_flashsave1 >> 29) & 0x7;
     
     // 解包第二个32位变量
-    facrecover_status = menuset_flashsave2 & 0x3;
+    //facrecover_status = menuset_flashsave2 & 0x3;
 }
 
 // 判断是否改变了数值，把设定值写入flash                                                                	
@@ -245,6 +245,19 @@ void Flash_Read_SetValue(void)
 	UnpackMenuSettings();
 }
 
+
+void recover_factory(void)
+{
+	uint32_t page_addr = STM32_FLASH_BASE + TARGET_SECTOR_NUM * STM32_SECTOR_SIZE;
+	
+	//擦除页
+	FMC_Unlock();
+	FMC_ErasePage(page_addr);
+	FMC_Lock();
+	
+	Flash_Read_SetValue();
+	Flash_Read_SetValue();
+}
 #endif
 // 气压读取处理================================================
 #if 1
@@ -2528,6 +2541,13 @@ void iot_app_Poll(void)
 			main_screen_dispupdate();
 			second_screen_dispupdate();
 			iot_app_ifflashdisp=0;
+		}
+		
+		if(facrecover_status==facrecon)
+		{
+			recover_factory();
+			
+			facrecover_status=facrecoff;
 		}
 		
 		SoftwarePWM_Update();

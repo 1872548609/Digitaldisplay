@@ -97,12 +97,14 @@ void second_screen_dispfloat(const char * data1,...);
 uint8 second_screen_dispupdate(void);
 
 // pwm
-
 void SoftwarePWM_Update(void);
 
 
 // 长按mode退出
 void systemreturnrun(void);	
+
+// 恢复出厂设置
+void recover_factory(void);
 	
 extern void   iot_app_init(uint8 task_id);
 extern uint16 iot_app_process_event(uint8 task_id, uint16 events);
