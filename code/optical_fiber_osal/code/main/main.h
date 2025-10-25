@@ -66,6 +66,8 @@ extern "C"
 #include "iot_driver_led.h"
 #include "iot_driver_readadc.h"
 #include "iot_driver_out.h"
+#include "iot_driver_usart.h"
+#include "iot_hal_usart.h"
 /*************************************************-*************************************************
 *                                             INCLUDES
 **************************************************-*****************^******************************/

@@ -53,8 +53,7 @@ float After_zero_calibration_val;
 // 局部变量定义区域
 uint8 iot_app_task_id;
 uint8 iot_app_ifflashdisp = 0;
-uint8 ifeco = 0;
-uint8 ifeco_status =0 ;
+
 // flash读写==============================================
 #if 1
 // 目标扇区（SECTOR_62，地址 0x0800f800 ~ 0x0800Fc00）写入地址必须1kb对齐
@@ -76,6 +75,8 @@ uint8 ifeco_status =0 ;
 #define MASK_eco 0x18000000			//27~28
 #define MASK_copy 0xE0000000 		//29~31
 #define MASK_facrecover 0x3 		//0~1
+
+#define MASK_calibrationOrNo 0x1 	//0
 
 uint32 menuset_flashsave1 = 0;
 uint32 menuset_flashsave2 = 0;
@@ -103,6 +104,7 @@ void PackMenuSettings(void)
     
     // 打包第二个32位变量 (menuset_flashsave2)
     //menuset_flashsave2 |= (facrecover_status & 0x3);                // 位0-1
+	menuset_flashsave2 |= (calibrationOrNo & 0x1);						 // 位0
 }
  
 // 从 menuset_flashsave1 和 menuset_flashsave2 解包菜单设置
@@ -124,6 +126,7 @@ void UnpackMenuSettings(void)
     
     // 解包第二个32位变量
     //facrecover_status = menuset_flashsave2 & 0x3;
+	calibrationOrNo=menuset_flashsave2 & 0x1;
 }
 
 // 判断是否改变了数值，把设定值写入flash                                                                	
@@ -156,7 +159,7 @@ void Flash_Write_SetValue(void)
 	
 	if(fabsf(*(volatile float*)(&read_buf[5])-Lo2_Value)>EPSILON){ifchange =1;}
 	
-		    // 设置用于比较
+	// 设置用于比较
     PackMenuSettings();
     current_settings[0] = menuset_flashsave1;
     current_settings[1] = menuset_flashsave2;
@@ -340,6 +343,142 @@ void pressure_readalways(void)
 	
 	//将校零后得气压值进行单位转换
 	unitchange_pressure_value = unitconversion(After_zero_calibration_val,unitconver_status);	
+}
+
+#endif
+// 校准=================================================
+#if 1
+//串口+最小二=======================================
+float x[] = {2190.0,2355.0,2519.0,2689.0,2850.0,3019.0,3186.0,3342.0,3507.0};
+float y[] = {20.01,30.01,40.01,50.33,60.13,70.42,80.52,90.03,100.05};
+int n = sizeof(x) / sizeof(x[0]);			//xy数组长度必须相同				
+
+#define maxdata 64
+uint8_t testdate[maxdata]={0};
+uint16_t testlen=0;
+
+
+#define MAX_PRESSURE_STR 50
+#define NUM_CALIBRATION_POINTS 7   //校准点数
+
+uint8_t calibration_complete = 0;  // 校准完成标志
+uint8_t error_flag = 0;  // 错误标志
+uint8_t received_count = 0;  // 已接收的气压数据数量
+
+
+uint8_t calibrationOrNo=0;//初始化完成标志
+
+
+void linearLeastSquares(float x[], float y[], int n, float *k, float *b) 
+{
+    float sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+ 
+    for (int i = 0; i < n; i++) {
+        sumX += x[i];
+        sumY += y[i];
+        sumXY += x[i] * y[i];
+        sumX2 += x[i] * x[i];
+    }
+ 
+    // 计算斜率 k
+    *k = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+ 
+    // 计算截距 b
+    float meanX = sumX / n;
+    float meanY = sumY / n;
+    *b = meanY - (*k) * meanX;
+}
+void reset_calibration() 
+{
+    received_count = 0;
+    memset(y, 0, sizeof(y));
+}
+
+void Usart_Process(void)
+{
+		 if(uartrxbuffer.uartfinish)
+			{  
+						uartrxbuffer.uartfinish=0; 
+						testlen=DIV_Uart_ReadAvailable(testdate,sizeof(testdate));    //读取缓冲区
+				   printf("%s\r\n",(char *)testdate); //回传接收到的数据
+		
+				 if (strstr((char *)testdate, "kPaG") == NULL)   //没有数据，或数据错误
+					{
+        error_flag = 1;  // 格式错误
+        return;
+					}
+					
+//				   DIV_Disp_Snprintf(MainScreen," CAl");    //接收到数据显示校准
+//							DIV_Disp_Snprintf(SecondScreen,"mode");
+ 
+    // 提取气压部分（"-0.00027"）
+    char *kpa_pos = strstr((char *)testdate, "kPaG");
+    if (kpa_pos == NULL) {
+        error_flag = 1;
+        return;
+    }
+ 
+    // 计算气压部分的长度
+    int len = kpa_pos - (char *)testdate;
+    if (len <= 0 || len >= MAX_PRESSURE_STR) {
+        error_flag = 1;
+        return;
+    }
+ 
+    // 临时存储气压字符串
+    char pressure_str[20];
+    strncpy(pressure_str, (char *)testdate, len);
+    pressure_str[len] = '\0';
+ 
+    // 转换为浮点数
+    float pressure = atof(pressure_str);
+ 
+    // 存储到数组
+    if (received_count < NUM_CALIBRATION_POINTS) {
+        y[received_count] = pressure;
+								x[received_count] = adcData;
+					   received_count++;
+    }
+ 
+    // 检查是否接收完成 接收到足够数量
+    if (received_count >= NUM_CALIBRATION_POINTS) {
+        calibration_complete = 1;
+    }			
+	}
+}
+void barometric(void)  //串口校准
+{
+			if(calibrationOrNo)   ///初始化成功就跳转
+			{
+				 system_state = RUN_STATE;
+			}
+			
+			
+			Usart_Process(); //接收校准气压数据
+			if (error_flag)  	// 格式错误
+			{
+					printf("格式错误！请重新发送数据。\r\n");
+				   reset_calibration();  // 重置校准状态
+					error_flag = 0;
+					DIV_Disp_ClearAllPoint(MainScreen);
+					DIV_Disp_Snprintf(MainScreen," EOO");   //显示错误
+					DIV_Disp_Snprintf(SecondScreen," ERR");				
+			}
+			if (calibration_complete) // 校准完成
+			{
+					linearLeastSquares(x,y,n,&k,&b);   //计算曲线最小二
+		
+					printf("校准成功！接收到的气压值：\n");
+					for (int i = 0; i < NUM_CALIBRATION_POINTS; i++) {
+									printf("%d: %.5f kPa %0.f Adv\n", i + 1, y[i],x[i]);
+					}
+					printf("校准曲线=%fX%f",k,b);  //打印曲线
+					
+					calibrationOrNo=1;  //校准完成
+					calibration_complete = 0;  // 重置标志
+						//写入flash
+					Flash_Write_SetValue();  //写
+			}
 }
 
 #endif
@@ -1310,7 +1449,7 @@ uint8 main_screen_dispupdate(void)
 		
 		main_screen_choicedispeed();
 		
-		if(count < (dispspeed_set/5))
+		if(count < (dispspeed_set/10))
 		{
 			count++;
 		}
@@ -2525,6 +2664,13 @@ void systemreturnrun(void){
 // 轮询任务
 void iot_app_Poll(void)
 {
+	if(system_state==BAROMETRIC_STATE)
+	{
+	
+		barometric();
+		
+		return ;
+	}
 	if(system_state==RUN_STATE)
 	{
 		if( Zero_Calibration_struct.Zero_Calibration_bit == 1 )		//进入校零显示，暂停主屏刷新，1秒后自动恢复
@@ -2780,7 +2926,7 @@ void iot_app_init(uint8 task_id)
 			__nop();
 		}
 	}
-	
+		
 	main_screen_disppressure();// 动画后立即刷新一次
 	
 	main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压

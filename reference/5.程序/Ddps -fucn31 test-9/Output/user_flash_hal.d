@@ -7,7 +7,7 @@
 ..\output\user_flash_hal.o: ..\Boards\Board.h
 ..\output\user_flash_hal.o: ..\User\Main\apm32f0xx.h
 ..\output\user_flash_hal.o: ..\CMSIS\core_cm0plus.h
-..\output\user_flash_hal.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\user_flash_hal.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\user_flash_hal.o: ..\CMSIS\core_cmInstr.h
 ..\output\user_flash_hal.o: ..\CMSIS\core_cmFunc.h
 ..\output\user_flash_hal.o: ..\User\Main\system_apm32f0xx.h
@@ -25,11 +25,11 @@
 ..\output\user_flash_hal.o: ..\FWLib\inc\apm32f0xx_fmc.h
 ..\output\user_flash_hal.o: ..\FWLib\inc\apm32f0xx_iwdt.h
 ..\output\user_flash_hal.o: ..\FWLib\inc\apm32f0xx_dbg.h
-..\output\user_flash_hal.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
-..\output\user_flash_hal.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
-..\output\user_flash_hal.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\string.h
-..\output\user_flash_hal.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdarg.h
-..\output\user_flash_hal.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\math.h
+..\output\user_flash_hal.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdio.h
+..\output\user_flash_hal.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\output\user_flash_hal.o: D:\keil5\ARM\ARMCC\Bin\..\include\string.h
+..\output\user_flash_hal.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdarg.h
+..\output\user_flash_hal.o: D:\keil5\ARM\ARMCC\Bin\..\include\math.h
 ..\output\user_flash_hal.o: ..\User\Hardware\USER_DRIVER\menu.h
 ..\output\user_flash_hal.o: ..\User\Main\superhead.h
 ..\output\user_flash_hal.o: ..\User\Hardware\USER_HAL\user_led_hal.h

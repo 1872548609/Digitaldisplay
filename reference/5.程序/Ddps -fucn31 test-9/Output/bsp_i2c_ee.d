@@ -7,7 +7,7 @@
 ..\output\bsp_i2c_ee.o: ..\FWLib\inc\apm32f0xx_usart.h
 ..\output\bsp_i2c_ee.o: ..\User\Main\apm32f0xx.h
 ..\output\bsp_i2c_ee.o: ..\CMSIS\core_cm0plus.h
-..\output\bsp_i2c_ee.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\bsp_i2c_ee.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\bsp_i2c_ee.o: ..\CMSIS\core_cmInstr.h
 ..\output\bsp_i2c_ee.o: ..\CMSIS\core_cmFunc.h
 ..\output\bsp_i2c_ee.o: ..\User\Main\system_apm32f0xx.h
@@ -19,5 +19,5 @@
 ..\output\bsp_i2c_ee.o: ..\FWLib\inc\apm32f0xx_tmr.h
 ..\output\bsp_i2c_ee.o: ..\FWLib\inc\apm32f0xx_adc.h
 ..\output\bsp_i2c_ee.o: ..\Boards\Board_APM32F051_EVAL\inc\bsp_delay.h
-..\output\bsp_i2c_ee.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
-..\output\bsp_i2c_ee.o: D:\Program Files\Keil5\ARM\ARMCC\Bin\..\include\string.h
+..\output\bsp_i2c_ee.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdio.h
+..\output\bsp_i2c_ee.o: D:\keil5\ARM\ARMCC\Bin\..\include\string.h

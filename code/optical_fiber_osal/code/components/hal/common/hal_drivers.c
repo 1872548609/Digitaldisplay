@@ -88,7 +88,7 @@ void HalDriverInit(void)
 
     /* UART初始化 */
     #if (defined HAL_UART) && (HAL_UART == TRUE)
-    HalUARTInit();
+	DIV_Usart_Init();
     #endif
 
     /* 按键初始化 */
@@ -202,7 +202,7 @@ void Hal_ProcessPoll(void)
 
     /* UART轮询 */
     #if (defined HAL_UART) && (HAL_UART == TRUE)
-    HalUARTPoll();
+   // HalUARTPoll();
     #endif  
 
     /* SPI轮询（可选） */

@@ -106,6 +106,9 @@ void systemreturnrun(void);
 // 恢复出厂设置
 void recover_factory(void);
 	
+// 校准
+extern uint8_t calibrationOrNo;//初始化完成标志
+	
 extern void   iot_app_init(uint8 task_id);
 extern uint16 iot_app_process_event(uint8 task_id, uint16 events);
 

@@ -36,7 +36,7 @@ extern "C"
 *                                          GLOBAL VARIABLES
 **************************************************-*****************^******************************/
 // 全局变量定义区域
-uint8_t system_state = RUN_STATE;
+uint8_t system_state = BAROMETRIC_STATE;
 
 float Current_pressure_value=0.0f;	
 float unitchange_pressure_value =0.0f;
