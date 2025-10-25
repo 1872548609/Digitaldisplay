@@ -107,6 +107,7 @@ extern "C"
 #define RUN_STATE  0	// 运行状态
 #define MENU_STATE 1	// 菜单状态
 #define BAROMETRIC_STATE 2// 校准状态
+#define ZERO_STATE 3 // 校0状态
 
 extern uint8_t system_state;	// 系统运行状态全局变量
 

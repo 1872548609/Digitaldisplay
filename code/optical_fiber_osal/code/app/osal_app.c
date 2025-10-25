@@ -66,7 +66,7 @@ const pTaskEventHandlerFn tasksArr[] =
 		liu_app_process_event,			    //小刘的事件管理
 		//lu_app_process_event,						//德晋的事件管理
 		iot_app_process_event,          // 用户自定义任务（必须存在）
-		hu_app_process_event,					  // 嘉诚的事件管理
+		//hu_app_process_event,					  // 嘉诚的事件管理
 		
 };
 

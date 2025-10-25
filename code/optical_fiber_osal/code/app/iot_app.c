@@ -2795,32 +2795,6 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
         }
     }
 	
-	// 长按设置应差==========================================
-	if((release_keys & HAL_KEY_LEFT_ADD)||(release_keys & HAL_KEY_RIGHT_SUB))// 按键释放
-	{
-		if(system_state == RUN_STATE)
-		{
-			osal_stop_timerEx(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT);
-			long_setclearstates();
-		}
-	}
-	
-	if((longpresssetycvalue & HAL_KEY_LEFT_ADD)&&!(longpresssetycvalue & HAL_KEY_RIGHT_SUB))
-	{
-		if(system_state == RUN_STATE)
-		{
-			osal_start_reload_timer(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT,100);
-			keypressaddorsub = PRESS_ADD; 
-		}
-	}
-	if(!(longpresssetycvalue & HAL_KEY_LEFT_ADD)&&(longpresssetycvalue & HAL_KEY_RIGHT_SUB))
-	{
-		if(system_state == RUN_STATE)
-		{
-			osal_start_reload_timer(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT,100);
-			keypressaddorsub = PRESS_DOWN; 
-		}
-	}
 	// 普通按键功能==========================================
 	
 	if(press_keys & HAL_KEY_MODE)
@@ -2890,6 +2864,30 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 			system_state = RUN_STATE; 
 		}
 		
+	}
+	
+	// 长按设置应差==========================================
+	if((release_keys & HAL_KEY_LEFT_ADD)||(release_keys & HAL_KEY_RIGHT_SUB))// 按键释放
+	{
+			osal_stop_timerEx(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT);
+			long_setclearstates();
+	}
+	
+	if((longpresssetycvalue & HAL_KEY_LEFT_ADD)&&!(longpresssetycvalue & HAL_KEY_RIGHT_SUB))
+	{
+		if(system_state == RUN_STATE)
+		{
+			osal_start_reload_timer(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT,100);
+			keypressaddorsub = PRESS_ADD; 
+		}
+	}
+	if(!(longpresssetycvalue & HAL_KEY_LEFT_ADD)&&(longpresssetycvalue & HAL_KEY_RIGHT_SUB))
+	{
+		if(system_state == RUN_STATE)
+		{
+			osal_start_reload_timer(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT,100);
+			keypressaddorsub = PRESS_DOWN; 
+		}
 	}
 	
 	if(longpress_morethan_4s_keys & HAL_KEY_MODE)
