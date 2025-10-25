@@ -249,6 +249,7 @@ void Flash_Read_SetValue(void)
 }
 
 
+// 恢复出厂设置
 void recover_factory(void)
 {
 	uint32_t page_addr = STM32_FLASH_BASE + TARGET_SECTOR_NUM * STM32_SECTOR_SIZE;
@@ -366,7 +367,7 @@ uint8_t error_flag = 0;  // 错误标志
 uint8_t received_count = 0;  // 已接收的气压数据数量
 
 
-uint8_t calibrationOrNo=0;//初始化完成标志
+uint8_t calibrationOrNo=1;//初始化完成标志
 
 
 void linearLeastSquares(float x[], float y[], int n, float *k, float *b) 
@@ -457,7 +458,7 @@ void barometric(void)  //串口校准
 			Usart_Process(); //接收校准气压数据
 			if (error_flag)  	// 格式错误
 			{
-					printf("格式错误！请重新发送数据。\r\n");
+					printf("errorformat!pleaseresend.\r\n");
 				   reset_calibration();  // 重置校准状态
 					error_flag = 0;
 					DIV_Disp_ClearAllPoint(MainScreen);
@@ -468,11 +469,11 @@ void barometric(void)  //串口校准
 			{
 					linearLeastSquares(x,y,n,&k,&b);   //计算曲线最小二
 		
-					printf("校准成功！接收到的气压值：\n");
+					printf("successful!recevice pressure is：\n");
 					for (int i = 0; i < NUM_CALIBRATION_POINTS; i++) {
 									printf("%d: %.5f kPa %0.f Adv\n", i + 1, y[i],x[i]);
 					}
-					printf("校准曲线=%fX%f",k,b);  //打印曲线
+					printf("calibration function=%fX%f",k,b);  //打印曲线
 					
 					calibrationOrNo=1;  //校准完成
 					calibration_complete = 0;  // 重置标志
