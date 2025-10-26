@@ -1471,9 +1471,6 @@ uint8 main_screen_dispupdate(void)
 #endif
 // 副屏显示================================================
 #if 1
-#define SECONDSCREEN_DISPAFTERTIME 0x0001
-#define SECONDSCREEN_DISPSETVALUE  0x0002
-
 uint32_t second_status = 0; // 副屏显示状态
 
 char second_screen_now[8]={0}; // 副屏当前显示
@@ -2795,25 +2792,6 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 			}
         }
     }
-//	
-//	if(system_state == PEAKTOVALLEY_STATE)
-//	{
-//		if(longpress_morethan_3s_keys & (HAL_KEY_MODE|HAL_KEY_LEFT_ADD))
-//		{
-//			
-//			longpress_morethan_3s_keys &=~ (HAL_KEY_MODE|HAL_KEY_LEFT_ADD);
-//		
-//			return scan_flag;
-//		}
-//		
-//		if(release_keys &  (HAL_KEY_MODE|HAL_KEY_LEFT_ADD))
-//		{
-//			system_state=RUN_STATE;
-//			
-//			iot_app_keylock=0;
-//		
-//		}
-//	}
 	
 	if(!iot_app_keylock)
 	{
@@ -2837,18 +2815,18 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 			}
 			
 			// 长按 =======================================================
-//			if(longpress_morethan_3s_keys & (HAL_KEY_MODE|HAL_KEY_LEFT_ADD))
-//			{
-//				longpress_morethan_3s_keys &=~ (HAL_KEY_MODE|HAL_KEY_LEFT_ADD);
-//				
-//				return scan_flag;
-//			}
-//			if(release_keys &  (HAL_KEY_MODE|HAL_KEY_LEFT_ADD))
-//			{
-//				system_state=PEAKTOVALLEY_STATE;
-//				iot_app_keylock=1;
-//			
-//			}
+			if(longpress_morethan_3s_keys & (HAL_KEY_MODE|HAL_KEY_LEFT_ADD))
+			{
+				
+				system_state=PEAKTOVALLEY_STATE;
+				iot_app_keylock=1;
+				
+				
+				longpress_morethan_3s_keys &=~ (HAL_KEY_MODE|HAL_KEY_LEFT_ADD);
+				
+				return scan_flag;
+			}
+
 			
 			
 			if(longpress_morethan_3s_keys & HAL_KEY_MODE)

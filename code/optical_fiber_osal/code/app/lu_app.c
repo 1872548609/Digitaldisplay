@@ -353,7 +353,8 @@ uint8 lu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milli
                 lu_mainbacklight_set(BACKLIGHT_GREEN);
                 osal_stop_timerEx(lu_app_task_id, LU_MAINTAIN_TIMER_EVT);
 				
-
+				system_state=RUN_STATE;
+				second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
             }
             
             lu_app_bit = 0;
@@ -369,6 +370,13 @@ uint8 lu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milli
         // K1松开后，可以重新允许状态切换
         lu_app_bit = 1;
         k1_released = 0; // 重置释放标志
+		
+		if(system_state == RUN_STATE)
+		{
+			iot_app_keylock=0;
+			
+		}
+		
     }
     
     // 移除阻塞的延时调用
