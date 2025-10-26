@@ -1481,6 +1481,49 @@ uint8_t Disp_S2Point_save=0;	// 副屏小数点显示存储
 
 uint8_t dispset_returntime = 0;
 
+// 清除副屏
+void second_screen_clear(void)
+{
+	memset(second_screen_now,' ',sizeof(second_screen_now));
+	Disp_S2Point_now=0;
+	
+	second_screen_disp("    ");
+	
+	DIV_Disp_ClearAllPoint(SecondScreen);
+}
+// 次屏显示选择
+void second_screen_dispchoice(void)
+{
+	switch(secscreen_status)
+	{
+		case OFF:{
+		
+			second_screen_clear();
+			
+		}break;
+		case UnIt:{
+			
+			second_screen_clear();
+			
+			second_screen_tranfromevt(SECONDSCREEN_DISPUNIT);
+			
+		}break;
+		case CuSt:{
+		
+		}break;
+		case No:{
+		
+		}break;
+		case Std:{
+		
+			second_screen_clear();
+			
+			second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
+			
+		}break;
+	}
+}
+
 // 根据当前单位显示设定值
 void second_screen_dispsetvalue(float value)
 {
@@ -1859,11 +1902,40 @@ uint8 second_screen_dispupdate(void)
 	{
 		second_screen_dispnowsetvalue();
 		
-		
 		second_status ^= SECONDSCREEN_DISPSETVALUE;
 		return 0;
 	}
-	
+	if(second_status & SECONDSCREEN_DISPUNIT)
+	{
+		switch(unitconver_status)
+		{
+			case bAr:{
+				second_screen_disp(" bAr");     
+			}break;
+			case KgF:{
+				second_screen_disp(" KgF");     
+			}break;
+			case KPR:{
+				second_screen_disp(" KPR");  
+			}break;
+			case MPR:{
+				second_screen_disp(" MPR");   
+			}break;
+			case PSI:{
+				second_screen_disp(" PSI");   
+			}break;
+			case MMHG:{
+				second_screen_disp("MMHG");   
+			}break;
+			case inHG:{
+				second_screen_disp("inHG");    
+			}break;
+		}
+		
+		second_status ^= SECONDSCREEN_DISPUNIT;
+		return 0;
+	}
+			
 	return 0;
 }
 
@@ -2649,7 +2721,8 @@ void systemreturnrun(void){
 		Menu_Execute(OUTCALLBACK);
 		
 		main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
-		second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
+		//second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
+		second_screen_dispchoice();
 		
 		iot_mainbacklight_set(BACKLIGHT_YELLOW);
 		
@@ -2665,16 +2738,14 @@ void iot_app_Poll(void)
 {
 	if(system_state==BAROMETRIC_STATE)
 	{
-	
 		barometric();
-		
 		return ;
 	}
 	if(system_state==RUN_STATE)
 	{
 		if( Zero_Calibration_struct.Zero_Calibration_bit == 1 )		//进入校零显示，暂停主屏刷新，1秒后自动恢复
 		{			
-		 main_screen_stopevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
+		 main_screen_stopevt(MAINSCREEN_DISPPRESSURE);
 		}
 		else
 		{			
@@ -2698,6 +2769,7 @@ void iot_app_Poll(void)
 		SoftwarePWM_Update();
 		
 		ColorLinkTrun();
+		
 	}
 	pressure_readalways();
 	
@@ -2798,7 +2870,7 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 
 		if(system_state == RUN_STATE)
 		{
-			if(press_keys & HAL_KEY_MODE && !(hold_keys & HAL_KEY_LEFT_ADD))
+			if(press_keys & HAL_KEY_MODE && !(hold_keys & HAL_KEY_LEFT_ADD))// 防止进模式会冲突
 			{
 				modeset_choiceanddisplay();	// 按键选择切换应差设定
 			}
@@ -2899,18 +2971,7 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 			}
 			if(longpress_morethan_3s_keys & HAL_KEY_MODE)
 			{
-				MenuSystem_Stop();		// 关闭菜单
-				Menu_Execute(OUTCALLBACK);
-				
-				main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
-				second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
-				
-				iot_mainbacklight_set(BACKLIGHT_YELLOW);
-				
-				main_screen_disppressure();// 退出后立即刷新一次
-				DIV_Disp_ClearAllPoint(MainScreen);
-				
-				system_state = RUN_STATE; 
+				systemreturnrun();
 				return scan_flag;
 			}
 			if(longpress_morethan_4s_keys & HAL_KEY_MODE)
@@ -3058,7 +3119,8 @@ void iot_app_init(uint8 task_id)
 	main_screen_disppressure();// 动画后立即刷新一次
 	
 	main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
-	second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
+	//second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
+	second_screen_dispchoice();
 	
 	 SoftwarePWM_Init( 10, 100);
 	

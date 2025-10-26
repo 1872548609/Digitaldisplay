@@ -94,11 +94,14 @@ uint8 main_screen_dispupdate(void);
 // 副屏显示
 #define SECONDSCREEN_DISPAFTERTIME 0x0001
 #define SECONDSCREEN_DISPSETVALUE  0x0002
+#define SECONDSCREEN_DISPUNIT      0x0004
 
 void second_screen_dispaftertime(uint16_t time,const char * data1,...);
 void second_screen_disp(const char * data1,...);
 void second_screen_dispfloat(const char * data1,...);
+void second_screen_dispchoice(void);
 void second_screen_tranfromevt(uint32 evt);
+void second_screen_stopevt(uint32 evt);
 uint8 second_screen_dispupdate(void);
 
 // pwm
