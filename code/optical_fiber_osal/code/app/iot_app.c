@@ -61,7 +61,7 @@ uint8 iot_app_keylock=0;
 #define TARGET_SECTOR_ADDR  0x0800f800
 #define TARGET_SECTOR_NUM   ((TARGET_SECTOR_ADDR - STM32_FLASH_BASE) / STM32_SECTOR_SIZE)	
 
-#define datalenght 10
+#define datalenght 11
 
 #define MASK_out1compare 0x3 		//0~1
 #define MASK_out2compare 0x1c		//2~4
@@ -146,8 +146,7 @@ void Flash_Write_SetValue(void)
 	{
 		return ;
 	}
-	
-	
+	// 读取数据===================================================================
 	if(fabsf(*(volatile float*)(&read_buf[0])-P1_Value)>EPSILON){ifchange =1;}
 
 	if(fabsf(*(volatile float*)(&read_buf[1])-P2_Value)>EPSILON){ifchange =1;}
@@ -170,6 +169,10 @@ void Flash_Write_SetValue(void)
 		ifchange = 1;
 	}
 	
+	if(fabsf(*(volatile float*)(&read_buf[8])-k)>EPSILON){ifchange =1;}
+	if(fabsf(*(volatile float*)(&read_buf[9])-b)>EPSILON){ifchange =1;}
+	
+	// 修改写入数据===================================================================
 	if(ifchange)
 	{
 		uint32_t my_data[datalenght] = {
@@ -181,7 +184,8 @@ void Flash_Write_SetValue(void)
 		*(uint32_t*)(&Lo2_Value),
 		menuset_flashsave1,  
         menuset_flashsave2,  
-		9,
+		*(uint32_t*)(&k),
+		*(uint32_t*)(&b),
 		0xEEEEEEEE};
 		
 		flash_write_page(TARGET_SECTOR_NUM, my_data, datalenght); // 写入
@@ -196,9 +200,12 @@ void Flash_Read_SetValue(void)
 	
 	int read_len = flash_read_latest_in_page(TARGET_SECTOR_NUM, read_buf, datalenght,0xEEEEEEEE);    
 	
+	// 设定默认值=====================================================
 	if(!read_len)
 	{
 		float defaultvalue = 0.0f;
+		float defaultk = 0.0608f;
+		float defaultb = -114.08f;
 	
 		uint32_t default_menu1 = 0;  // 菜单设定的默认值
 		uint32_t default_menu2 = 0;  
@@ -219,7 +226,8 @@ void Flash_Read_SetValue(void)
 		*(uint32_t*)(&defaultvalue),
 		default_menu1,                  
         default_menu2,              
-		9,
+		*(uint32_t*)(&defaultk),
+		*(uint32_t*)(&defaultb),	
 		0xEEEEEEEE};
 		
 		flash_write_page(TARGET_SECTOR_NUM, my_data, datalenght); // 写入第0页
@@ -232,6 +240,7 @@ void Flash_Read_SetValue(void)
 		}
 	}
 
+	// 读出数据===========================================================
 	P1_Value = 	*(volatile float*)(&read_buf[0]);
 	
 	P2_Value =  *(volatile float*)(&read_buf[1]);																					
@@ -247,6 +256,9 @@ void Flash_Read_SetValue(void)
 	menuset_flashsave1 = read_buf[6];  // 读取菜单设定1
 	menuset_flashsave2 = read_buf[7];  // 读取菜单设定2
 	UnpackMenuSettings();
+	
+	k = *(volatile float*)(&read_buf[8]);
+	b = *(volatile float*)(&read_buf[9]);
 }
 
 
@@ -398,89 +410,89 @@ void reset_calibration()
 
 void Usart_Process(void)
 {
-		 if(uartrxbuffer.uartfinish)
-			{  
-						uartrxbuffer.uartfinish=0; 
-						testlen=DIV_Uart_ReadAvailable(testdate,sizeof(testdate));    //读取缓冲区
-				   printf("%s\r\n",(char *)testdate); //回传接收到的数据
-		
-				 if (strstr((char *)testdate, "kPaG") == NULL)   //没有数据，或数据错误
-					{
-        error_flag = 1;  // 格式错误
-        return;
-					}
-					
-//				   DIV_Disp_Snprintf(MainScreen," CAl");    //接收到数据显示校准
-//							DIV_Disp_Snprintf(SecondScreen,"mode");
- 
-    // 提取气压部分（"-0.00027"）
-    char *kpa_pos = strstr((char *)testdate, "kPaG");
-    if (kpa_pos == NULL) {
-        error_flag = 1;
-        return;
-    }
- 
-    // 计算气压部分的长度
-    int len = kpa_pos - (char *)testdate;
-    if (len <= 0 || len >= MAX_PRESSURE_STR) {
-        error_flag = 1;
-        return;
-    }
- 
-    // 临时存储气压字符串
-    char pressure_str[20];
-    strncpy(pressure_str, (char *)testdate, len);
-    pressure_str[len] = '\0';
- 
-    // 转换为浮点数
-    float pressure = atof(pressure_str);
- 
-    // 存储到数组
-    if (received_count < NUM_CALIBRATION_POINTS) {
-        y[received_count] = pressure;
-								x[received_count] = adcData;
-					   received_count++;
-    }
- 
-    // 检查是否接收完成 接收到足够数量
-    if (received_count >= NUM_CALIBRATION_POINTS) {
-        calibration_complete = 1;
-    }			
+	if(uartrxbuffer.uartfinish)
+	{  
+		uartrxbuffer.uartfinish=0; 
+		testlen=DIV_Uart_ReadAvailable(testdate,sizeof(testdate));    //读取缓冲区
+		printf("%s\r\n",(char *)testdate); //回传接收到的数据
+
+		if (strstr((char *)testdate, "kPaG") == NULL)   //没有数据，或数据错误
+		{
+			error_flag = 1;  // 格式错误
+			return;
+		}
+			
+		//DIV_Disp_Snprintf(MainScreen," CAl");    //接收到数据显示校准
+		//DIV_Disp_Snprintf(SecondScreen,"mode");
+
+		// 提取气压部分（"-0.00027"）
+		char *kpa_pos = strstr((char *)testdate, "kPaG");
+		if (kpa_pos == NULL) {
+			error_flag = 1;
+			return;
+		}
+	 
+		// 计算气压部分的长度
+		int len = kpa_pos - (char *)testdate;
+		if (len <= 0 || len >= MAX_PRESSURE_STR) {
+			error_flag = 1;
+			return;
+		}
+	 
+		// 临时存储气压字符串
+		char pressure_str[20];
+		strncpy(pressure_str, (char *)testdate, len);
+		pressure_str[len] = '\0';
+	 
+		// 转换为浮点数
+		float pressure = atof(pressure_str);
+	 
+		// 存储到数组
+		if (received_count < NUM_CALIBRATION_POINTS) {
+			y[received_count] = pressure;
+									x[received_count] = adcData;
+						   received_count++;
+		}
+	 
+		// 检查是否接收完成 接收到足够数量
+		if (received_count >= NUM_CALIBRATION_POINTS) {
+			calibration_complete = 1;
+		}			
 	}
 }
 void barometric(void)  //串口校准
 {
-			if(calibrationOrNo)   ///初始化成功就跳转
-			{
-				 system_state = RUN_STATE;
-			}
-			
-			
-			Usart_Process(); //接收校准气压数据
-			if (error_flag)  	// 格式错误
-			{
-					printf("errorformat!pleaseresend.\r\n");
-				   reset_calibration();  // 重置校准状态
-					error_flag = 0;
-					DIV_Disp_ClearAllPoint(MainScreen);
-					DIV_Disp_Snprintf(MainScreen," EOO");   //显示错误
-					DIV_Disp_Snprintf(SecondScreen," ERR");				
-			}
-			if (calibration_complete) // 校准完成
-			{
-					linearLeastSquares(x,y,n,&k,&b);   //计算曲线最小二
+	if(calibrationOrNo)   ///初始化成功就跳转
+	{
+		system_state = RUN_STATE;
+	}
+	
+	
+	Usart_Process(); //接收校准气压数据
+	if (error_flag)  	// 格式错误
+	{
+		printf("errorformat!pleaseresend.\r\n");
+	   reset_calibration();  // 重置校准状态
+		error_flag = 0;
+		DIV_Disp_ClearAllPoint(MainScreen);
+		DIV_Disp_Snprintf(MainScreen," EOO");   //显示错误
+		DIV_Disp_Snprintf(SecondScreen," ERR");				
+	}
+	if (calibration_complete) // 校准完成
+	{
+		linearLeastSquares(x,y,n,&k,&b);   //计算曲线最小二
+
+		printf("successful!recevice pressure is：\n");
+		for (int i = 0; i < NUM_CALIBRATION_POINTS; i++) {
+						printf("%d: %.5f kPa %0.f Adv\n", i + 1, y[i],x[i]);
+		}
+		printf("calibration function=%fX%f",k,b);  //打印曲线
 		
-					printf("successful!recevice pressure is：\n");
-					for (int i = 0; i < NUM_CALIBRATION_POINTS; i++) {
-									printf("%d: %.5f kPa %0.f Adv\n", i + 1, y[i],x[i]);
-					}
-					printf("calibration function=%fX%f",k,b);  //打印曲线
-					
-					calibrationOrNo=1;  //校准完成
-					calibration_complete = 0;  // 重置标志
-						//写入flash
-					Flash_Write_SetValue();  //写
-			}
+		calibrationOrNo=1;  //校准完成
+		calibration_complete = 0;  // 重置标志
+			//写入flash
+		Flash_Write_SetValue();  //写
+	}
 }
 
 #endif
