@@ -2861,6 +2861,7 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 				second_screen_stopevt(SECONDSCREEN_DISPSETVALUE);// 关闭副屏刷新设定值
 				
 				system_state = MENU_STATE; 
+				return scan_flag;
 			}
 			// 长按设置应差==========================================
 			if((longpresssetycvalue & HAL_KEY_LEFT_ADD)&&!(longpresssetycvalue & HAL_KEY_RIGHT_SUB))
@@ -2912,6 +2913,7 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 				DIV_Disp_ClearAllPoint(MainScreen);
 				
 				system_state = RUN_STATE; 
+				return scan_flag;
 			}
 			if(longpress_morethan_4s_keys & HAL_KEY_MODE)
 			{
