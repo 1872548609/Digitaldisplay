@@ -108,6 +108,7 @@ extern "C"
 #define MENU_STATE 1	// 菜单状态
 #define BAROMETRIC_STATE 2// 校准状态
 #define ZERO_STATE 3 // 校0状态
+#define PEAKTOVALLEY_STATE 4 // 峰值谷值保持
 
 extern uint8_t system_state;	// 系统运行状态全局变量
 

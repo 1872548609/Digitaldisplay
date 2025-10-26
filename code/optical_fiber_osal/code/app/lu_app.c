@@ -3,7 +3,7 @@ Filename:       iot_app.c
 Revised:        $Date: 2019-8-20 15:35
 Revision:       $Revision: V1.0.0
 
-Description:    IoTÓ¦ÓÃ³ÌĞòÖ÷ÎÄ¼ş£¬°üº¬ÈÎÎñ³õÊ¼»¯¡¢°´¼ü´¦ÀíºÍÊÂ¼ş´¦ÀíµÈ¹¦ÄÜ
+Description:    IoTåº”ç”¨ç¨‹åºä¸»æ–‡ä»¶ï¼ŒåŒ…å«ä»»åŠ¡åˆå§‹åŒ–ã€æŒ‰é”®å¤„ç†å’Œäº‹ä»¶å¤„ç†ç­‰åŠŸèƒ½
 
 Copyright 2021 uwaycon. All rights reserved.
 **************************************************-*****************^******************************/
@@ -19,25 +19,25 @@ extern "C"
 /*************************************************-*************************************************
 *                                               NOTE
 **************************************************-*****************^******************************/
-//-- source insightÊ¹ÓÃUTF-8±àÂë£¬File->Reload As Encoding...->UTF-8
-//-- source insightÉèÖÃÄ¬ÈÏ±àÂë£¬Option->Preferences->Files->Default encoding->UTF-8
+//-- source insightä½¿ç”¨UTF-8ç¼–ç ï¼ŒFile->Reload As Encoding...->UTF-8
+//-- source insightè®¾ç½®é»˜è®¤ç¼–ç ï¼ŒOption->Preferences->Files->Default encoding->UTF-8
 
 /*************************************************-*************************************************
 *                                             INCLUDES
 **************************************************-*****************^******************************/
-// Í·ÎÄ¼ş°üº¬ÇøÓò£¨Êµ¼ÊÊ¹ÓÃÊ±ĞèÒª°üº¬±ØÒªµÄÍ·ÎÄ¼ş£©
+// å¤´æ–‡ä»¶åŒ…å«åŒºåŸŸï¼ˆå®é™…ä½¿ç”¨æ—¶éœ€è¦åŒ…å«å¿…è¦çš„å¤´æ–‡ä»¶ï¼‰
 #include "iot_app.h"
 #include "OSAL_Timers.h"
 	
 /*************************************************-*************************************************
 *                                               MACRO
 **************************************************-*****************^******************************/
-// ºê¶¨ÒåÇøÓò
+// å®å®šä¹‰åŒºåŸŸ
 	
 #define LU_MAINTAIN_TIMER_EVT                                      0x0002 
 
 
-	// ±³¹âµ÷Õû=====================================
+	// èƒŒå…‰è°ƒæ•´=====================================
 #if 1
 void lu_allbacklight_set(uint8 en)
 {
@@ -105,46 +105,46 @@ void lu_backlight_levelset(uint8_t level)
 /*************************************************-*************************************************
 *                                          CONSTANT DEFINED
 **************************************************-*****************^******************************/
-// ³£Á¿¶¨ÒåÇøÓò
+// å¸¸é‡å®šä¹‰åŒºåŸŸ
 
 /*************************************************-*************************************************
 *                                           STRUCT DEFINED
 **************************************************-*****************^******************************/
-// ½á¹¹Ìå¶¨ÒåÇøÓò
+// ç»“æ„ä½“å®šä¹‰åŒºåŸŸ
 
 /*************************************************-*************************************************
 *                                          GLOBAL VARIABLES
 **************************************************-*****************^******************************/
-// È«¾Ö±äÁ¿¶¨ÒåÇøÓò
+// å…¨å±€å˜é‡å®šä¹‰åŒºåŸŸ
 
 /*************************************************-*************************************************
 *                                          LOCAL VARIABLES
 **************************************************-*****************^******************************/
-// ¾Ö²¿±äÁ¿¶¨ÒåÇøÓò
+// å±€éƒ¨å˜é‡å®šä¹‰åŒºåŸŸ
 uint8 lu_app_task_id;
 uint8 lu_app_state = 0;
 uint8 lu_app_bit = 1;
-//ÑÓÊ±
+//å»¶æ—¶
 void lu_Disp_DelayUs_temp(uint32_t us)
 {
 	uint32_t i;
-    for (i = 0; i < us * 10; i++) {  // 10 ÊÇ¾­ÑéÖµ£¬Ğè¸ù¾İÊµ¼ÊÖ÷Æµµ÷Õû
-        __NOP();  // ¿Õ²Ù×÷£¬·ÀÖ¹±»ÓÅ»¯£¨¿ÉÑ¡£©
+    for (i = 0; i < us * 10; i++) {  // 10 æ˜¯ç»éªŒå€¼ï¼Œéœ€æ ¹æ®å®é™…ä¸»é¢‘è°ƒæ•´
+        __NOP();  // ç©ºæ“ä½œï¼Œé˜²æ­¢è¢«ä¼˜åŒ–ï¼ˆå¯é€‰ï¼‰
     }
 }
 void lu_Disp_DelayMs_temp(uint32_t ms)
 {
     while (ms--) {
-        lu_Disp_DelayUs_temp(1000);  // µ÷ÓÃ1000´ÎÎ¢ÃëÑÓÊ± = 1ºÁÃë
+        lu_Disp_DelayUs_temp(1000);  // è°ƒç”¨1000æ¬¡å¾®ç§’å»¶æ—¶ = 1æ¯«ç§’
     }
 }
 
 /*************************************************-*************************************************
 *                                          FUNCTION PROTOTYPES
 **************************************************-*****************^******************************/
-// º¯ÊıÉùÃ÷ÇøÓò
+// å‡½æ•°å£°æ˜åŒºåŸŸ
 
-// static void Maintain_function(uint32_t current_value) µ÷ÓÃ½Ó¿Ú £¨current_value£© µ±Ç°´«¸ĞÆ÷ÊıÖµ
+// static void Maintain_function(uint32_t current_value) è°ƒç”¨æ¥å£ ï¼ˆcurrent_valueï¼‰ å½“å‰ä¼ æ„Ÿå™¨æ•°å€¼
 
 /*************************************************-*************************************************
 *                                          FUNCTION DEFINITIONS
@@ -155,19 +155,19 @@ void lu_display_Screen(char * Mainstring, char * Secondstring){
 		DIV_Disp_ClearAllPoint(1);
 		DIV_Disp_ClearAllPoint(0);
 
-		DIV_Disp_Snprintf(MainScreen,Mainstring);  //ÏÔÊ¾¿îĞÍ
-		second_screen_disp(Secondstring);//ÏÔÊ¾npn¿î
+		DIV_Disp_Snprintf(MainScreen,Mainstring);  //æ˜¾ç¤ºæ¬¾å‹
+		second_screen_disp(Secondstring);//æ˜¾ç¤ºnpnæ¬¾
 	
 }
 
 
 /**
- * @brief ·åÖµ-¹ÈÖµ±£³ÖÖ÷¹¦ÄÜº¯Êı
- * @param current_value µ±Ç°´«¸ĞÆ÷ÊıÖµ
- * @note ´Ëº¯ÊıÔÚ¶¨Ê±Æ÷ÊÂ¼şÖĞ±»µ÷ÓÃ£¬×Ô¶¯´¦Àí·åÖµ¹ÈÖµµÄ¼ÇÂ¼ºÍÏÔÊ¾
+ * @brief å³°å€¼-è°·å€¼ä¿æŒä¸»åŠŸèƒ½å‡½æ•°
+ * @param current_value å½“å‰ä¼ æ„Ÿå™¨æ•°å€¼
+ * @note æ­¤å‡½æ•°åœ¨å®šæ—¶å™¨äº‹ä»¶ä¸­è¢«è°ƒç”¨ï¼Œè‡ªåŠ¨å¤„ç†å³°å€¼è°·å€¼çš„è®°å½•å’Œæ˜¾ç¤º
  */
 /**
- * @brief ·Ç×èÈûµÄ·åÖµ-¹ÈÖµ±£³Ö¹¦ÄÜº¯Êı
+ * @brief éé˜»å¡çš„å³°å€¼-è°·å€¼ä¿æŒåŠŸèƒ½å‡½æ•°
  */
 static void Maintain_function_nonblocking(void)
 {
@@ -177,21 +177,21 @@ static void Maintain_function_nonblocking(void)
     static uint8_t display_state = 0;
     
     if (first_run) {
-        max_value = Current_pressure_value;
-        min_value = Current_pressure_value;
+        max_value = unitchange_pressure_value;
+        min_value = unitchange_pressure_value;
         first_run = 0;
 			  
     }
     
-    if (unitchange_pressure_value > max_value) max_value = Current_pressure_value;
-    if (unitchange_pressure_value < min_value) min_value = Current_pressure_value;
+    if (unitchange_pressure_value > max_value) max_value = unitchange_pressure_value;
+    if (unitchange_pressure_value < min_value) min_value = unitchange_pressure_value;
     
     if (display_state == 0) {
 
         lu_display_Screen("PERK", "botm");
     } else {
 			   
-        // ¸ù¾İµ¥Î»ÏÔÊ¾¶ÔÓ¦µÄ×î´ó×îĞ¡Öµ¸ñÊ½
+        // æ ¹æ®å•ä½æ˜¾ç¤ºå¯¹åº”çš„æœ€å¤§æœ€å°å€¼æ ¼å¼
         switch(unitconver_status)
         {
             case bAr:{
@@ -230,12 +230,12 @@ static void Maintain_function_nonblocking(void)
 }
 
 /**
- * @brief ÖØÖÃ·åÖµ¹ÈÖµ¹¦ÄÜ×´Ì¬
+ * @brief é‡ç½®å³°å€¼è°·å€¼åŠŸèƒ½çŠ¶æ€
  */
 static void Reset_Maintain_function(void)
 {
-    // ÕâÀï¿ÉÒÔÌí¼ÓÖØÖÃ·åÖµ¹ÈÖµ×´Ì¬µÄ´úÂë
-    // ÀıÈçÖØÖÃ×î´óÖµ×îĞ¡ÖµµÈ
+    // è¿™é‡Œå¯ä»¥æ·»åŠ é‡ç½®å³°å€¼è°·å€¼çŠ¶æ€çš„ä»£ç 
+    // ä¾‹å¦‚é‡ç½®æœ€å¤§å€¼æœ€å°å€¼ç­‰
 }
 
 
@@ -244,86 +244,86 @@ uint8 lu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milli
     uint8  k;
     uint8  key_mask = HAL_KEY_1;
     uint8  scan_flag = 1;
-    uint8  press_keys = 0;      // °´ÏÂµÄ°´¼ü
-    uint8  release_keys = 0;    // ÊÍ·ÅµÄ°´¼ü
-    static uint8 islongorshortpress = 0; // ³¤°´»ò¶Ì°´±êÖ¾
-    uint8_t longpress_morethan_3s_keys = 0; // ³¤°´³¬¹ı3ÃëµÄ°´¼ü
+    uint8  press_keys = 0;      // æŒ‰ä¸‹çš„æŒ‰é”®
+    uint8  release_keys = 0;    // é‡Šæ”¾çš„æŒ‰é”®
+    static uint8 islongorshortpress = 0; // é•¿æŒ‰æˆ–çŸ­æŒ‰æ ‡å¿—
+    uint8_t longpress_morethan_3s_keys = 0; // é•¿æŒ‰è¶…è¿‡3ç§’çš„æŒ‰é”®
     
-    // Ìí¼ÓK2³¤°´¼ì²â±äÁ¿
-    static uint8_t k1_k2_combo_press_time = 0; // K1ºÍK2Í¬Ê±°´ÏÂµÄÊ±¼ä¼ÆÊı
-    static uint8_t last_k1_k2_state = 0;       // ÉÏÒ»´ÎK1ºÍK2Í¬Ê±°´ÏÂµÄ×´Ì¬
-    static uint8_t k1_released = 0;            // K1ÊÍ·Å¼ì²â±êÖ¾
+    // æ·»åŠ K2é•¿æŒ‰æ£€æµ‹å˜é‡
+    static uint8_t k1_k2_combo_press_time = 0; // K1å’ŒK2åŒæ—¶æŒ‰ä¸‹çš„æ—¶é—´è®¡æ•°
+    static uint8_t last_k1_k2_state = 0;       // ä¸Šä¸€æ¬¡K1å’ŒK2åŒæ—¶æŒ‰ä¸‹çš„çŠ¶æ€
+    static uint8_t k1_released = 0;            // K1é‡Šæ”¾æ£€æµ‹æ ‡å¿—
 
-    // Ö»´¦ÀíÓĞĞ§µÄ°´¼ü
+    // åªå¤„ç†æœ‰æ•ˆçš„æŒ‰é”®
     cur_keys &= HU_APP_KEY_MASK;
     pre_keys &= HU_APP_KEY_MASK;
 
-    // ¼ì²âK1ÊÇ·ñËÉ¿ª
+    // æ£€æµ‹K1æ˜¯å¦æ¾å¼€
     if ((pre_keys & HAL_KEY_MODE) && !(cur_keys & HAL_KEY_MODE)) {
-        // K1´Ó°´ÏÂ±äÎªËÉ¿ª
+        // K1ä»æŒ‰ä¸‹å˜ä¸ºæ¾å¼€
         k1_released = 1;
     } else if (cur_keys & HAL_KEY_MODE) {
-        // K1±»°´ÏÂ£¬ÖØÖÃÊÍ·Å±êÖ¾
+        // K1è¢«æŒ‰ä¸‹ï¼Œé‡ç½®é‡Šæ”¾æ ‡å¿—
         k1_released = 0;
     }
 
-    // ¼ì²âK1ºÍK2Í¬Ê±°´ÏÂ
+    // æ£€æµ‹K1å’ŒK2åŒæ—¶æŒ‰ä¸‹
     uint8_t current_k1_k2_combo = ((cur_keys & HAL_KEY_MODE) && (cur_keys & HAL_KEY_2)) ? 1 : 0;
     
     if (current_k1_k2_combo) {
-        // K1ºÍK2Í¬Ê±°´ÏÂ
+        // K1å’ŒK2åŒæ—¶æŒ‰ä¸‹
         if (last_k1_k2_state) {
-            // ³ÖĞø°´ÏÂ£¬Ôö¼ÓÊ±¼ä¼ÆÊı
+            // æŒç»­æŒ‰ä¸‹ï¼Œå¢åŠ æ—¶é—´è®¡æ•°
             k1_k2_combo_press_time++;
             
-            // ¼ì²âÊÇ·ñ´ïµ½2Ãë£¨¼ÙÉèpoll_time_millisecondsÎª100ms£¬20´ÎÎª2Ãë£©
+            // æ£€æµ‹æ˜¯å¦è¾¾åˆ°2ç§’ï¼ˆå‡è®¾poll_time_millisecondsä¸º100msï¼Œ20æ¬¡ä¸º2ç§’ï¼‰
             if (k1_k2_combo_press_time >= 20) {
-                // K1ºÍK2Í¬Ê±°´ÏÂ³¬¹ı2Ãë
+                // K1å’ŒK2åŒæ—¶æŒ‰ä¸‹è¶…è¿‡2ç§’
                 longpress_morethan_3s_keys |= (HAL_KEY_MODE | HAL_KEY_2);
             }
         } else {
-            // ¸Õ¿ªÊ¼Í¬Ê±°´ÏÂ£¬ÖØÖÃÊ±¼ä¼ÆÊı
+            // åˆšå¼€å§‹åŒæ—¶æŒ‰ä¸‹ï¼Œé‡ç½®æ—¶é—´è®¡æ•°
             k1_k2_combo_press_time = 1;
             last_k1_k2_state = 1;
         }
     } else {
-        // K1ºÍK2Ã»ÓĞÍ¬Ê±°´ÏÂ£¬ÖØÖÃ×´Ì¬
+        // K1å’ŒK2æ²¡æœ‰åŒæ—¶æŒ‰ä¸‹ï¼Œé‡ç½®çŠ¶æ€
         k1_k2_combo_press_time = 0;
         last_k1_k2_state = 0;
     }
 
-    // ±éÀúËùÓĞ°´¼ü
+    // éå†æ‰€æœ‰æŒ‰é”®
     for (k = 0; k < 8; k++,key_mask<<=1)
     {
-        IOT_WATCHDOG_RESET(); // Î¹¹·
+        IOT_WATCHDOG_RESET(); // å–‚ç‹—
 
-        // Ìø¹ıÎŞĞ§°´¼ü
+        // è·³è¿‡æ— æ•ˆæŒ‰é”®
         if (!(key_mask & HU_APP_KEY_MASK))
         {
             continue;
         }
         
-        // °´¼ü°´ÏÂ´¦Àí
+        // æŒ‰é”®æŒ‰ä¸‹å¤„ç†
         if (cur_keys & key_mask)
         {
-            // ¶Ì°´¼ì²â
+            // çŸ­æŒ‰æ£€æµ‹
             if (hal_key_press_time_count[k] == 2)
             {
                islongorshortpress = 1;
             }
-            // ³¬³¤°´¼ì²â£¨>3s£©
+            // è¶…é•¿æŒ‰æ£€æµ‹ï¼ˆ>3sï¼‰
             if (hal_key_press_time_count[k] == 30)
             {
                 islongorshortpress = 2;
                 longpress_morethan_3s_keys |= key_mask;
             }
         }
-        // °´¼üÊÍ·Å´¦Àí
+        // æŒ‰é”®é‡Šæ”¾å¤„ç†
         else
         {
             if((pre_keys & key_mask) && !(cur_keys & key_mask))
             {
-                // ¶Ì°´´¦Àí
+                // çŸ­æŒ‰å¤„ç†
                 if(islongorshortpress == 1)
                 {
                     press_keys |= key_mask;
@@ -335,41 +335,43 @@ uint8 lu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milli
             }
         }
     }
-        
-    // ĞŞ¸ÄÎª¼ì²âK1ºÍK2Í¬Ê±³¤°´³¬¹ı2Ãë
+
+    // ä¿®æ”¹ä¸ºæ£€æµ‹K1å’ŒK2åŒæ—¶é•¿æŒ‰è¶…è¿‡2ç§’
     if((longpress_morethan_3s_keys & (HAL_KEY_MODE | HAL_KEY_2)) == (HAL_KEY_MODE | HAL_KEY_2))
     {
-        if(system_state == RUN_STATE && lu_app_bit)
+        if(system_state == PEAKTOVALLEY_STATE && lu_app_bit)
         {
-            lu_app_state = !lu_app_state;  // ÇĞ»»×´Ì¬
+            lu_app_state = !lu_app_state;  // åˆ‡æ¢çŠ¶æ€
             
             if (lu_app_state) {
-                // ½øÈë·åÖµÄ£Ê½ - Æô¶¯500ms¶¨Ê±Æ÷
+                // è¿›å…¥å³°å€¼æ¨¡å¼ - å¯åŠ¨500mså®šæ—¶å™¨
                 lu_mainbacklight_set(BACKLIGHT_RED);
-                Reset_Maintain_function(); // ÖØÖÃ·åÖµÄ£Ê½×´Ì¬
-                osal_start_reload_timer(lu_app_task_id, LU_MAINTAIN_TIMER_EVT, 500); // 500msÖØÔØ¶¨Ê±Æ÷
+                Reset_Maintain_function(); // é‡ç½®å³°å€¼æ¨¡å¼çŠ¶æ€
+                osal_start_reload_timer(lu_app_task_id, LU_MAINTAIN_TIMER_EVT, 500); // 500msé‡è½½å®šæ—¶å™¨
             } else {
-                // ÍË³ö·åÖµÄ£Ê½ - Í£Ö¹¶¨Ê±Æ÷
+                // é€€å‡ºå³°å€¼æ¨¡å¼ - åœæ­¢å®šæ—¶å™¨
                 lu_mainbacklight_set(BACKLIGHT_GREEN);
                 osal_stop_timerEx(lu_app_task_id, LU_MAINTAIN_TIMER_EVT);
+				
+
             }
             
             lu_app_bit = 0;
             
-            // ÖØÖÃ×éºÏ°´¼ü×´Ì¬£¬·ÀÖ¹ÖØ¸´´¥·¢
+            // é‡ç½®ç»„åˆæŒ‰é”®çŠ¶æ€ï¼Œé˜²æ­¢é‡å¤è§¦å‘
             k1_k2_combo_press_time = 0;
             last_k1_k2_state = 0;
         }
     }
     
-    // ¸ù¾İK1ÊÍ·Å×´Ì¬À´ÖØÖÃlu_app_bit
+    // æ ¹æ®K1é‡Šæ”¾çŠ¶æ€æ¥é‡ç½®lu_app_bit
     if (k1_released) {
-        // K1ËÉ¿ªºó£¬¿ÉÒÔÖØĞÂÔÊĞí×´Ì¬ÇĞ»»
+        // K1æ¾å¼€åï¼Œå¯ä»¥é‡æ–°å…è®¸çŠ¶æ€åˆ‡æ¢
         lu_app_bit = 1;
-        k1_released = 0; // ÖØÖÃÊÍ·Å±êÖ¾
+        k1_released = 0; // é‡ç½®é‡Šæ”¾æ ‡å¿—
     }
     
-    // ÒÆ³ı×èÈûµÄÑÓÊ±µ÷ÓÃ
+    // ç§»é™¤é˜»å¡çš„å»¶æ—¶è°ƒç”¨
     // if(lu_app_state){Maintain_function(); lu_Disp_DelayMs_temp(500);}
         
     return scan_flag;
@@ -378,33 +380,33 @@ uint8 lu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_milli
 
 void lu_app_init(uint8 task_id)
 {
-    lu_app_task_id = task_id; // ±£´æÈÎÎñID
+    lu_app_task_id = task_id; // ä¿å­˜ä»»åŠ¡ID
 	
-    lu_allbacklight_set(BACKLIGHT_ON);		// ´ò¿ª±³¹â
+    lu_allbacklight_set(BACKLIGHT_ON);		// æ‰“å¼€èƒŒå…‰
 	
-    // ×¢²áÊÂ¼ş
+    // æ³¨å†Œäº‹ä»¶
     //osal_start_reload_timer(lu_app_task_id,LU_APP_TIMER_EVT,HU_APP_TIMER_INTERVAL);
 	
-    // ×¢²á°´¼ü»Øµ÷º¯Êı
+    // æ³¨å†ŒæŒ‰é”®å›è°ƒå‡½æ•°
     HalKeyCallbackRegister(lu_app_key_callback);
 	
 }
 
 uint16 lu_app_process_event(uint8 task_id, uint16 events)
 {
-    (void)task_id; // ÏÔÊ½ºöÂÔÎ´ÒıÓÃ²ÎÊı£¨±ÜÃâ±àÒëÆ÷¾¯¸æ£©
+    (void)task_id; // æ˜¾å¼å¿½ç•¥æœªå¼•ç”¨å‚æ•°ï¼ˆé¿å…ç¼–è¯‘å™¨è­¦å‘Šï¼‰
      
-    // ´¦ÀíÏµÍ³ÏûÏ¢ÊÂ¼ş
+    // å¤„ç†ç³»ç»Ÿæ¶ˆæ¯äº‹ä»¶
     if ( events & SYS_EVENT_MSG )
     {
-        // ½ÓÊÕÏûÏ¢¶ÓÁĞÖĞµÄÏûÏ¢
+        // æ¥æ”¶æ¶ˆæ¯é˜Ÿåˆ—ä¸­çš„æ¶ˆæ¯
         uint8* msg_packet = (uint8 *)osal_msg_receive(lu_app_task_id);
         while ( msg_packet )
         {
-            // ¸ù¾İÏûÏ¢ÊÂ¼şÀàĞÍ·Ö·¢´¦Àí
+            // æ ¹æ®æ¶ˆæ¯äº‹ä»¶ç±»å‹åˆ†å‘å¤„ç†
             //switch ( msg_packet->hdr.event )
             //{
-            //case KEY_CHANGE://°´¼üÊÂ¼ş´¦Àí
+            //case KEY_CHANGE://æŒ‰é”®äº‹ä»¶å¤„ç†
             // //UserApp_HandleKeys( ((keyChange_t *)MSGpkt)->state, ((keyChange_t *)MSGpkt)->keys );
             // break;
 
@@ -412,36 +414,36 @@ uint16 lu_app_process_event(uint8 task_id, uint16 events)
             // break;
             //}
 
-            // ÊÍ·ÅÏûÏ¢ÄÚ´æ
+            // é‡Šæ”¾æ¶ˆæ¯å†…å­˜
             osal_msg_deallocate((uint8 *)msg_packet);
 
-            // ½ÓÊÕÏÂÒ»ÌõÏûÏ¢
+            // æ¥æ”¶ä¸‹ä¸€æ¡æ¶ˆæ¯
             msg_packet = (uint8 *)osal_msg_receive(lu_app_task_id);
         }
 
-        // ·µ»ØÎ´´¦ÀíµÄÊÂ¼ş£¨Çå³ıÒÑ´¦ÀíµÄSYS_EVENT_MSG£©
+        // è¿”å›æœªå¤„ç†çš„äº‹ä»¶ï¼ˆæ¸…é™¤å·²å¤„ç†çš„SYS_EVENT_MSGï¼‰
         return (events ^ SYS_EVENT_MSG);
     }
     
-    // ´¦Àí·åÖµÄ£Ê½¶¨Ê±Æ÷ÊÂ¼ş - Ã¿500ms×Ô¶¯ÇĞ»»ÏÔÊ¾
+    // å¤„ç†å³°å€¼æ¨¡å¼å®šæ—¶å™¨äº‹ä»¶ - æ¯500msè‡ªåŠ¨åˆ‡æ¢æ˜¾ç¤º
     if(events & LU_MAINTAIN_TIMER_EVT) {
         if(lu_app_state) {
-            Maintain_function_nonblocking(); // ·Ç×èÈûµÄÏÔÊ¾ÇĞ»»
+            Maintain_function_nonblocking(); // éé˜»å¡çš„æ˜¾ç¤ºåˆ‡æ¢
         }
         return (events ^ LU_MAINTAIN_TIMER_EVT);
     }
 	
-	//ÅĞ¶ÏËûÊÇ·ñ³É¹¦µ÷¶ÈÆğÀ´ÁË£¬Ìí¼Ó³É¹¦¾Í»á½øÄãµÄÊÂ¼ş¹ÜÀí
+	//åˆ¤æ–­ä»–æ˜¯å¦æˆåŠŸè°ƒåº¦èµ·æ¥äº†ï¼Œæ·»åŠ æˆåŠŸå°±ä¼šè¿›ä½ çš„äº‹ä»¶ç®¡ç†
 	if(events & HU_APP_TIMER_EVT)
 	{
-		// ÊÂ¼şµ½ÁË¾ÍÖ´ĞĞ
+		// äº‹ä»¶åˆ°äº†å°±æ‰§è¡Œ
 		osal_stop_timerEx(lu_app_task_id,HU_APP_TIMER_EVT);
 		
 		return (events ^ HU_APP_TIMER_EVT);
 	}
 		
 	
-	// ¶ªÆúÎ´ÖªÊÂ¼ş
+	// ä¸¢å¼ƒæœªçŸ¥äº‹ä»¶
     return 0;
 }
 

@@ -53,6 +53,7 @@ float After_zero_calibration_val;
 // 局部变量定义区域
 uint8 iot_app_task_id;
 uint8 iot_app_ifflashdisp = 0;
+uint8 iot_app_keylock=0;
 
 // flash读写==============================================
 #if 1
@@ -2794,114 +2795,242 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 			}
         }
     }
+//	
+//	if(system_state == PEAKTOVALLEY_STATE)
+//	{
+//		if(longpress_morethan_3s_keys & (HAL_KEY_MODE|HAL_KEY_LEFT_ADD))
+//		{
+//			
+//			longpress_morethan_3s_keys &=~ (HAL_KEY_MODE|HAL_KEY_LEFT_ADD);
+//		
+//			return scan_flag;
+//		}
+//		
+//		if(release_keys &  (HAL_KEY_MODE|HAL_KEY_LEFT_ADD))
+//		{
+//			system_state=RUN_STATE;
+//			
+//			iot_app_keylock=0;
+//		
+//		}
+//	}
 	
-	// 普通按键功能==========================================
-	
-	if(press_keys & HAL_KEY_MODE)
+	if(!iot_app_keylock)
 	{
-		if(system_state == RUN_STATE)
-		{
-			modeset_choiceanddisplay();	// 按键选择切换应差设定
-		}
-		if(system_state == MENU_STATE)
-		{
-			Menu_Execute(MENU_CBK_MODE);
-		}	
-	}
-	
-	if(press_keys & HAL_KEY_LEFT_ADD)
-	{
-		if(system_state == MENU_STATE)
-		{
-			Menu_Execute(MENU_CBK_ADD);
-		}
-		else if(system_state == RUN_STATE)
-		{
-			short_setycvalue(PRESS_ADD);
-			second_status &= ~SECONDSCREEN_DISPAFTERTIME;// 防止按下mode后恢复旧现场改变当前副屏的显示
-		}
-	}
-	
-	if(press_keys & HAL_KEY_RIGHT_SUB)
-	{
-		if(system_state == MENU_STATE)
-		{
-			Menu_Execute(MENU_CBK_SUB);
-		}
-		else if(system_state == RUN_STATE)
-		{
-			short_setycvalue(PRESS_DOWN);
-			second_status &= ~SECONDSCREEN_DISPAFTERTIME;// 防止按下mode后恢复旧现场改变当前副屏的显示
-		}
-	}
 
-	if(longpress_morethan_3s_keys & HAL_KEY_MODE)
-	{
 		if(system_state == RUN_STATE)
 		{
-			MenuSystem_Start();		// 启动菜单
-			Menu_Enter(); // 进入根下第一个菜单
-			Menu_Execute(INCALLBACK);
+			if(press_keys & HAL_KEY_MODE)
+			{
+				modeset_choiceanddisplay();	// 按键选择切换应差设定
+			}
 			
-			main_screen_stopevt(MAINSCREEN_DISPPRESSURE);// 关闭主屏刷新气压
-			second_screen_stopevt(SECONDSCREEN_DISPSETVALUE);// 关闭副屏刷新设定值
+			if(press_keys & HAL_KEY_LEFT_ADD)
+			{
+				short_setycvalue(PRESS_ADD);
+				second_status &= ~SECONDSCREEN_DISPAFTERTIME;// 防止按下mode后恢复旧现场改变当前副屏的显示
+			}
+			if(press_keys & HAL_KEY_RIGHT_SUB)
+			{
+				short_setycvalue(PRESS_DOWN);
+				second_status &= ~SECONDSCREEN_DISPAFTERTIME;// 防止按下mode后恢复旧现场改变当前副屏的显示
+			}
 			
-			system_state = MENU_STATE; 
-		}
-		else if(system_state == MENU_STATE)
-		{
-			MenuSystem_Stop();		// 关闭菜单
-			Menu_Execute(OUTCALLBACK);
+			// 长按 =======================================================
+//			if(longpress_morethan_3s_keys & (HAL_KEY_MODE|HAL_KEY_LEFT_ADD))
+//			{
+//				longpress_morethan_3s_keys &=~ (HAL_KEY_MODE|HAL_KEY_LEFT_ADD);
+//				
+//				return scan_flag;
+//			}
+//			if(release_keys &  (HAL_KEY_MODE|HAL_KEY_LEFT_ADD))
+//			{
+//				system_state=PEAKTOVALLEY_STATE;
+//				iot_app_keylock=1;
+//			
+//			}
 			
-			main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
-			second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
 			
-			iot_mainbacklight_set(BACKLIGHT_YELLOW);
-			
-			main_screen_disppressure();// 退出后立即刷新一次
-			DIV_Disp_ClearAllPoint(MainScreen);
-			
-			system_state = RUN_STATE; 
+			if(longpress_morethan_3s_keys & HAL_KEY_MODE)
+			{
+				MenuSystem_Start();		// 启动菜单
+				Menu_Enter(); // 进入根下第一个菜单
+				Menu_Execute(INCALLBACK);
+				
+				main_screen_stopevt(MAINSCREEN_DISPPRESSURE);// 关闭主屏刷新气压
+				second_screen_stopevt(SECONDSCREEN_DISPSETVALUE);// 关闭副屏刷新设定值
+				
+				system_state = MENU_STATE; 
+			}
+			// 长按设置应差==========================================
+			if((longpresssetycvalue & HAL_KEY_LEFT_ADD)&&!(longpresssetycvalue & HAL_KEY_RIGHT_SUB))
+			{
+				osal_start_reload_timer(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT,100);
+				keypressaddorsub = PRESS_ADD; 
+			}
+			if(!(longpresssetycvalue & HAL_KEY_LEFT_ADD)&&(longpresssetycvalue & HAL_KEY_RIGHT_SUB))
+			{
+					osal_start_reload_timer(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT,100);
+					keypressaddorsub = PRESS_DOWN; 
+			}
+			if((release_keys & HAL_KEY_LEFT_ADD)||(release_keys & HAL_KEY_RIGHT_SUB)||(longpresssetycvalue & HAL_KEY_MODE))// 按键释放
+			{
+					osal_stop_timerEx(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT);
+					long_setclearstates();
+			}
 		}
 		
-	}
-	
-	// 长按设置应差==========================================
-	if((release_keys & HAL_KEY_LEFT_ADD)||(release_keys & HAL_KEY_RIGHT_SUB))// 按键释放
-	{
-			osal_stop_timerEx(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT);
-			long_setclearstates();
-	}
-	
-	if((longpresssetycvalue & HAL_KEY_LEFT_ADD)&&!(longpresssetycvalue & HAL_KEY_RIGHT_SUB))
-	{
-		if(system_state == RUN_STATE)
-		{
-			osal_start_reload_timer(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT,100);
-			keypressaddorsub = PRESS_ADD; 
-		}
-	}
-	if(!(longpresssetycvalue & HAL_KEY_LEFT_ADD)&&(longpresssetycvalue & HAL_KEY_RIGHT_SUB))
-	{
-		if(system_state == RUN_STATE)
-		{
-			osal_start_reload_timer(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT,100);
-			keypressaddorsub = PRESS_DOWN; 
-		}
-	}
-	
-	if(longpress_morethan_4s_keys & HAL_KEY_MODE)
-	{
+		
 		if(system_state == MENU_STATE)
 		{
-			if((strcmp(menuSystem.current->text,"NORMSET") == 0))
+			if(press_keys & HAL_KEY_MODE)
 			{
-				Menu_Next();
-				Menu_Execute(INCALLBACK);
+				Menu_Execute(MENU_CBK_MODE);
+			}
+			
+			if(press_keys & HAL_KEY_LEFT_ADD)
+			{
+				Menu_Execute(MENU_CBK_ADD);
+			}
+			
+			if(press_keys & HAL_KEY_RIGHT_SUB)
+			{
+				Menu_Execute(MENU_CBK_SUB);
+
+			}
+			if(longpress_morethan_3s_keys & HAL_KEY_MODE)
+			{
+				MenuSystem_Stop();		// 关闭菜单
+				Menu_Execute(OUTCALLBACK);
+				
+				main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
+				second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
+				
+				iot_mainbacklight_set(BACKLIGHT_YELLOW);
+				
+				main_screen_disppressure();// 退出后立即刷新一次
+				DIV_Disp_ClearAllPoint(MainScreen);
+				
+				system_state = RUN_STATE; 
+			}
+			if(longpress_morethan_4s_keys & HAL_KEY_MODE)
+			{
+				if((strcmp(menuSystem.current->text,"NORMSET") == 0))
+				{
+					Menu_Next();
+					Menu_Execute(INCALLBACK);
+				}
 			}
 		}
 	}
 	
+	// 普通按键功能==========================================
+//	if(press_keys & HAL_KEY_MODE)
+//	{
+//		if(system_state == RUN_STATE)
+//		{
+//			modeset_choiceanddisplay();	// 按键选择切换应差设定
+//		}
+//		if(system_state == MENU_STATE)
+//		{
+//			Menu_Execute(MENU_CBK_MODE);
+//		}	
+//	}
+//	
+//	if(press_keys & HAL_KEY_LEFT_ADD)
+//	{
+//		if(system_state == MENU_STATE)
+//		{
+//			Menu_Execute(MENU_CBK_ADD);
+//		}
+//		else if(system_state == RUN_STATE)
+//		{
+//			short_setycvalue(PRESS_ADD);
+//			second_status &= ~SECONDSCREEN_DISPAFTERTIME;// 防止按下mode后恢复旧现场改变当前副屏的显示
+//		}
+//	}
+	
+//	if(press_keys & HAL_KEY_RIGHT_SUB)
+//	{
+//		if(system_state == MENU_STATE)
+//		{
+//			Menu_Execute(MENU_CBK_SUB);
+//		}
+//		else if(system_state == RUN_STATE)
+//		{
+//			short_setycvalue(PRESS_DOWN);
+//			second_status &= ~SECONDSCREEN_DISPAFTERTIME;// 防止按下mode后恢复旧现场改变当前副屏的显示
+//		}
+//	}
+	// 长按======================================================
+
+//	if(longpress_morethan_3s_keys & HAL_KEY_MODE)
+//	{
+//		if(system_state == RUN_STATE)
+//		{
+//			MenuSystem_Start();		// 启动菜单
+//			Menu_Enter(); // 进入根下第一个菜单
+//			Menu_Execute(INCALLBACK);
+//			
+//			main_screen_stopevt(MAINSCREEN_DISPPRESSURE);// 关闭主屏刷新气压
+//			second_screen_stopevt(SECONDSCREEN_DISPSETVALUE);// 关闭副屏刷新设定值
+//			
+//			system_state = MENU_STATE; 
+//		}
+//		else if(system_state == MENU_STATE)
+//		{
+//			MenuSystem_Stop();		// 关闭菜单
+//			Menu_Execute(OUTCALLBACK);
+//			
+//			main_screen_tranfromevt(MAINSCREEN_DISPPRESSURE);// 主屏刷新气压
+//			second_screen_tranfromevt(SECONDSCREEN_DISPSETVALUE);// 副屏刷新设定值
+//			
+//			iot_mainbacklight_set(BACKLIGHT_YELLOW);
+//			
+//			main_screen_disppressure();// 退出后立即刷新一次
+//			DIV_Disp_ClearAllPoint(MainScreen);
+//			
+//			system_state = RUN_STATE; 
+//		}
+//	}
+//	if(longpress_morethan_4s_keys & HAL_KEY_MODE)
+//	{
+//		if(system_state == MENU_STATE)
+//		{
+//			if((strcmp(menuSystem.current->text,"NORMSET") == 0))
+//			{
+//				Menu_Next();
+//				Menu_Execute(INCALLBACK);
+//			}
+//		}
+//	}
+//	// 长按设置应差==========================================
+//	
+//	if((longpresssetycvalue & HAL_KEY_LEFT_ADD)&&!(longpresssetycvalue & HAL_KEY_RIGHT_SUB))
+//	{
+//		if(system_state == RUN_STATE)
+//		{
+//			osal_start_reload_timer(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT,100);
+//			keypressaddorsub = PRESS_ADD; 
+//		}
+//	}
+//	if(!(longpresssetycvalue & HAL_KEY_LEFT_ADD)&&(longpresssetycvalue & HAL_KEY_RIGHT_SUB))
+//	{
+//		if(system_state == RUN_STATE)
+//		{
+//			osal_start_reload_timer(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT,100);
+//			keypressaddorsub = PRESS_DOWN; 
+//		}
+//	}
+//	if((release_keys & HAL_KEY_LEFT_ADD)||(release_keys & HAL_KEY_RIGHT_SUB))// 按键释放
+//	{
+//			osal_stop_timerEx(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT);
+//			long_setclearstates();
+//	}
+//	
+	
+	
+
 	return scan_flag;
 }
 

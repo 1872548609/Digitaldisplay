@@ -33,6 +33,7 @@ extern "C"
 *                                             FUNCTION
 **************************************************-*****************^******************************/
 extern uint8 iot_app_ifflashdisp ;
+extern uint8 iot_app_keylock;
 
 #define EPSILON 1e-6f   //误差容许
 #define MIN_DECIMAL_PRECISION 0.0001f   // 最小小数精度（根据实际需求调整）

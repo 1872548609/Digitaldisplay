@@ -64,7 +64,7 @@ const pTaskEventHandlerFn tasksArr[] =
 {
 		Hal_ProcessEvent,               // 硬件抽象层任务
 		liu_app_process_event,			    //小刘的事件管理
-		//lu_app_process_event,						//德晋的事件管理
+		lu_app_process_event,						//德晋的事件管理
 		iot_app_process_event,          // 用户自定义任务（必须存在）
 		//hu_app_process_event,					  // 嘉诚的事件管理
 		
@@ -112,7 +112,7 @@ void osalInitTasks( void )
     // 注意：taskID在每次调用后会自动递增
     Hal_Init( taskID++ );       // 硬件抽象层初始化
 	liu_app_init( taskID++ );		//  小刘的任务初始化
-	//lu_app_init ( taskID++ );		// 德晋任务的初始化（与主程序显示有冲突）
+	lu_app_init ( taskID++ );		// 德晋任务的初始化（与主程序显示有冲突）
 	iot_app_init( taskID++ );
 	hu_app_init ( taskID++ ); // 	嘉诚的任务初始化
 	
