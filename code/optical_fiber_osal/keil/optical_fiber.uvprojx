@@ -729,6 +729,16 @@
               <FileType>5</FileType>
               <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_out.h</FilePath>
             </File>
+            <File>
+              <FileName>iot_driver_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>iot_driver_usart.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\code\components\driver\usr\apm32f0xx\iot_driver_usart.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -873,6 +883,16 @@
               <FileName>hal_timer.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\code\components\hal\target\apm32f051\hal_timer.h</FilePath>
+            </File>
+            <File>
+              <FileName>iot_hal_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\components\hal\target\apm32f051\iot_hal_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>iot_hal_usart.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\code\components\hal\target\apm32f051\iot_hal_usart.h</FilePath>
             </File>
           </Files>
         </Group>

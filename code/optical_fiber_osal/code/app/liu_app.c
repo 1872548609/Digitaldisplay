@@ -378,7 +378,10 @@ uint8 liu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 		LongPress_MODE_Key_4s();
 	}
 	
-	
+	if((release_keys & HAL_KEY_LEFT_ADD)||(release_keys & HAL_KEY_RIGHT_SUB))// 按键释放
+	{
+			
+	}
 	
 	//多键同时长按
 	if( (ADD_SUB_longpress_morethan_2s_keys & HAL_KEY_LEFT_ADD) 
