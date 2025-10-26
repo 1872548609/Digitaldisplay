@@ -38,7 +38,7 @@ typedef struct
 
 extern Zero_Calibration_typedef Zero_Calibration_struct;
 
-
+void LongPress_ADD_SUB_Key_2s(void)	;
 
 void   liu_app_init(uint8 task_id);
 uint16 liu_app_process_event(uint8 task_id, uint16 events);

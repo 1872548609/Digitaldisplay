@@ -390,7 +390,7 @@ uint8 liu_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 	{
 		ADD_SUB_longpress_morethan_2s_keys = 0;
 		
-		LongPress_ADD_SUB_Key_2s();
+//		LongPress_ADD_SUB_Key_2s();
 	}
 	
 	return scan_flag;
