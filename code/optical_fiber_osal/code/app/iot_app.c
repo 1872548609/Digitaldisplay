@@ -2798,7 +2798,7 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 
 		if(system_state == RUN_STATE)
 		{
-			if(press_keys & HAL_KEY_MODE)
+			if(press_keys & HAL_KEY_MODE )
 			{
 				modeset_choiceanddisplay();	// 按键选择切换应差设定
 			}
@@ -2821,9 +2821,9 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 				system_state=PEAKTOVALLEY_STATE;
 				iot_app_keylock=1;
 				
-				
-				longpress_morethan_3s_keys &=~ (HAL_KEY_MODE|HAL_KEY_LEFT_ADD);
-				
+				osal_stop_timerEx(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT);
+				long_setclearstates();
+
 				return scan_flag;
 			}
 
@@ -2842,16 +2842,20 @@ uint8 iot_app_key_callback(uint8 cur_keys, uint8 pre_keys, uint32 poll_time_mill
 				return scan_flag;
 			}
 			// 长按设置应差==========================================
-			if((longpresssetycvalue & HAL_KEY_LEFT_ADD)&&!(longpresssetycvalue & HAL_KEY_RIGHT_SUB))
+			if(!(longpresssetycvalue & HAL_KEY_MODE))
 			{
-				osal_start_reload_timer(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT,100);
-				keypressaddorsub = PRESS_ADD; 
-			}
-			if(!(longpresssetycvalue & HAL_KEY_LEFT_ADD)&&(longpresssetycvalue & HAL_KEY_RIGHT_SUB))
-			{
+				if((longpresssetycvalue & HAL_KEY_LEFT_ADD)&&!(longpresssetycvalue & HAL_KEY_RIGHT_SUB))
+				{
 					osal_start_reload_timer(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT,100);
-					keypressaddorsub = PRESS_DOWN; 
+					keypressaddorsub = PRESS_ADD; 
+				}
+				if(!(longpresssetycvalue & HAL_KEY_LEFT_ADD)&&(longpresssetycvalue & HAL_KEY_RIGHT_SUB))
+				{
+						osal_start_reload_timer(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT,100);
+						keypressaddorsub = PRESS_DOWN; 
+				}
 			}
+			
 			if((release_keys & HAL_KEY_LEFT_ADD)||(release_keys & HAL_KEY_RIGHT_SUB)||(longpresssetycvalue & HAL_KEY_MODE))// 按键释放
 			{
 					osal_stop_timerEx(iot_app_task_id,IOT_APP_LONGKEYSET_YCVALUE_EVT);
