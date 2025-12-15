@@ -1,0 +1,9 @@
+.\objects\apm32f0xx_comp.o: ..\code\components\driver\lib\apm32f0xx\src\apm32f0xx_comp.c
+.\objects\apm32f0xx_comp.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_comp.h
+.\objects\apm32f0xx_comp.o: D:\long\Arm\Packs\Geehy\APM32F0xx_DFP\1.0.9\Device\Device\Geehy\APM32F0xx\Include\apm32f0xx.h
+.\objects\apm32f0xx_comp.o: ..\code\components\hal\target\apm32f051_barometer\CMSIS\core_cm0plus.h
+.\objects\apm32f0xx_comp.o: D:\long\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\apm32f0xx_comp.o: ..\code\components\hal\target\apm32f051_barometer\CMSIS\core_cmInstr.h
+.\objects\apm32f0xx_comp.o: ..\code\components\hal\target\apm32f051_barometer\CMSIS\core_cmFunc.h
+.\objects\apm32f0xx_comp.o: D:\long\Arm\Packs\Geehy\APM32F0xx_DFP\1.0.9\Device\Device\Geehy\APM32F0xx\Include\system_apm32f0xx.h
+.\objects\apm32f0xx_comp.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_rcm.h

@@ -1,0 +1,12 @@
+.\objects\iot_driver_gpio.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_gpio.c
+.\objects\iot_driver_gpio.o: ..\code\components\driver\usr\apm32f0xx\iot_driver_gpio.h
+.\objects\iot_driver_gpio.o: D:\long\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\iot_driver_gpio.o: D:\long\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\iot_driver_gpio.o: D:\long\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\iot_driver_gpio.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_gpio.h
+.\objects\iot_driver_gpio.o: D:\long\Arm\Packs\Geehy\APM32F0xx_DFP\1.0.9\Device\Device\Geehy\APM32F0xx\Include\apm32f0xx.h
+.\objects\iot_driver_gpio.o: ..\code\components\hal\target\apm32f051_barometer\CMSIS\core_cm0plus.h
+.\objects\iot_driver_gpio.o: ..\code\components\hal\target\apm32f051_barometer\CMSIS\core_cmInstr.h
+.\objects\iot_driver_gpio.o: ..\code\components\hal\target\apm32f051_barometer\CMSIS\core_cmFunc.h
+.\objects\iot_driver_gpio.o: D:\long\Arm\Packs\Geehy\APM32F0xx_DFP\1.0.9\Device\Device\Geehy\APM32F0xx\Include\system_apm32f0xx.h
+.\objects\iot_driver_gpio.o: ..\code\components\driver\lib\apm32f0xx\inc\apm32f0xx_rcm.h
